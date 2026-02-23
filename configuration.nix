@@ -4,7 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ./modules/globals.nix
-    ./modules/greeter.nix
+    ./users/greeter/default.nix
     ./users/roman/default.nix
   ];
 

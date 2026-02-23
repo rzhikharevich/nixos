@@ -9,10 +9,7 @@ Personal NixOS configuration for a system named `nixform`, targeting a Minisforu
 ## Build Commands
 
 ```sh
-sudo nixos-rebuild switch --flake .#nixform   # rebuild and switch
-sudo nixos-rebuild build --flake .#nixform    # build without switching
-nix flake update                              # update all flake inputs
-nix flake update <input-name>                 # update a single input
+nix build .#nixosConfigurations.nixform.config.system.build.toplevel # Build into ./result for verification.
 ```
 
 ## Architecture

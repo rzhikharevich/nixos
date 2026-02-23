@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
-
+let
+  safeSuspend = import ../../scripts/safe-suspend.nix { inherit pkgs; };
+in
 {
   users.users.roman = {
     isNormalUser = true;
@@ -21,7 +23,7 @@
         after-resume = "${pkgs.niri} msg action power-on-monitors";
       };
       timeouts = [
-        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock && ${pkgs.systemd}/bin/systemctl suspend"; }
+        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock && ${safeSuspend}"; }
       ];
     };
 
