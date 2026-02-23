@@ -23,7 +23,7 @@ in
         after-resume = "${pkgs.niri} msg action power-on-monitors";
       };
       timeouts = [
-        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock && ${safeSuspend}"; }
+        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock --daemonize && ${safeSuspend}"; }
       ];
     };
 
