@@ -11,6 +11,19 @@
   home-manager.users.roman = {
     imports = [ ./niri.nix ];
     programs.fish.enable = true;
+    programs.foot.enable = true;
+    programs.swaylock.enable = true;
+
+    services.swayidle = {
+      enable = true;
+      events = {
+        before-sleep = "${pkgs.niri} msg action power-off-monitors";
+        after-resume = "${pkgs.niri} msg action power-on-monitors";
+      };
+      timeouts = [
+        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock && ${pkgs.systemd}/bin/systemctl suspend"; }
+      ];
+    };
 
     stylix = {
       image = pkgs.fetchurl {
