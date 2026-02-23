@@ -1,15 +1,16 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 { config, lib, pkgs, niri-flake, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules/greeter.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./modules/globals.nix
+    ./modules/greeter.nix
+    ./users/roman/default.nix
+  ];
+
+  rzhikharevich.sshPubKeys = [
+    "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive"
+  ];
 
   boot = {
     kernelParams = [
@@ -81,19 +82,8 @@
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
-  users.users.roman = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
-    shell = pkgs.fish;
-  };
-
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
-  home-manager.users.roman = {
-    imports = [ ./modules/niri.nix ];
-    programs.fish.enable = true;
-    home.stateVersion = "25.11";
-  };
 
   nix.gc = {
     automatic = true;
@@ -142,6 +132,7 @@
 
   stylix = {
     enable = true;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/linux-vt.yaml";
   };
 
   services.openssh = {
@@ -151,9 +142,6 @@
   };
 
   users.users.root.openssh.authorizedKeys.keys = [
-    "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive.Roman’s-MacBook-Pro.local"
-  ];
-  users.users.roman.openssh.authorizedKeys.keys = [
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive.Roman’s-MacBook-Pro.local"
   ];
 
