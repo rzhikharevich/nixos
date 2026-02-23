@@ -18,7 +18,7 @@ let
   '';
 
   greeterWlgreetConfig = pkgs.writeText "greetd-wlgreet-config" ''
-    command = "${pkgs.niri}/bin/niri"
+    command = "${pkgs.niri}/bin/niri-session"
     outputMode = "all"
     scale = 1
 
@@ -56,10 +56,6 @@ let
   greeterNiriConfig = pkgs.writeText "greetd-niri-config" ''
     output "eDP-1" {
       scale 2.0
-    }
-
-    cursor {
-      xcursor-size 48
     }
 
     hotkey-overlay {
