@@ -41,6 +41,7 @@
       "Super+L".action.spawn = [ "${pkgs.swaylock}/bin/swaylock" ];
       "Super+T".action.spawn = [ "${pkgs.foot}/bin/foot" ];
       "Super+Q".action.close-window = [];
+      "Super+Shift+E".action.quit = [];
     };
   };
 }
