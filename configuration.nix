@@ -12,6 +12,30 @@
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive"
   ];
 
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      download-buffer-size = 1024 * 1048576;
+      # extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
+    };
+
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+
+    optimise = {
+      automatic = true;
+      dates = "weekly";
+    };
+  };
+
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [ niri-flake.overlays.niri ];
+  };
+
   boot = {
     kernelParams = [
       "amd_pstate=active" "iommu=pt" "rcutree.enable_rcu_lazy=1" "rcu_nocbs=all"
@@ -19,8 +43,10 @@
     ];
     loader = {
       efi.canTouchEfiVariables = true;
-      systemd-boot.configurationLimit = 5;
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 5;
+      };
     };
     initrd = {
       systemd.enable = true;
@@ -30,10 +56,8 @@
         allowDiscards = true;
       };
     };
+    kernelPackages = pkgs.linuxPackages_latest;
   };
-
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   environment.etc."lvm/lvm.conf".text = lib.mkForce ''
     devices {
@@ -48,21 +72,23 @@
   };
 
   swapDevices = [
-    {
-      device = "/dev/disk/by-uuid/14b1ed22-5e4a-455b-a1aa-95ab63854b18";
-    }
+    { device = "/dev/disk/by-uuid/14b1ed22-5e4a-455b-a1aa-95ab63854b18"; }
   ];
 
-  networking.hostName = "nixform"; # Define your hostname.
-
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.backend = "iwd";
-  networking.wireless.iwd.enable = true;
-  networking.wireless.iwd.settings = {
-    Settings.AutoConnect = true;
+  networking = {
+    hostName = "nixform";
+    networkmanager = {
+      enable = true;
+      wifi.backend = "iwd";
+    };
+    wireless.iwd = {
+      enable = true;
+      settings = {
+        Settings.AutoConnect = true;
+      };
+    };
+    useDHCP = false;
   };
-
-  networking.useDHCP = false;
 
   time.timeZone = "Europe/London";
 
@@ -82,21 +108,10 @@
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
   };
-
-  nix.optimise = {
-    automatic = true;
-    dates = "weekly";
-  };
-
-  nixpkgs.overlays = [ niri-flake.overlays.niri ];
 
   programs.fish = {
     enable = true;
@@ -104,31 +119,37 @@
       set fish_greeting
     '';
   };
+
   documentation.man.generateCaches = false;
-  programs.niri.enable = true;
-  programs.niri.package = pkgs.niri;
+
   niri-flake.cache.enable = false;
-  environment.variables.NIXOS_OZONE_WL = "1";
+  programs.niri = {
+    enable = true;
+    package = pkgs.niri;
+  };
+
   # programs.ccache.enable = true;
-  # nix.settings.extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
-  nix.settings.download-buffer-size = 1024 * 1048576;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  environment.systemPackages = with pkgs; [
-    fastfetch
-    git
-    hdparm
-    htop
-    pciutils
-    powertop
-    pstree
-    ripgrep
-    tmux
-    usbutils
-    wirelesstools
-    (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-      # pyusb
-    ]))
-  ];
+
+  environment = {
+    variables.NIXOS_OZONE_WL = "1";
+    systemPackages = with pkgs; [
+      claude-code
+      fastfetch
+      git
+      hdparm
+      htop
+      pciutils
+      powertop
+      pstree
+      ripgrep
+      tmux
+      usbutils
+      wirelesstools
+      (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
+        # pyusb
+      ]))
+    ];
+  };
 
   stylix = {
     enable = true;

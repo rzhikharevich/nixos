@@ -20,5 +20,18 @@
     spawn-at-startup = [
       { argv = [ "${pkgs.swaybg}/bin/swaybg" "-m" "fill" "-i" config.stylix.image ]; }
     ];
+
+    outputs = {
+      "eDP-1" = {
+        scale = 1.5;
+        variable-refresh-rate = true;
+        backdrop-color = "000000";
+      };
+    };
+
+    cursor = {
+      size = 96;
+      hide-when-typing = true;
+    };
   };
 }
