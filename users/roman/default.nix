@@ -27,6 +27,30 @@ in
       ];
     };
 
+    services.wluma = {
+      enable = true;
+      settings = {
+        als.iio = {
+          path = "/sys/bus/iio/devices";
+          thresholds = {
+            "0" = "night";
+            "10" = "dark";
+            "50" = "dim";
+            "150" = "normal";
+            "300" = "bright";
+            "400" = "outdoors";
+          };
+        };
+        output.backlight = [
+          {
+            name = "eDP-1";
+            path = "/sys/class/backlight/amdgpu_bl1";
+            capturer = "none";
+          }
+        ];
+      };
+    };
+
     stylix = {
       image = pkgs.fetchurl {
         url = "https://github.com/rzhikharevich/nixos-artefacts/blob/main/wallpapers/GreatWave.jpg?raw=true";
