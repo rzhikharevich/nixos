@@ -1,4 +1,4 @@
-{ config, lib, pkgs, niri-flake, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -31,10 +31,7 @@
     };
   };
 
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [ niri-flake.overlays.niri ];
-  };
+  nixpkgs.config.allowUnfree = true;
 
   boot = {
     kernelParams = [
@@ -158,13 +155,13 @@
 
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
   };
 
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive.Roman’s-MacBook-Pro.local"
-  ];
+  users.users.root.openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
 
   system.stateVersion = "25.11"; # Did you read the comment?
 }

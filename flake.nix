@@ -14,8 +14,8 @@
   };
   outputs = inputs@{ self, nixpkgs, nixos-hardware, home-manager, stylix, niri-flake, ... }: {
     nixosConfigurations.nixform = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit niri-flake; };
       modules = [
+        { nixpkgs.overlays = [ niri-flake.overlays.niri ]; }
         ./configuration.nix
         home-manager.nixosModules.default
         niri-flake.nixosModules.niri
