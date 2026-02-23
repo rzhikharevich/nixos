@@ -18,14 +18,14 @@
         hash = "sha256-RKhIar3wMwo/5rWG5AdQbnOP4HX+C138Q5YeNY/acgY=";
       };
       polarity = "dark";
-      # icons = {
-      #   enable = true;
-      #   package = pkgs.colloid-icon-theme.override {
-      #     colorVariants = ["grey"];
-      #     light = "Colloid";
-      #     dark = "Colloid-Dark";
-      #   };
-      # };
+      icons = {
+        enable = true;
+        package = pkgs.colloid-icon-theme.override {
+          colorVariants = ["grey"];
+        };
+        light = "Colloid";
+        dark = "Colloid-Dark";
+      };
     };
 
     home.stateVersion = "25.11";
