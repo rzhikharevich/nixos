@@ -35,7 +35,19 @@
 
   boot = {
     kernelParams = [
-      "amd_pstate=active" "iommu=pt" "rcutree.enable_rcu_lazy=1" "rcu_nocbs=all"
+      # TODO: Reconsideer iommu=pt.
+      "amd_pstate=active" "iommu=pt"
+
+      # rcutree.enable_rcu_lazy allows the kernel to delay RCU callbacks to decrease the amount of
+      # RCU grace periods and therefore let idle CPUs sleep for longer. rcu_nocbs= is required for
+      # it to work on a given CPU, enable it for all.
+      #   - https://lwn.net/Articles/988638
+      "rcutree.enable_rcu_lazy=1" "rcu_nocbs=all"
+
+      # PCIe ASPM might be negotiated to be off by the BIOS for spurious reasons, force enable it.
+      #   - https://wireless.docs.kernel.org/en/latest/en/users/documentation/aspm.html
+      #
+      # Note that pcie_aspm.policy is already set to powersupersave by nixos-hardware.
       "pcie_aspm=force"
     ];
     loader = {
