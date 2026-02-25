@@ -32,6 +32,7 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+  hardware.enableAllFirmware = true;
 
   boot = {
     kernelParams = [
@@ -148,6 +149,7 @@
       git
       hdparm
       htop
+      nvd
       pciutils
       powertop
       pstree
