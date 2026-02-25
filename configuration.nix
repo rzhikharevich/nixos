@@ -145,21 +145,29 @@
     systemPackages = with pkgs; [
       brightnessctl
       cargo
+      clang
       claude-code
+      clippy
       fastfetch
+      file
+      gcc
       git
+      gnumake
       hdparm
       htop
       nvd
       pciutils
       powertop
       pstree
-      rustc
       ripgrep
+      rust-analyzer
+      rustc
+      rustfmt
       strace
       tmux
       usbutils
       wirelesstools
+
       (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
         # pyusb
       ]))
