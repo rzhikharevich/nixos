@@ -142,6 +142,7 @@
   environment = {
     variables.NIXOS_OZONE_WL = "1";
     systemPackages = with pkgs; [
+      brightnessctl
       claude-code
       fastfetch
       git
@@ -151,6 +152,7 @@
       powertop
       pstree
       ripgrep
+      strace
       tmux
       usbutils
       wirelesstools
