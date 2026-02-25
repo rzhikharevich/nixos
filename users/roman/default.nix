@@ -67,6 +67,13 @@ in
       };
     };
 
+    programs.claude-code = {
+      enable = true;
+      rules = {
+        rust-code-style = ./claude/rules/rust-code-style.md;
+      };
+    };
+
     home.stateVersion = "25.11";
   };
 }
