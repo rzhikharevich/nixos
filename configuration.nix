@@ -144,10 +144,8 @@
     variables.NIXOS_OZONE_WL = "1";
     systemPackages = with pkgs; [
       brightnessctl
-      cargo
       clang
       claude-code
-      clippy
       fastfetch
       file
       gcc
@@ -160,13 +158,19 @@
       powertop
       pstree
       ripgrep
-      rust-analyzer
-      rustc
-      rustfmt
       strace
       tmux
       usbutils
       wirelesstools
+
+      (pkgs.fenix.complete.withComponents [
+         "cargo"
+         "clippy"
+         "rust-analyzer"
+         "rust-src"
+         "rustc"
+         "rustfmt"
+      ])
 
       (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
         # pyusb
