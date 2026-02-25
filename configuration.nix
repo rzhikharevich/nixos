@@ -144,6 +144,7 @@
     variables.NIXOS_OZONE_WL = "1";
     systemPackages = with pkgs; [
       brightnessctl
+      cargo
       claude-code
       fastfetch
       git
@@ -153,6 +154,7 @@
       pciutils
       powertop
       pstree
+      rustc
       ripgrep
       strace
       tmux
