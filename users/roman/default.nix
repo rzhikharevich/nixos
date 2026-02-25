@@ -76,7 +76,11 @@ in
 
     programs.firefox = {
        enable = true;
+       profiles = {
+          default = {};
+       };
     };
+    stylix.targets.firefox.profileNames = [ "default" ];
 
     home.stateVersion = "25.11";
   };
