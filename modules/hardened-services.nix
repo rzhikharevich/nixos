@@ -1,10 +1,11 @@
 { config, lib, ... }:
 let
-  hardeningDefaults = {
+  hardeningDefaults = lib.mapAttrs (_: lib.mkDefault) {
     # DynamicUser = true;
     ProtectSystem = "full";
-    # ProtectHome = true;
-    # PrivateTmp = true;
+    ProtectHome = true;
+    PrivateTmp = true;
+    PrivateUsers = true;
     NoNewPrivileges = true;
     ProtectKernelTunables = true;
     ProtectKernelModules = true;

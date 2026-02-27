@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 {
   users.users.roman = {
+    uid = 1000;
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.fish;
@@ -91,8 +92,15 @@
         enable = true;
     };
 
-    systemd.user.services = lib.genAttrs [ "swaybg" "swayidle" "wluma" ] (_: {
-      Service = config.rzhikharevich.hardeningDefaults;
+    systemd.user.services = lib.genAttrs [ "swaybg" "swayidle" "wluma" ] (appName: {
+      Service = (
+        let user = config.users.users.roman;
+        in lib.mkMerge [
+          config.rzhikharevich.hardeningDefaults
+          (lib.mkUserHardeningDefaults user)
+          (lib.mkAllowUserLocalState user appName)
+        ]
+      );
     });
 
     home.stateVersion = "25.11";
