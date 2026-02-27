@@ -9,7 +9,7 @@
   };
 
   home-manager.users.roman = {
-    imports = [ ./niri.nix ];
+    imports = [ ./niri.nix ./firefox.nix ];
     programs.fish.enable = true;
     programs.foot.enable = true;
     programs.swaylock.enable = true;
@@ -74,22 +74,6 @@
         rust-code-style = ./claude/rules/rust-code-style.md;
       };
     };
-
-    programs.firefox = {
-       enable = true;
-       profiles = {
-          default = {
-            settings = {
-              # "gfx.webrender.all" = true;
-              # "layers.acceleration.force-enabled" = true;
-              # "widget.dmabuf.force-enabled" = true;
-              "dom.min_background_timeout_value" = 10000;
-              "beacon.enabled" = false;
-            };
-          };
-       };
-    };
-    stylix.targets.firefox.profileNames = [ "default" ];
 
     programs.zed-editor = {
         enable = true;
