@@ -32,6 +32,9 @@ in {
   };
 
   config.systemd.services = lib.mapAttrs (_: svc: svc // {
-    serviceConfig = hardeningDefaults // (svc.serviceConfig or {});
+    serviceConfig = lib.mkMerge [
+      hardeningDefaults
+      (svc.serviceConfig or {})
+    ];
   }) config.rzhikharevich.hardenedServices;
 }

@@ -23,7 +23,6 @@ in {
       CPUSchedulingPolicy = "idle";
       User = "ssh-inhibit-suspend";
       BindPaths = [ "/run/dbus/system_bus_socket" ];
-      SystemCallFilter = "";
     };
     wantedBy = [ "multi-user.target" ];
   };

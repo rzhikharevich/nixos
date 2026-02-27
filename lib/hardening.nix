@@ -7,6 +7,7 @@ lib: {
   mkAllowUserLocalState = user: appName: {
     BindReadOnlyPaths = [ "-${user.home}/.config/${appName}" ];
     BindPaths = [
+      "-${user.home}/.cache/${appName}"
       "-${user.home}/.local/share/${appName}"
       "-${user.home}/.local/state/${appName}"
     ];
