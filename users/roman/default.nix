@@ -92,16 +92,14 @@
         enable = true;
     };
 
-    systemd.user.services = lib.genAttrs [ "swaybg" "swayidle" "wluma" ] (appName: {
-      Service = (
-        let user = config.users.users.roman;
-        in lib.mkMerge [
+    systemd.user.services =
+      let user = config.users.users.roman;
+      in lib.genAttrs [ "swaybg" "swayidle" "wluma" ] (appName: {
+        Service = lib.mkMerge [
           config.rzhikharevich.hardeningDefaults
-          (lib.mkUserHardeningDefaults user)
-          (lib.mkAllowUserLocalState user appName)
-        ]
-      );
-    });
+          (lib.mkHardenedUserService user appName)
+        ];
+      });
 
     home.stateVersion = "25.11";
   };
