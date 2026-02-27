@@ -39,7 +39,19 @@ in {
       "Super+T".action.spawn = [ "${pkgs.foot}/bin/foot" ];
       "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
+      "Super+F".action.toggle-window-floating = [];
     };
+
+    window-rules = [
+      {
+        matches = [
+          {
+            is-floating = true;
+          }
+        ];
+        shadow.enable = true;
+      }
+    ];
   };
 
   programs.swaylock.enable = true;
