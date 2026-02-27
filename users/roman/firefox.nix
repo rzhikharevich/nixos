@@ -31,21 +31,26 @@
         installation_mode = "force_installed";
         private_browsing = true;
       };
-      "3rdparty".Extensions."uBlock0@raymondhill.net".toOverwrite.filterLists = [
-        "user-filters"
-        "ublock-filters"
-        "ublock-badware"
-        "ublock-privacy"
-        "ublock-unbreak"
-        "ublock-quick-fixes"
-        "easylist"
-        "easyprivacy"
-        "urlhaus-1"
-        "plowe-0"
-        "fanboy-cookiemonster"
-        "fanboy-social"
-        "fanboy-thirdparty_social"
-      ];
+      "3rdparty".Extensions."uBlock0@raymondhill.net" = {
+        toOverwrite.filterLists = [
+          "user-filters"
+          "ublock-filters"
+          "ublock-badware"
+          "ublock-privacy"
+          "ublock-unbreak"
+          "ublock-quick-fixes"
+          "easylist"
+          "easyprivacy"
+          "urlhaus-1"
+          "plowe-0"
+          "fanboy-cookiemonster"
+          "fanboy-social"
+          "fanboy-thirdparty_social"
+        ];
+        userSettings = [
+          [ "showIconBadge" "false" ]
+        ];
+      };
     };
   };
 
