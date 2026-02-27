@@ -21,7 +21,10 @@
         after-resume = "${pkgs.niri} msg action power-on-monitors";
       };
       timeouts = [
-        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock & ${pkgs.systemd}/bin/systemctl suspend"; }
+        {
+          timeout = 300;
+          command = "${pkgs.systemd}/bin/systemctl --user start swaylock & ${pkgs.systemd}/bin/systemctl suspend";
+        }
       ];
     };
 

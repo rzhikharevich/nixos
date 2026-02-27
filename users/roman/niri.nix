@@ -1,5 +1,9 @@
 { config, osConfig, lib, pkgs, ... }:
-{
+let graphicalSessionUnit = {
+  PartOf = "graphical-session.target";
+  After = "graphical-session.target";
+};
+in {
   programs.niri.settings = {
     input = {
       keyboard.xkb = {
@@ -31,19 +35,29 @@
     cursor.hide-when-typing = true;
 
     binds = {
-      "Super+L".action.spawn = [ "${pkgs.swaylock}/bin/swaylock" ];
+      "Super+L".action.spawn = [ "${pkgs.systemd}/bin/systemctl" "--user" "start" "swaylock" ];
       "Super+T".action.spawn = [ "${pkgs.foot}/bin/foot" ];
       "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
     };
   };
 
+  programs.swaylock.enable = true;
+  # Don't want a swaylock crash expose the session :)
+  systemd.user.services.swaylock = {
+    Unit = {
+      Description = "Lock screen";
+    } // graphicalSessionUnit;
+    Service = {
+      ExecStart = "${pkgs.swaylock}/bin/swaylock";
+      Restart = "on-failure";
+    };
+  };
+
   systemd.user.services.swaybg = {
     Unit = {
-      Description = "Desktop background service";
-      PartOf = ["graphical-session.target"];
-      After = ["graphical-session.target"];
-    };
+      Description = "Desktop background";
+    } // graphicalSessionUnit;
     Service = {
       ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i ${config.stylix.image}";
       Restart = "on-failure";
