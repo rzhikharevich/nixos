@@ -45,6 +45,14 @@
       # (hopefully not).
       "nowatchdog"
 
+      # Enabling this makes the per-cpu workqueues which
+      # were observed to contribute significantly to power
+      # consumption unbound, leading to measurably lower
+      # power usage at the cost of small performance
+      # overhead.
+      #   - https://docs.kernel.org/admin-guide/kernel-parameters.html
+      "workqueue.power_efficient=1"
+
       # rcutree.enable_rcu_lazy allows the kernel to delay RCU callbacks to decrease the amount of
       # RCU grace periods and therefore let idle CPUs sleep for longer. rcu_nocbs= is required for
       # it to work on a given CPU, enable it for all.
@@ -57,6 +65,10 @@
       # Note that pcie_aspm.policy is already set to powersupersave by nixos-hardware.
       "pcie_aspm=force"
     ];
+    extraModprobeConfig = ''
+      options iwlwifi power_save=1
+      options iwlmvm power_scheme=3
+    '';
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot = {
@@ -73,6 +85,7 @@
       };
     };
     kernelPackages = pkgs.linuxPackages_latest;
+    kernel.sysctl."vm.dirty_writeback_centisecs" = 1500;
   };
 
   environment.etc."lvm/lvm.conf".text = lib.mkForce ''
@@ -104,6 +117,11 @@
       };
     };
     useDHCP = false;
+  };
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = false;
   };
 
   time.timeZone = "Europe/London";
@@ -161,11 +179,13 @@
       htop
       nvd
       pciutils
+      powerstat
       powertop
       pstree
       ripgrep
       strace
       tmux
+      linuxPackages_latest.turbostat
       usbutils
       wirelesstools
       xxd
@@ -196,6 +216,21 @@
   };
 
   services.power-profiles-daemon.enable = true;
+  services.fwupd.enable = true;
+
+  services.scx = {
+    enable = true;
+    scheduler = "scx_lavd";
+    extraArgs = [ "--powersave" ];
+  };
+
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{power/control}="auto"
+  '';
+
+  systemd.tmpfiles.rules = [
+    "w /sys/devices/pci0000:00/0000:00:08.1/0000:c4:00.0/drm/card1/card1-eDP-1/amdgpu/panel_power_savings - - - - 1"
+  ];
 
   services.openssh = {
     enable = true;
