@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   services.greetd = {
     enable = true;
@@ -8,19 +8,14 @@
     };
   };
 
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if ((action.id == "org.freedesktop.login1.power-off" ||
-           action.id == "org.freedesktop.login1.power-off-multiple-sessions" ||
-           action.id == "org.freedesktop.login1.power-off-ignore-inhibit" ||
-           action.id == "org.freedesktop.login1.reboot" ||
-           action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-           action.id == "org.freedesktop.login1.reboot-ignore-inhibit") &&
-          subject.user == "greeter") {
-        return polkit.Result.YES;
-      }
-    });
-  '';
+  security.polkit.extraConfig = lib.mkPolkitAllow "greeter" [
+    "org.freedesktop.login1.power-off"
+    "org.freedesktop.login1.power-off-multiple-sessions"
+    "org.freedesktop.login1.power-off-ignore-inhibit"
+    "org.freedesktop.login1.reboot"
+    "org.freedesktop.login1.reboot-multiple-sessions"
+    "org.freedesktop.login1.reboot-ignore-inhibit"
+  ];
 
   security.pam.services.greetd.enableGnomeKeyring = true;
 

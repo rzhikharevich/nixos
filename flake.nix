@@ -25,15 +25,20 @@
        inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs@{ self, nixpkgs, nixos-hardware, home-manager, stylix, niri-flake, fenix, ... }: {
+  outputs = inputs@{ self, nixpkgs, nixos-hardware, home-manager, stylix, niri-flake, fenix, ... }:
+  let
+    lib = import ./lib { inherit inputs; };
+  in {
     packages.x86_64-linux.default = fenix.packages.x86_64-linux.minimal.toolchain;
-    nixosConfigurations.nixform = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nixform = lib.nixosSystem {
       modules = [
         { nixpkgs.overlays = [ niri-flake.overlays.niri fenix.overlays.default ]; }
         ./configuration.nix
         home-manager.nixosModules.default
         niri-flake.nixosModules.niri
         nixos-hardware.nixosModules.minisforum-v3
+        nixos-hardware.nixosModules.common-cpu-amd-pstate
+        nixos-hardware.nixosModules.common-cpu-amd-zenpower
         stylix.nixosModules.stylix
       ];
     };

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, osConfig, lib, pkgs, ... }:
 {
   programs.niri.settings = {
     input = {
@@ -20,10 +20,6 @@
       touch.map-to-output = "eDP-1";
     };
 
-    spawn-at-startup = [
-      { argv = [ "${pkgs.swaybg}/bin/swaybg" "-m" "fill" "-i" config.stylix.image ]; }
-    ];
-
     outputs = {
       "eDP-1" = {
         scale = 1.5;
@@ -32,10 +28,7 @@
       };
     };
 
-    cursor = {
-      size = 96;
-      hide-when-typing = true;
-    };
+    cursor.hide-when-typing = true;
 
     binds = {
       "Super+L".action.spawn = [ "${pkgs.swaylock}/bin/swaylock" ];
@@ -43,5 +36,18 @@
       "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
     };
+  };
+
+  systemd.user.services.swaybg = {
+    Unit = {
+      Description = "Desktop background service";
+      PartOf = ["graphical-session.target"];
+      After = ["graphical-session.target"];
+    };
+    Service = {
+      ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i ${config.stylix.image}";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = ["graphical-session.target"];
   };
 }

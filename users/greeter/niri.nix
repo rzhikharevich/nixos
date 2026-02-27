@@ -1,6 +1,5 @@
 { pkgs, ... }:
 let
-  safeSuspend = import ../../scripts/safe-suspend.nix { inherit pkgs; };
   powerMenu = pkgs.writeShellScript "power-menu" ''
     choice=$(echo -e 'Poweroff\nReboot\nCancel' | ${pkgs.fuzzel}/bin/fuzzel --dmenu \
       --line-height=40 \
@@ -68,7 +67,7 @@ in
         "${pkgs.swayidle}/bin/swayidle" "-w"
         "before-sleep" "${pkgs.niri}/bin/niri msg action power-off-monitors"
         "after-resume" "${pkgs.niri}/bin/niri msg action power-on-monitors"
-        "timeout" "30" "${safeSuspend}"
+        "timeout" "30" "${pkgs.systemd}/bin/systemctl suspend"
       ]; }
       { argv = [ "${pkgs.wvkbd}/bin/wvkbd-mobintl" "--hidden" "-L" "400" "--fn" "sans 20" ]; }
       { argv = [ "sh" "-c" "${pkgs.wlgreet}/bin/wlgreet --config ${wlgreetConfig}; ${pkgs.niri}/bin/niri msg action quit --skip-confirmation" ]; }

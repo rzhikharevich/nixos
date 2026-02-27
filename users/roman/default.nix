@@ -1,7 +1,4 @@
 { config, pkgs, lib, ... }:
-let
-  safeSuspend = import ../../scripts/safe-suspend.nix { inherit pkgs; };
-in
 {
   users.users.roman = {
     isNormalUser = true;
@@ -23,7 +20,7 @@ in
         after-resume = "${pkgs.niri} msg action power-on-monitors";
       };
       timeouts = [
-        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock --daemonize && ${safeSuspend}"; }
+        { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock & ${pkgs.systemd}/bin/systemctl suspend"; }
       ];
     };
 
@@ -77,10 +74,26 @@ in
     programs.firefox = {
        enable = true;
        profiles = {
-          default = {};
+          default = {
+            settings = {
+              # "gfx.webrender.all" = true;
+              # "layers.acceleration.force-enabled" = true;
+              # "widget.dmabuf.force-enabled" = true;
+              "dom.min_background_timeout_value" = 10000;
+              "beacon.enabled" = false;
+            };
+          };
        };
     };
     stylix.targets.firefox.profileNames = [ "default" ];
+
+    programs.zed-editor = {
+        enable = true;
+    };
+
+    systemd.user.services = lib.genAttrs [ "swaybg" "swayidle" "wluma" ] (_: {
+      Service = config.rzhikharevich.hardeningDefaults;
+    });
 
     home.stateVersion = "25.11";
   };

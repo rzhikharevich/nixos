@@ -4,6 +4,8 @@
   imports = [
     ./hardware-configuration.nix
     ./modules/globals.nix
+    ./modules/hardened-services.nix
+    ./modules/ssh-inhibit-suspend.nix
     ./users/greeter/default.nix
     ./users/roman/default.nix
   ];
@@ -37,7 +39,11 @@
   boot = {
     kernelParams = [
       # TODO: Reconsideer iommu=pt.
-      "amd_pstate=active" "iommu=pt"
+      "iommu=pt"
+
+      # Lockup watchdogs are not that relevant on laptops unless I'll have to debug kernel bugs
+      # (hopefully not).
+      "nowatchdog"
 
       # rcutree.enable_rcu_lazy allows the kernel to delay RCU callbacks to decrease the amount of
       # RCU grace periods and therefore let idle CPUs sleep for longer. rcu_nocbs= is required for
@@ -162,6 +168,7 @@
       tmux
       usbutils
       wirelesstools
+      xxd
 
       (pkgs.fenix.complete.withComponents [
          "cargo"
@@ -181,7 +188,14 @@
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/linux-vt.yaml";
+    cursor = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Classic";
+      size = 24;
+    };
   };
+
+  services.power-profiles-daemon.enable = true;
 
   services.openssh = {
     enable = true;
