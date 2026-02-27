@@ -94,12 +94,19 @@
 
     systemd.user.services =
       let user = config.users.users.roman;
-      in lib.genAttrs [ "swaybg" "swayidle" "wluma" ] (appName: {
-        Service = lib.mkMerge [
-          config.rzhikharevich.hardeningDefaults
-          (lib.mkHardenedUserService user appName)
-        ];
-      });
+      in
+        lib.genAttrs [ "swaybg" "swayidle" ] (appName: {
+          Service = lib.mkMerge [
+            config.rzhikharevich.hardeningDefaults
+            (lib.mkHardenedUserService user appName {})
+          ];
+        }) //
+        lib.genAttrs [ "wluma" ] (appName: {
+          Service = lib.mkMerge [
+            config.rzhikharevich.hardeningDefaults
+            (lib.mkHardenedUserService user appName { usesShareDir = true; })
+          ];
+        });
 
     home.stateVersion = "25.11";
   };
