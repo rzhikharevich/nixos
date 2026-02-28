@@ -35,6 +35,14 @@
         { nixpkgs.overlays = [
           niri-flake.overlays.niri fenix.overlays.default
           (final: prev: {
+            wvkbd = prev.wvkbd.overrideAttrs {
+              makeFlags = [ "LAYOUT=deskintl" ];
+              patches = [
+                ./patches/wvkbd-no-fn-row.patch
+                ./patches/wvkbd-add-cyrillic-layer.patch
+              ];
+              meta.mainProgram = "wvkbd-deskintl";
+            };
             pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
               (python-final: python-prev: {
                 picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {

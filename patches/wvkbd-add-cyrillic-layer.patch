@@ -1,0 +1,18 @@
+--- a/config.deskintl.h
++++ b/config.deskintl.h
+@@ -31,6 +31,7 @@
+ /* layers is an ordered list of layouts, used to cycle through */
+ static enum layout_id layers[] = {
+   Full, // First layout is the default layout on startup
++  Cyrillic,
+   Special,
+   NumLayouts // signals the last item, may not be omitted
+ };
+@@ -38,6 +39,7 @@
+ /* layers is an ordered list of layouts, used to cycle through */
+ static enum layout_id landscape_layers[] = {
+   Full, // First layout is the default layout on startup
++  Cyrillic,
+   Special,
+   NumLayouts // signals the last item, may not be omitted
+ };
