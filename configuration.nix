@@ -38,8 +38,18 @@
 
   boot = {
     kernelParams = [
-      # TODO: Reconsideer iommu=pt.
+      # TODO: Reconsider iommu=pt.
       "iommu=pt"
+
+      # 'active' might interfere with lavd's ability to precisely control frequencies.
+      # TODO: Compare options more thoroughly.
+      "amd_pstate=guided"
+
+      # Experiment: Assign IRQs to cores with highest amd_pstate_prefcore_ranking.
+      "irqaffinity=1,5,9,13"
+
+      # threadirqs is interesting since it would presumably bring IRQs under lavd's control but
+      # it's probably more trouble (overhead) than it's worth.
 
       # Lockup watchdogs are not that relevant on laptops unless I'll have to debug kernel bugs
       # (hopefully not).
@@ -221,7 +231,7 @@
   services.scx = {
     enable = true;
     scheduler = "scx_lavd";
-    extraArgs = [ "--powersave" ];
+    extraArgs = [ "--autopower" ];
   };
 
   services.udev.extraRules = ''
@@ -229,7 +239,7 @@
   '';
 
   systemd.tmpfiles.rules = [
-    "w /sys/devices/pci0000:00/0000:00:08.1/0000:c4:00.0/drm/card1/card1-eDP-1/amdgpu/panel_power_savings - - - - 1"
+    "w /sys/devices/pci0000:00/0000:00:08.1/0000:c4:00.0/drm/card1/card1-eDP-1/amdgpu/panel_power_savings - - - - 2"
   ];
 
   services.openssh = {
