@@ -215,6 +215,10 @@
     ];
   };
 
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+  ];
+
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/linux-vt.yaml";

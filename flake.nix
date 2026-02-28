@@ -32,12 +32,23 @@
     packages.x86_64-linux.default = fenix.packages.x86_64-linux.minimal.toolchain;
     nixosConfigurations.nixform = lib.nixosSystem {
       modules = [
-        { nixpkgs.overlays = [ niri-flake.overlays.niri fenix.overlays.default ]; }
+        { nixpkgs.overlays = [
+          niri-flake.overlays.niri fenix.overlays.default
+          (final: prev: {
+            pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+              (python-final: python-prev: {
+                picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
+                  doCheck = false;
+                });
+              })
+            ];
+          })
+        ]; }
         ./configuration.nix
         home-manager.nixosModules.default
         niri-flake.nixosModules.niri
         nixos-hardware.nixosModules.minisforum-v3
-        nixos-hardware.nixosModules.common-cpu-amd-pstate
+        # nixos-hardware.nixosModules.common-cpu-amd-pstate
         nixos-hardware.nixosModules.common-cpu-amd-zenpower
         stylix.nixosModules.stylix
       ];
