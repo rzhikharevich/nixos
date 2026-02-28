@@ -40,18 +40,30 @@ in {
       "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
       "Super+F".action.toggle-window-floating = [];
+      "Super+Left".action.focus-column-left = [];
+      "Super+Right".action.focus-column-right = [];
+      "Super+Up".action.focus-window-or-workspace-up = [];
+      "Super+Down".action.focus-window-or-workspace-down = [];
     };
 
-    window-rules = [
-      {
-        matches = [
-          {
-            is-floating = true;
-          }
-        ];
-        shadow.enable = true;
-      }
-    ];
+    window-rules =
+      let uniformCornerRadius = (r: lib.genAttrs
+        [ "bottom-left" "bottom-right" "top-left" "top-right" ]
+        (_: r)
+      );
+      in [
+        {
+          clip-to-geometry = true;
+        }
+        {
+          matches = [ { is-floating = true; } ];
+          shadow.enable = true;
+        }
+        {
+          matches = [ { app-id = "firefox"; } ];
+          geometry-corner-radius = uniformCornerRadius 14.0;
+        }
+      ];
   };
 
   programs.swaylock.enable = true;
