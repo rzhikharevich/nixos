@@ -41,12 +41,15 @@
       # TODO: Reconsider iommu=pt.
       "iommu=pt"
 
-      # 'active' might interfere with lavd's ability to precisely control frequencies.
-      # TODO: Compare options more thoroughly.
-      "amd_pstate=guided"
+      # TODO: Test amd_pstate=passive with manually set minimum frequencies (which default to the
+      # min non-linear frequency = ~1100 MHz, not the absolute minimum = ~400 MHz which is what
+      # active does in power-saving mode).
+      "amd_pstate=active"
 
-      # Experiment: Assign IRQs to cores with highest amd_pstate_prefcore_ranking.
-      "irqaffinity=1,5,9,13"
+      # Experiment: Assign IRQs to boot CPU cores + cores with the highest amd_pstate_prefcore_ranking
+      # which pairs well with scx_lavd since it tries to pack threads on the latter (the boot core
+      # can't be prevented from receiving IRQs).
+      "irqaffinity=0,1,8,9"
 
       # threadirqs is interesting since it would presumably bring IRQs under lavd's control but
       # it's probably more trouble (overhead) than it's worth.
@@ -76,7 +79,7 @@
       "pcie_aspm=force"
     ];
     extraModprobeConfig = ''
-      options iwlwifi power_save=1
+      options iwlwifi power_save=1 uapsd_disable=3
       options iwlmvm power_scheme=3
     '';
     loader = {
@@ -187,6 +190,7 @@
       gnumake
       hdparm
       htop
+      iw
       nvd
       pciutils
       powerstat
