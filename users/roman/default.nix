@@ -15,6 +15,7 @@ in {
     imports = [ ./niri.nix ./hyprlock.nix ./firefox.nix ];
     programs.fish.enable = true;
     programs.foot.enable = true;
+
     systemd.user.targets.user-sleep = {
       Unit.Description = "User sleep target";
     };
@@ -23,8 +24,8 @@ in {
       enable = true;
       extraArgs = [ "-w" ];
       events = {
-        before-sleep = (startUserUnit "user-sleep.target");
-        after-resume = (stopUserUnit "user-sleep.target");
+        before-sleep = "${startUserUnit "user-sleep.target"}";
+        after-resume = stopUserUnit "user-sleep.target";
       };
       timeouts = [
         {

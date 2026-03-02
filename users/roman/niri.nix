@@ -98,14 +98,15 @@ in {
       ];
   };
 
-  # Don't want a hyprlock crash expose the session :)
   systemd.user.services.hyprlock = {
     Unit = {
       Description = "Lock screen";
       Before = "user-sleep.target";
     } // graphicalSessionUnit;
     Service = {
+      ExecStartPre = "${pkgs.niri}/bin/niri msg action do-screen-transition --delay-ms 100";
       ExecStart = "${pkgs.hyprlock}/bin/hyprlock";
+      ExecStartPost = "${pkgs.coreutils}/bin/sleep 1";
       Restart = "on-failure";
     };
     Install.RequiredBy = [ "user-sleep.target" ];
