@@ -35,11 +35,11 @@
           path = "/sys/bus/iio/devices";
           thresholds = {
             "0" = "night";
-            "10" = "dark";
-            "50" = "dim";
-            "150" = "normal";
-            "300" = "bright";
-            "400" = "outdoors";
+            "1" = "dark";
+            "2" = "dim";
+            "5" = "normal";
+            "10" = "bright";
+            "20" = "outdoors";
           };
         };
         output.backlight = [
@@ -83,9 +83,9 @@
 
     programs.zed-editor = {
         enable = true;
-        # userSettings = {
-        #   buffer_font_family = lib. "JetBrains Mono";
-        # };
+        userSettings = {
+          wrap_guides = [ 100 ];
+        };
     };
 
     systemd.user.services =
