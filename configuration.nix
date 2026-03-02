@@ -179,9 +179,9 @@
 
   environment = {
     variables = {
-      NIXOS_OZONE_WL = "1"
-      SYSTEMD_PAGER = ""  # Super annoying most of the time.
-    }
+      NIXOS_OZONE_WL = "1";
+      SYSTEMD_PAGER = "";  # Super annoying most of the time.
+    };
     systemPackages = with pkgs; [
       brightnessctl
       clang
