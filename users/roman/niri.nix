@@ -59,9 +59,17 @@ in {
           matches = [ { is-floating = true; } ];
           shadow.enable = true;
         }
+
+        # Adjusting for app-specific corner radii.
+        # TODO: Maybe there's a way to tell apps to not have rounded corners?
+        # TODO: Alternatively, could just go with rounding everything.
         {
           matches = [ { app-id = "firefox"; } ];
           geometry-corner-radius = uniformCornerRadius 14.0;
+        }
+        {
+          matches = [ { app-id = "dev.zed.Zed"; } ];
+          geometry-corner-radius = uniformCornerRadius 10.0;
         }
       ];
   };
