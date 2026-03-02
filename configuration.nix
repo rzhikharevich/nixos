@@ -199,6 +199,7 @@
       hdparm
       htop
       iw
+      ncdu
       nvd
       pciutils
       powerstat
@@ -253,6 +254,8 @@
       size = 24;
     };
   };
+
+  services.iio-niri.enable = true;
 
   services.upower = {
     enable = true;
