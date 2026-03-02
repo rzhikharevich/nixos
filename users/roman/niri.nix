@@ -60,11 +60,34 @@ in {
           shadow.enable = true;
         }
 
+        {
+          matches = [ {
+            app-id = "firefox";
+            title = "Picture-in-Picture";
+          } ];
+
+          open-floating = true;
+          open-focused = false;
+          border.enable = false;
+          shadow.enable = true;
+
+          default-floating-position = {
+            x = 48;
+            y = 48;
+            relative-to="bottom-right";
+          };
+          max-height = 360;
+          min-height = 360;
+          max-width = 640;
+          min-width = 576;
+        }
+
         # Adjusting for app-specific corner radii.
         # TODO: Maybe there's a way to tell apps to not have rounded corners?
         # TODO: Alternatively, could just go with rounding everything.
         {
           matches = [ { app-id = "firefox"; } ];
+          excludes = [ { title = "Picture-in-Picture"; } ];
           geometry-corner-radius = uniformCornerRadius 14.0;
         }
         {
