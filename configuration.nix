@@ -178,7 +178,10 @@
   # programs.ccache.enable = true;
 
   environment = {
-    variables.NIXOS_OZONE_WL = "1";
+    variables = {
+      NIXOS_OZONE_WL = "1"
+      SYSTEMD_PAGER = ""  # Super annoying most of the time.
+    }
     systemPackages = with pkgs; [
       brightnessctl
       clang
@@ -242,8 +245,13 @@
     extraArgs = [ "--autopower" ];
   };
 
+  # Reportedly, suspending fingerprint readers (i.e. 27c6:6092 in this case) might cause issues.
+  # Additionally, don't suspend input devices for obvious reasons.
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="pci", ATTR{power/control}="auto"
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="27c6", ATTR{idProduct}=="6092", ATTR{power/autosuspend}="-1"
+    ACTION=="add", SUBSYSTEM=="usb", DRIVER=="usbhid", RUN+="/bin/sh -c 'echo on > /sys%p/../power/control'"
+    ACTION=="add", SUBSYSTEM=="usb", DRIVER=="usb", ATTR{power/control}="auto"
   '';
 
   systemd.tmpfiles.rules = [
