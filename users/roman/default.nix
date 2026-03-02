@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
-let inherit (config.rzhikharevich) startUserUnit stopUserUnit;
+let
+  inherit (config.rzhikharevich) startUserUnit stopUserUnit;
+  colloidIcons = pkgs.colloid-icon-theme.override { colorVariants = ["grey"]; };
 in {
   users.users.roman = {
     uid = 1000;
@@ -71,15 +73,56 @@ in {
         url = "https://raw.githubusercontent.com/rzhikharevich/nixos-artefacts/f6e480efbf530c6eeeba2d361a7afab7ac322a6b/wallpapers/GreatWave.jpg";
         hash = "sha256-RKhIar3wMwo/5rWG5AdQbnOP4HX+C138Q5YeNY/acgY=";
       };
-      polarity = "dark";
+      # polarity = "dark";
       icons = {
         enable = true;
-        package = pkgs.colloid-icon-theme.override {
-          colorVariants = ["grey"];
-        };
+        package = colloidIcons;
         light = "Colloid";
         dark = "Colloid-Dark";
       };
+    };
+
+    programs.fuzzel = {
+      enable = true;
+      settings.main.line-height = 24;
+    };
+
+    programs.waybar = {
+      enable = true;
+      systemd.enable = true;
+      settings.mainBar = {
+        layer = "top";
+        height = 36;
+        modules-left = [ "niri/workspaces" ];
+        modules-center = [ "clock" ];
+        modules-right = [ "custom/keyboard" "niri/language" "wireplumber" "battery" ];
+        "custom/keyboard" = {
+          format = " ";
+          tooltip-format = "Toggle on-screen keyboard";
+          on-click = "pkill -SIGRTMIN wvkbd-deskintl";
+        };
+      };
+      style = ''
+        #custom-keyboard {
+          background-image: url("${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/input-keyboard-virtual-show.svg");
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          min-width: 24px;
+          padding: 0 8px;
+        }
+
+        #workspaces button {
+          padding: 0 8px;
+          margin: 0 2px;
+          background-color: @base02;
+        }
+
+        #workspaces button.active {
+          background-color: @base0D;
+          color: @base00;
+        }
+      '';
     };
 
     programs.claude-code = {

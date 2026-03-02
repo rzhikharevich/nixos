@@ -37,6 +37,7 @@ in {
     binds = {
       "Super+L".action.spawn = [ "${pkgs.systemd}/bin/systemctl" "--user" "start" "hyprlock" ];
       "Super+T".action.spawn = [ "${pkgs.foot}/bin/foot" ];
+      "Super+D".action.spawn = [ "${pkgs.fuzzel}/bin/fuzzel" ];
       "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
       "Super+F".action.toggle-window-floating = [];
@@ -122,6 +123,17 @@ in {
       ExecStop = "${pkgs.niri}/bin/niri msg action power-on-monitors";
     };
     Install.WantedBy = [ "user-sleep.target" ];
+  };
+
+  systemd.user.services.wvkbd = {
+    Unit = {
+      Description = "On-screen keyboard";
+    } // graphicalSessionUnit;
+    Service = {
+      ExecStart = "${pkgs.wvkbd}/bin/wvkbd-deskintl --hidden -L 500 --fn \"sans 20\"";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 
   systemd.user.services.swaybg = {
