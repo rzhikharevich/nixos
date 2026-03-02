@@ -71,11 +71,27 @@ in {
   systemd.user.services.swaylock = {
     Unit = {
       Description = "Lock screen";
+      Before = "user-sleep.target";
     } // graphicalSessionUnit;
     Service = {
       ExecStart = "${pkgs.swaylock}/bin/swaylock";
       Restart = "on-failure";
     };
+    Install.RequiredBy = [ "user-sleep.target" ];
+  };
+
+  systemd.user.services.niri-monitor-power-manager = {
+    Unit = {
+      Description = "Niri monitor power manager";
+      Before = "user-sleep.target";
+    };
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+      ExecStart = "${pkgs.niri}/bin/niri msg action power-off-monitors";
+      ExecStop = "${pkgs.niri}/bin/niri msg action power-on-monitors";
+    };
+    Install.WantedBy = [ "user-sleep.target" ];
   };
 
   systemd.user.services.swaybg = {
@@ -86,6 +102,6 @@ in {
       ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i ${config.stylix.image}";
       Restart = "on-failure";
     };
-    Install.WantedBy = ["graphical-session.target"];
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 }

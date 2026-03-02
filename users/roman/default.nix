@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }:
-{
+let inherit (config.rzhikharevich) startUserUnit stopUserUnit;
+in {
   users.users.roman = {
     uid = 1000;
     isNormalUser = true;
@@ -14,16 +15,25 @@
     programs.foot.enable = true;
     programs.swaylock.enable = true;
 
+    systemd.user.targets.user-sleep = {
+      Unit.Description = "User sleep target";
+    };
+
     services.swayidle = {
       enable = true;
+      extraArgs = [ "-w" ];
       events = {
-        before-sleep = "${pkgs.niri} msg action power-off-monitors";
-        after-resume = "${pkgs.niri} msg action power-on-monitors";
+        before-sleep = (startUserUnit "user-sleep.target");
+        after-resume = (stopUserUnit "user-sleep.target");
       };
       timeouts = [
         {
-          timeout = 300;
-          command = "${pkgs.systemd}/bin/systemctl --user start swaylock & ${pkgs.systemd}/bin/systemctl suspend";
+          timeout = 600;
+          command = startUserUnit "swaylock";
+        }
+        {
+          timeout = 630;
+          command = "${pkgs.systemd}/bin/systemctl suspend";
         }
       ];
     };
