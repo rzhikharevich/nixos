@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ./modules/globals.nix
     ./modules/hardened-services.nix
+    ./modules/pam-no-fprint.nix
     ./modules/ssh-inhibit-suspend.nix
     ./users/greeter/default.nix
     ./users/roman/default.nix
@@ -19,6 +20,7 @@
       experimental-features = [ "nix-command" "flakes" ];
       download-buffer-size = 1024 * 1048576;
       # extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
+      trusted-users = [ "@wheel" ];
     };
 
     gc = {
@@ -152,6 +154,9 @@
 
   services.libinput.enable = true;
 
+  services.fprintd.enable = true;
+  security.pam.services.hyprlock = {};
+
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
@@ -226,6 +231,19 @@
     jetbrains-mono
   ];
 
+  fonts.fontconfig.confPackages = [
+    (pkgs.writeTextDir "etc/fonts/conf.d/61-noto-emoji-monochrome.conf" ''
+      <?xml version="1.0"?>
+      <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+      <fontconfig>
+        <match target="scan">
+          <test name="family"><string>Noto Emoji</string></test>
+          <edit name="family" mode="append"><string>Monochrome Emoji</string></edit>
+        </match>
+      </fontconfig>
+    '')
+  ];
+
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/linux-vt.yaml";
@@ -234,6 +252,12 @@
       name = "Bibata-Modern-Classic";
       size = 24;
     };
+  };
+
+  services.upower = {
+    enable = true;
+    criticalPowerAction = "Hibernate";
+    noPollBatteries = true;
   };
 
   services.power-profiles-daemon.enable = true;

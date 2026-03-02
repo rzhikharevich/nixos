@@ -10,11 +10,9 @@ in {
   };
 
   home-manager.users.roman = {
-    imports = [ ./niri.nix ./firefox.nix ];
+    imports = [ ./niri.nix ./hyprlock.nix ./firefox.nix ];
     programs.fish.enable = true;
     programs.foot.enable = true;
-    programs.swaylock.enable = true;
-
     systemd.user.targets.user-sleep = {
       Unit.Description = "User sleep target";
     };
@@ -29,7 +27,7 @@ in {
       timeouts = [
         {
           timeout = 600;
-          command = startUserUnit "swaylock";
+          command = startUserUnit "hyprlock";
         }
         {
           timeout = 630;

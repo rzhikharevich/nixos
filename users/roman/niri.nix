@@ -35,7 +35,7 @@ in {
     cursor.hide-when-typing = true;
 
     binds = {
-      "Super+L".action.spawn = [ "${pkgs.systemd}/bin/systemctl" "--user" "start" "swaylock" ];
+      "Super+L".action.spawn = [ "${pkgs.systemd}/bin/systemctl" "--user" "start" "hyprlock" ];
       "Super+T".action.spawn = [ "${pkgs.foot}/bin/foot" ];
       "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
@@ -74,15 +74,14 @@ in {
       ];
   };
 
-  programs.swaylock.enable = true;
-  # Don't want a swaylock crash expose the session :)
-  systemd.user.services.swaylock = {
+  # Don't want a hyprlock crash expose the session :)
+  systemd.user.services.hyprlock = {
     Unit = {
       Description = "Lock screen";
       Before = "user-sleep.target";
     } // graphicalSessionUnit;
     Service = {
-      ExecStart = "${pkgs.swaylock}/bin/swaylock";
+      ExecStart = "${pkgs.hyprlock}/bin/hyprlock";
       Restart = "on-failure";
     };
     Install.RequiredBy = [ "user-sleep.target" ];
