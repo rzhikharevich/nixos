@@ -180,6 +180,7 @@
     package = pkgs.niri;
   };
 
+  programs.dconf.enable = true;
   # programs.ccache.enable = true;
 
   environment = {

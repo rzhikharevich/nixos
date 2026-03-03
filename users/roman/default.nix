@@ -16,6 +16,10 @@ in {
     programs.fish.enable = true;
     programs.foot.enable = true;
 
+    dconf.settings."org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+
     systemd.user.targets.user-sleep = {
       Unit.Description = "User sleep target";
     };
@@ -74,12 +78,12 @@ in {
         url = "https://raw.githubusercontent.com/rzhikharevich/nixos-artefacts/f6e480efbf530c6eeeba2d361a7afab7ac322a6b/wallpapers/GreatWave.jpg";
         hash = "sha256-RKhIar3wMwo/5rWG5AdQbnOP4HX+C138Q5YeNY/acgY=";
       };
-      # polarity = "dark";
+      polarity = "dark";
       icons = {
         enable = true;
         package = colloidIcons;
-        light = "Colloid";
-        dark = "Colloid-Dark";
+        light = "Colloid-Grey-Light";
+        dark = "Colloid-Grey-Dark";
       };
     };
 

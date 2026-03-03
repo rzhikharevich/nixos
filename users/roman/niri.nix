@@ -35,16 +35,22 @@ in {
     cursor.hide-when-typing = true;
 
     binds = {
+      "Super+A".action.toggle-overview = [];
+      "Super+M".action.maximize-column = [];
       "Super+L".action.spawn = [ "${pkgs.systemd}/bin/systemctl" "--user" "start" "hyprlock" ];
-      "Super+T".action.spawn = [ "${pkgs.foot}/bin/foot" ];
+      "Super+1".action.spawn = [ "${pkgs.foot}/bin/foot" ];
+      "Super+2".action.spawn = [ "${pkgs.firefox}/bin/firefox" ];
+      "Super+S".action.spawn = [ "${pkgs.swaynotificationcenter}/bin/swaync-client" "-t" ];
       "Super+D".action.spawn = [ "${pkgs.fuzzel}/bin/fuzzel" ];
       "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
-      "Super+F".action.toggle-window-floating = [];
+      "Super+T".action.toggle-window-floating = [];
       "Super+Left".action.focus-column-left = [];
       "Super+Right".action.focus-column-right = [];
       "Super+Up".action.focus-window-or-workspace-up = [];
       "Super+Down".action.focus-window-or-workspace-down = [];
+      "XF86AudioRaiseVolume".action.spawn = [ "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%+" ];
+      "XF86AudioLowerVolume".action.spawn = [ "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%-" ];
     };
 
     window-rules =
@@ -96,6 +102,13 @@ in {
           geometry-corner-radius = uniformCornerRadius 10.0;
         }
       ];
+
+    layer-rules = [
+      {
+        matches = [ { namespace = "swaync-control-center"; } ];
+        opacity = 0.9;
+      }
+    ];
   };
 
   systemd.user.services.hyprlock = {
@@ -146,5 +159,33 @@ in {
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  services.swaync = {
+    enable = true;
+    settings = {
+      widgets = [ "buttons-grid" "dnd" "volume" "notifications" ];
+
+      widget-config.buttons-grid = let
+        mkToggle = cond: then-cmd: else-cmd: "${pkgs.bash}/bin/sh -c '[[ ${cond} ]] && ${then-cmd} || ${else-cmd}'";
+        mkState = cond: mkToggle cond "echo true" "echo false";
+      in {
+        actions = [
+          {
+            label = "Wi-Fi";
+            type = "toggle";
+            active = true;
+            command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "nmcli radio wifi on" "nmcli radio wifi off";
+            update-command = mkState "$(nmcli radio wifi) == enabled";
+          }
+        ];
+      };
+    };
+    style = ''
+      .control-center {
+        margin: 8px;
+        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8);
+      }
+    '';
   };
 }

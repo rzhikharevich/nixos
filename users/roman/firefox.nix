@@ -3,28 +3,36 @@
   programs.firefox = {
     enable = true;
 
-    profiles.default.settings = {
-      "browser.newtabpage.activity-stream.showSponsored" = false;
-      "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-      "browser.newtabpage.activity-stream.feeds.topsites" = false;
-      "browser.newtabpage.activity-stream.feeds.section.highlights" = false;
-      "browser.newtabpage.activity-stream.feeds.snippets" = false;
-      "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
-      "browser.newtabpage.activity-stream.showWeather" = false;
+    profiles.default = {
+      settings = {
+        "browser.newtabpage.activity-stream.showSponsored" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.feeds.topsites" = false;
+        "browser.newtabpage.activity-stream.feeds.section.highlights" = false;
+        "browser.newtabpage.activity-stream.feeds.snippets" = false;
+        "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+        "browser.newtabpage.activity-stream.showWeather" = false;
 
-      "dom.min_background_timeout_value" = 10000;
-      "beacon.enabled" = false;
-      "privacy.resistFingerprinting" = true;
-    };
+        "dom.min_background_timeout_value" = 10000;
+        "beacon.enabled" = false;
+        "privacy.resistFingerprinting" = true;
 
-    profiles.default.search = {
-      force = true;
-      default = "ddg";
-      privateDefault = "ddg";
+        "extensions.pocket.enabled" = false;
+        "browser.ml.enable" = false;
+      };
+
+      extensions.force = true;
+
+      search = {
+        force = true;
+        default = "ddg";
+        privateDefault = "ddg";
+      };
     };
 
     policies = {
       DisableTelemetry = true;
+      DisableFirefoxAccounts = true;
 
       ExtensionSettings."uBlock0@raymondhill.net" = {
         install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
@@ -54,5 +62,8 @@
     };
   };
 
-  stylix.targets.firefox.profileNames = [ "default" ];
+  stylix.targets.firefox = {
+    profileNames = [ "default" ];
+    colorTheme.enable = true;
+  };
 }
