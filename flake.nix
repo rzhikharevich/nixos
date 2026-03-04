@@ -28,38 +28,28 @@
   outputs = inputs@{ self, nixpkgs, nixos-hardware, home-manager, stylix, niri-flake, fenix, ... }:
   let
     lib = import ./lib { inherit inputs; };
+
+    commonOverlays = [
+      niri-flake.overlays.niri
+      fenix.overlays.default
+      (import ./overlays.nix)
+    ];
+
+    commonModules = [
+      ./configuration.nix
+      home-manager.nixosModules.default
+    ];
+
+    mkHost = hostModule: extraModules: lib.nixosSystem {
+      modules = [{ nixpkgs.overlays = commonOverlays; }] ++ commonModules ++ [ hostModule ] ++ extraModules;
+    };
   in {
     packages.x86_64-linux.default = fenix.packages.x86_64-linux.minimal.toolchain;
-    nixosConfigurations.nixform = lib.nixosSystem {
-      modules = [
-        { nixpkgs.overlays = [
-          niri-flake.overlays.niri fenix.overlays.default
-          (final: prev: {
-            wvkbd = prev.wvkbd.overrideAttrs {
-              makeFlags = [ "LAYOUT=deskintl" ];
-              patches = [
-                ./patches/wvkbd-no-fn-row.patch
-                ./patches/wvkbd-add-cyrillic-layer.patch
-              ];
-              meta.mainProgram = "wvkbd-deskintl";
-            };
-            pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-              (python-final: python-prev: {
-                picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
-                  doCheck = false;
-                });
-              })
-            ];
-          })
-        ]; }
-        ./configuration.nix
-        home-manager.nixosModules.default
-        niri-flake.nixosModules.niri
-        nixos-hardware.nixosModules.minisforum-v3
-        # nixos-hardware.nixosModules.common-cpu-amd-pstate
-        nixos-hardware.nixosModules.common-cpu-amd-zenpower
-        stylix.nixosModules.stylix
-      ];
-    };
+    nixosConfigurations.nixform = mkHost ./hosts/nixform [
+      nixos-hardware.nixosModules.minisforum-v3
+      nixos-hardware.nixosModules.common-cpu-amd-zenpower
+      niri-flake.nixosModules.niri
+      stylix.nixosModules.stylix
+    ];
   };
 }

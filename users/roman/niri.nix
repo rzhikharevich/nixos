@@ -130,20 +130,6 @@ in {
     ];
   };
 
-  systemd.user.services.hyprlock = {
-    Unit = {
-      Description = "Lock screen";
-      Before = "user-sleep.target";
-    } // graphicalSessionUnit;
-    Service = {
-      ExecStartPre = "${pkgs.niri}/bin/niri msg action do-screen-transition --delay-ms 100";
-      ExecStart = "${pkgs.hyprlock}/bin/hyprlock";
-      ExecStartPost = "${pkgs.coreutils}/bin/sleep 1";
-      Restart = "on-failure";
-    };
-    Install.RequiredBy = [ "user-sleep.target" ];
-  };
-
   systemd.user.services.niri-monitor-power-manager = {
     Unit = {
       Description = "Niri monitor power manager";
@@ -178,33 +164,5 @@ in {
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
-  };
-
-  services.swaync = {
-    enable = true;
-    settings = {
-      widgets = [ "buttons-grid" "dnd" "volume" "notifications" ];
-
-      widget-config.buttons-grid = let
-        mkToggle = cond: then-cmd: else-cmd: "${pkgs.bash}/bin/sh -c '[[ ${cond} ]] && ${then-cmd} || ${else-cmd}'";
-        mkState = cond: mkToggle cond "echo true" "echo false";
-      in {
-        actions = [
-          {
-            label = "Wi-Fi";
-            type = "toggle";
-            active = true;
-            command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "nmcli radio wifi on" "nmcli radio wifi off";
-            update-command = mkState "$(nmcli radio wifi) == enabled";
-          }
-        ];
-      };
-    };
-    style = ''
-      .control-center {
-        margin: 8px;
-        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8);
-      }
-    '';
   };
 }

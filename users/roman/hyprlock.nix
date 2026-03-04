@@ -59,4 +59,20 @@
       ];
     };
   };
+
+  systemd.user.services.hyprlock = {
+    Unit = {
+      Description = "Lock screen";
+      Before = "user-sleep.target";
+      PartOf = "graphical-session.target";
+      After = "graphical-session.target";
+    };
+    Service = {
+      ExecStartPre = "${pkgs.niri}/bin/niri msg action do-screen-transition --delay-ms 100";
+      ExecStart = "${pkgs.hyprlock}/bin/hyprlock";
+      ExecStartPost = "${pkgs.coreutils}/bin/sleep 1";
+      Restart = "on-failure";
+    };
+    Install.RequiredBy = [ "user-sleep.target" ];
+  };
 }

@@ -2,11 +2,6 @@
 let
   inherit (config.rzhikharevich) startUserUnit stopUserUnit;
   colloidIcons = pkgs.colloid-icon-theme.override { colorVariants = ["grey"]; };
-  keyboardIcon = pkgs.runCommand "keyboard-icon.png" { nativeBuildInputs = [ pkgs.librsvg ]; } ''
-    rsvg-convert -w 64 -h 64 \
-      ${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/input-keyboard-virtual-show.svg \
-      -o $out
-  '';
 in {
   users.users.roman = {
     uid = 1000;
@@ -17,10 +12,10 @@ in {
   };
 
   home-manager.users.roman = {
-    imports = [ ./niri.nix ./hyprlock.nix ./firefox.nix ];
+    imports = [ ./niri.nix ./hyprlock.nix ./firefox.nix ./waybar.nix ./swaync.nix ];
 
     home.packages = [
-      (pkgs.writers.writePython3Bin "cownix" { flakeIgnore = [ "E265" "E501" ]; } (builtins.readFile ../../scripts/cownix.py))
+      (pkgs.writePython3Script "cownix" (builtins.readFile ../../scripts/cownix.py))
     ];
 
     programs.fish.enable = true;
@@ -101,47 +96,6 @@ in {
     programs.fuzzel = {
       enable = true;
       settings.main.line-height = 24;
-    };
-
-    programs.waybar = {
-      enable = true;
-      systemd.enable = true;
-      settings.mainBar = {
-        layer = "top";
-        height = 44;
-        modules-left = [ "niri/workspaces" ];
-        modules-center = [ "clock" ];
-        modules-right = [ "custom/keyboard" "niri/language" "wireplumber" "battery" ];
-        "custom/keyboard" = {
-          format = " ";
-          tooltip-format = "Toggle on-screen keyboard";
-          on-click = "pkill -SIGRTMIN wvkbd-deskintl";
-        };
-      };
-      style = ''
-        window#waybar {
-          background-color: alpha(@base00, 0.85);
-        }
-
-        #custom-keyboard {
-          background-image: url("${keyboardIcon}");
-          background-size: contain;
-          background-repeat: no-repeat;
-          background-position: center;
-          min-width: 24px;
-          padding: 0 8px;
-        }
-
-        #workspaces button {
-          margin: 2px 2px;
-          background-color: @base02;
-        }
-
-        #workspaces button.active {
-          background-color: @base0D;
-          color: @base00;
-        }
-      '';
     };
 
     programs.claude-code = {
