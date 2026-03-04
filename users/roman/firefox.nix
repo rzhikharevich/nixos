@@ -18,6 +18,15 @@
         "privacy.resistFingerprinting" = true;
 
         "extensions.pocket.enabled" = false;
+        "extensions.htmlaboutaddons.recommendations.enabled" = false;
+        "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
+        "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
+        "browser.urlbar.suggest.linkpreview" = false;
+        "browser.urlbar.suggest.quicksuggest.sponsored" = false;
+        "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
+        "browser.urlbar.quicksuggest.enabled" = false;
+        "browser.urlbar.quicksuggest.dataCollection.enabled" = false;
+        "browser.tabs.groups.smart.enabled" = false;
         "browser.ml.enable" = false;
       };
 

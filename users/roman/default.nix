@@ -2,6 +2,11 @@
 let
   inherit (config.rzhikharevich) startUserUnit stopUserUnit;
   colloidIcons = pkgs.colloid-icon-theme.override { colorVariants = ["grey"]; };
+  keyboardIcon = pkgs.runCommand "keyboard-icon.png" { nativeBuildInputs = [ pkgs.librsvg ]; } ''
+    rsvg-convert -w 64 -h 64 \
+      ${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/input-keyboard-virtual-show.svg \
+      -o $out
+  '';
 in {
   users.users.roman = {
     uid = 1000;
@@ -13,11 +18,16 @@ in {
 
   home-manager.users.roman = {
     imports = [ ./niri.nix ./hyprlock.nix ./firefox.nix ];
+
+    home.packages = [
+      (pkgs.writers.writePython3Bin "cownix" { flakeIgnore = [ "E265" "E501" ]; } (builtins.readFile ../../scripts/cownix.py))
+    ];
+
     programs.fish.enable = true;
     programs.foot.enable = true;
 
     dconf.settings."org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
+      color-scheme = lib.mkForce "prefer-dark";
     };
 
     systemd.user.targets.user-sleep = {
@@ -78,7 +88,8 @@ in {
         url = "https://raw.githubusercontent.com/rzhikharevich/nixos-artefacts/f6e480efbf530c6eeeba2d361a7afab7ac322a6b/wallpapers/GreatWave.jpg";
         hash = "sha256-RKhIar3wMwo/5rWG5AdQbnOP4HX+C138Q5YeNY/acgY=";
       };
-      polarity = "dark";
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+      # polarity = "dark";
       icons = {
         enable = true;
         package = colloidIcons;
@@ -97,7 +108,7 @@ in {
       systemd.enable = true;
       settings.mainBar = {
         layer = "top";
-        height = 36;
+        height = 44;
         modules-left = [ "niri/workspaces" ];
         modules-center = [ "clock" ];
         modules-right = [ "custom/keyboard" "niri/language" "wireplumber" "battery" ];
@@ -108,8 +119,12 @@ in {
         };
       };
       style = ''
+        window#waybar {
+          background-color: alpha(@base00, 0.85);
+        }
+
         #custom-keyboard {
-          background-image: url("${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/input-keyboard-virtual-show.svg");
+          background-image: url("${keyboardIcon}");
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center;
@@ -118,8 +133,7 @@ in {
         }
 
         #workspaces button {
-          padding: 0 8px;
-          margin: 0 2px;
+          margin: 2px 2px;
           background-color: @base02;
         }
 

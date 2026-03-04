@@ -35,22 +35,34 @@ in {
     cursor.hide-when-typing = true;
 
     binds = {
+      "Super+Q".action.close-window = [];
       "Super+A".action.toggle-overview = [];
+      "Super+S".action.spawn = [ "${pkgs.swaynotificationcenter}/bin/swaync-client" "-t" ];
+      "Super+D".action.spawn = [ "${pkgs.fuzzel}/bin/fuzzel" ];
+      "Super+F".action.toggle-column-tabbed-display = [];
       "Super+M".action.maximize-column = [];
       "Super+L".action.spawn = [ "${pkgs.systemd}/bin/systemctl" "--user" "start" "hyprlock" ];
       "Super+1".action.spawn = [ "${pkgs.foot}/bin/foot" ];
       "Super+2".action.spawn = [ "${pkgs.firefox}/bin/firefox" ];
-      "Super+S".action.spawn = [ "${pkgs.swaynotificationcenter}/bin/swaync-client" "-t" ];
-      "Super+D".action.spawn = [ "${pkgs.fuzzel}/bin/fuzzel" ];
-      "Super+Q".action.close-window = [];
       "Super+Shift+E".action.quit = [];
       "Super+T".action.toggle-window-floating = [];
       "Super+Left".action.focus-column-left = [];
       "Super+Right".action.focus-column-right = [];
       "Super+Up".action.focus-window-or-workspace-up = [];
       "Super+Down".action.focus-window-or-workspace-down = [];
+      "Ctrl+Super+Left".action.consume-or-expel-window-left = [];
+      "Ctrl+Super+Right".action.consume-or-expel-window-right = [];
       "XF86AudioRaiseVolume".action.spawn = [ "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%+" ];
       "XF86AudioLowerVolume".action.spawn = [ "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%-" ];
+    };
+
+    layout.tab-indicator = {
+      place-within-column = true;
+      length.total-proportion = 0.95;
+      gaps-between-tabs = 10.0;
+      position = "top";
+      corner-radius = 10.0;
+      width = 10.0;
     };
 
     window-rules =
@@ -104,6 +116,13 @@ in {
       ];
 
     layer-rules = [
+      {
+        matches = [ { namespace = "waybar"; } ];
+        shadow = {
+          enable = true;
+          spread = 3;
+        };
+      }
       {
         matches = [ { namespace = "swaync-control-center"; } ];
         opacity = 0.9;
