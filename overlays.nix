@@ -5,8 +5,8 @@ final: prev: {
         ${src} \
         -o $out
     '';
-  writePython3Script = name: source:
-    prev.writers.writePython3Bin name { flakeIgnore = [ "E265" "E501" ]; } source;
+  writePython3Script = name: opts: source:
+    prev.writers.writePython3Bin name ({ flakeIgnore = [ "E265" "E501" ]; } // opts) source;
   wvkbd = prev.wvkbd.overrideAttrs {
     makeFlags = [ "LAYOUT=deskintl" ];
     patches = [

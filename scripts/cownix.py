@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
+import asyncio
+import asyncinotify
+from dataclasses import dataclass
 import json
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -11,9 +15,9 @@ STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local" / "stat
 STATE_FILE = STATE_DIR / "cownix.json"
 
 
-def main():
+async def main():
     args = parse_args()
-    args.func(args.path)
+    await args.func(args)
 
 
 def parse_args():
@@ -24,6 +28,18 @@ def parse_args():
         "write", help="Replace a Nix store symlink with a file copy"
     )
     write_parser.add_argument("path")
+    write_parser.add_argument(
+        "-o", "--open", action="store_true",
+        help="Open the file in $EDITOR",
+    )
+    write_parser.add_argument(
+        "-x", "--execute", metavar="CMD",
+        help="Run CMD on each file modification (requires --open)",
+    )
+    write_parser.add_argument(
+        "-r", "--restore-on-close", action="store_true",
+        help="Restore the file after $EDITOR is closed",
+    )
     write_parser.set_defaults(func=write)
 
     restore_parser = subparsers.add_parser("restore", help="Restore the original Nix store symlink")
@@ -37,10 +53,13 @@ def abs_path(path):
     return str(Path(os.path.normpath(Path(path).absolute())))
 
 
-def write(path):
+async def write(args):
+    path = args.path
     p = Path(path)
     if not p.is_symlink():
         sys.exit(f"Error: {path} is not a symlink")
+    if args.execute and not args.open:
+        sys.exit("Error: --execute requires --open")
 
     target = p.readlink()
     if not str(target).startswith("/nix/store/"):
@@ -63,8 +82,46 @@ def write(path):
         shutil.copy2(target, p)
         p.chmod(p.stat().st_mode | 0o644)
 
+    if args.open:
+        editor = os.environ.get("EDITOR", "nano")
+        if args.execute:
+            watcher = asyncio.create_task(watch_and_exec(p, args.execute))
+            try:
+                proc = await asyncio.create_subprocess_exec(editor, str(p))
+                await proc.wait()
+            finally:
+                watcher.cancel()
+                try:
+                    await watcher
+                except asyncio.CancelledError:
+                    pass
+        else:
+            subprocess.call([editor, str(p)])
 
-def restore(path):
+        if args.restore_on_close:
+            await restore(RestoreArgs(path=path))
+
+
+async def watch_and_exec(path, cmd):
+    with asyncinotify.Inotify() as inotify, open("/home/roman/log.txt", "w") as f:
+        inotify.add_watch(
+            path.parent,
+            asyncinotify.Mask.MOVED_TO | asyncinotify.Mask.MODIFY,
+        )
+        async for event in inotify:
+            print(event, file=f, flush=True)
+            if str(event.name) == path.name:
+                rc = subprocess.call(cmd, shell=True)
+                print(rc, file=f, flush=True)
+
+
+@dataclass(frozen=True)
+class RestoreArgs:
+    path: str
+
+
+async def restore(args):
+    path = args.path
     p = Path(path)
     key = abs_path(p)
     state = load_state()
@@ -93,4 +150,4 @@ def save_state(state):
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
