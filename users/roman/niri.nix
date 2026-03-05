@@ -127,7 +127,14 @@ in {
         matches = [ { namespace = "waybar"; } ];
         shadow = {
           enable = true;
-          spread = 3;
+          spread = 5;
+        };
+      }
+      {
+        matches = [ { namespace = "wvkbd"; } ];
+        shadow = {
+          enable = true;
+          spread = 5;
         };
       }
       {

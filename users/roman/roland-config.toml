@@ -1,0 +1,23 @@
+[[gestures]]
+num_fingers = 1
+kind = "SwipeUp"
+action = "niri msg action toggle-overview"
+min_duration = 50
+min_distance = 5.0
+on_edge = {Bottom = 5}
+
+[[gestures]]
+num_fingers = 1
+kind = "SwipeRight"
+action = "niri msg action focus-column-left"
+min_duration = 50
+min_distance = 5.0
+on_edge = {Left = 5}
+
+[[gestures]]
+num_fingers = 1
+kind = "SwipeLeft"
+action = "niri msg action focus-column-right"
+min_duration = 50
+min_distance = 5.0
+on_edge = {Right = 5}
