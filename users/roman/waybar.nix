@@ -36,13 +36,19 @@ in {
       }
 
       #workspaces button {
-        margin: 2px 2px;
+        margin: 4px 4px;
         background-color: @base02;
+        opacity: 0.85;
+        box-shadow: 0 0 2px 0px black;
       }
 
       #workspaces button.active {
         background-color: @base0D;
         color: @base00;
+      }
+
+      .modules-left #workspaces button.active {
+          border: 0;
       }
     '';
   };

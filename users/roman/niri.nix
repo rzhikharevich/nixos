@@ -73,10 +73,17 @@ in {
       in [
         {
           clip-to-geometry = true;
+          shadow = {
+            enable = true;
+            spread = 5;
+          };
         }
         {
           matches = [ { is-floating = true; } ];
-          shadow.enable = true;
+          shadow = {
+            enable = true;
+            spread = 10;
+          };
         }
 
         {

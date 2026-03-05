@@ -15,7 +15,9 @@ in {
     imports = [ ./niri.nix ./hyprlock.nix ./firefox.nix ./waybar.nix ./swaync.nix ];
 
     home.packages = [
-      (pkgs.writePython3Script "cownix" (builtins.readFile ../../scripts/cownix.py))
+      (pkgs.writePython3Script "cownix" {
+        libraries = [ pkgs.python3Packages.asyncinotify ];
+      } (builtins.readFile ../../scripts/cownix.py))
     ];
 
     programs.fish.enable = true;
