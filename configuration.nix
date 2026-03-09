@@ -17,7 +17,7 @@
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
       download-buffer-size = 1024 * 1048576;
       # extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
       trusted-users = [ "@wheel" ];

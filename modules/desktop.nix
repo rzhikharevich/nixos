@@ -84,19 +84,6 @@
     jetbrains-mono
   ];
 
-  fonts.fontconfig.confPackages = [
-    (pkgs.writeTextDir "etc/fonts/conf.d/61-noto-emoji-monochrome.conf" ''
-      <?xml version="1.0"?>
-      <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-      <fontconfig>
-        <match target="scan">
-          <test name="family"><string>Noto Emoji</string></test>
-          <edit name="family" mode="append"><string>Monochrome Emoji</string></edit>
-        </match>
-      </fontconfig>
-    '')
-  ];
-
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/linux-vt.yaml";

@@ -6,7 +6,7 @@ in {
   users.users.roman = {
     uid = 1000;
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "input" ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
   };
@@ -50,36 +50,23 @@ in {
       ];
     };
 
-    services.wluma = {
-      enable = true;
-      settings = {
-        als.iio = {
-          path = "/sys/bus/iio/devices";
-          thresholds = {
-            "0" = "night";
-            "1" = "dark";
-            "2" = "dim";
-            "5" = "normal";
-            "10" = "bright";
-            "20" = "outdoors";
-          };
-        };
-        output.backlight = [
-          {
-            name = "eDP-1";
-            path = "/sys/class/backlight/amdgpu_bl1";
-            capturer = "none";
-          }
-        ];
-      };
-    };
-
     fonts.fontconfig.defaultFonts.monospace = [ "JetBrains Mono" ];
+    fonts.fontconfig.defaultFonts.sansSerif = [ "Cantarell" ];
 
     stylix = {
-      fonts.monospace = {
-        package = pkgs.jetbrains-mono;
-        name = "JetBrains Mono";
+      fonts = {
+        monospace = {
+          package = pkgs.jetbrains-mono;
+          name = "JetBrains Mono";
+        };
+        sansSerif = {
+          package = pkgs.cantarell-fonts;
+          name = "Cantarell";
+        };
+        sizes = {
+          desktop = 14;
+          popups = 14;
+        };
       };
       image = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/rzhikharevich/nixos-artefacts/f6e480efbf530c6eeeba2d361a7afab7ac322a6b/wallpapers/GreatWave.jpg";
@@ -97,7 +84,13 @@ in {
 
     programs.fuzzel = {
       enable = true;
-      settings.main.line-height = 24;
+      settings.main = {
+        line-height = 44;
+        width = 35;
+        vertical-pad = 12;
+        inner-pad = 8;
+        border-radius = 12;
+      };
     };
 
     programs.claude-code = {
@@ -138,7 +131,7 @@ in {
               After = "graphical-session.target";
             };
             Service = {
-              ExecStart = "${pkgs.roland}/bin/roland --config ~/.config/roland/config.toml";
+              ExecStart = "${pkgs.roland}/bin/roland --config /home/roman/.config/roland/config.toml";
               Restart = "on-failure";
             };
             Install.WantedBy = [ "graphical-session.target" ];

@@ -1,8 +1,27 @@
 { config, osConfig, lib, pkgs, ... }:
-let graphicalSessionUnit = {
-  PartOf = "graphical-session.target";
-  After = "graphical-session.target";
-};
+let
+  graphicalSessionUnit = {
+    PartOf = "graphical-session.target";
+    After = "graphical-session.target";
+  };
+  uniformCornerRadius = r: lib.genAttrs
+    [ "bottom-left" "bottom-right" "top-left" "top-right" ]
+    (_: r);
+  mkAlpha = color: alpha: "#${color}${lib.trivial.toHexString (builtins.floor (alpha * 255))}";
+  mkTiledShadow = color: {
+    enable = true;
+    softness = 12;
+    spread = 2;
+    offset = { x = 0.0; y = 4.0; };
+    color = color;
+  };
+  mkFloatingShadow = color: {
+    enable = true;
+    softness = 25;
+    spread = 5;
+    offset = { x = 0.0; y = 4.0; };
+    color = color;
+  };
 in {
   programs.niri.settings = {
     input = {
@@ -28,11 +47,42 @@ in {
       "eDP-1" = {
         scale = 1.5;
         variable-refresh-rate = true;
-        backdrop-color = "000000";
+        backdrop-color = config.lib.stylix.colors.base00;
       };
     };
 
     cursor.hide-when-typing = true;
+
+    animations = {
+      workspace-switch.kind.spring = {
+        damping-ratio = 0.9;
+        stiffness = 800;
+        epsilon = 0.0001;
+      };
+      horizontal-view-movement.kind.spring = {
+        damping-ratio = 0.9;
+        stiffness = 800;
+        epsilon = 0.0001;
+      };
+      window-open.kind.easing = {
+        duration-ms = 200;
+        curve = "ease-out-expo";
+      };
+      window-close.kind.easing = {
+        duration-ms = 150;
+        curve = "ease-out-quad";
+      };
+      window-movement.kind.spring = {
+        damping-ratio = 0.9;
+        stiffness = 600;
+        epsilon = 0.0001;
+      };
+      window-resize.kind.spring = {
+        damping-ratio = 0.9;
+        stiffness = 600;
+        epsilon = 0.0001;
+      };
+    };
 
     binds = {
       "Super+Q".action.close-window = [];
@@ -56,90 +106,80 @@ in {
       "XF86AudioLowerVolume".action.spawn = [ "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%-" ];
     };
 
-    layout.tab-indicator = {
-      place-within-column = true;
-      length.total-proportion = 0.95;
-      gaps-between-tabs = 10.0;
-      position = "top";
-      corner-radius = 10.0;
-      width = 10.0;
+    layout = {
+      always-center-single-column = true;
+
+      tab-indicator = {
+        place-within-column = true;
+        length.total-proportion = 0.95;
+        gaps-between-tabs = 10.0;
+        position = "left";
+        corner-radius = 10.0;
+        width = 10.0;
+      };
     };
 
-    window-rules =
-      let uniformCornerRadius = (r: lib.genAttrs
-        [ "bottom-left" "bottom-right" "top-left" "top-right" ]
-        (_: r)
-      );
-      in [
-        {
-          clip-to-geometry = true;
-          shadow = {
-            enable = true;
-            spread = 5;
-          };
-        }
-        {
-          matches = [ { is-floating = true; } ];
-          shadow = {
-            enable = true;
-            spread = 10;
-          };
-        }
+    window-rules = [
+      {
+        clip-to-geometry = true;
+        geometry-corner-radius = uniformCornerRadius 12.0;
+        shadow =
+          (mkTiledShadow <| mkAlpha config.lib.stylix.colors.base0D 0.4) //
+          { inactive-color = (mkAlpha config.lib.stylix.colors.base03 0.4); };
+        border.width = 2;
+      }
 
-        {
-          matches = [ {
-            app-id = "firefox";
-            title = "Picture-in-Picture";
-          } ];
+      {
+        matches = [ { is-floating = true; } ];
+        shadow = mkFloatingShadow (mkAlpha config.lib.stylix.colors.base0D 0.3) //
+          { inactive-color = mkAlpha config.lib.stylix.colors.base03 0.3; };
+      }
 
-          open-floating = true;
-          open-focused = false;
-          border.enable = false;
-          shadow.enable = true;
+      {
+        matches = [ { app-id = "firefox"; } ];
+        excludes = [ { title = "Picture-in-Picture"; } ];
+        geometry-corner-radius = uniformCornerRadius 14.0;
+      }
 
-          default-floating-position = {
-            x = 48;
-            y = 48;
-            relative-to="bottom-right";
-          };
-          max-height = 360;
-          min-height = 360;
-          max-width = 640;
-          min-width = 576;
-        }
+      {
+        matches = [ {
+          app-id = "firefox";
+          title = "Picture-in-Picture";
+        } ];
 
-        # Adjusting for app-specific corner radii.
-        # TODO: Maybe there's a way to tell apps to not have rounded corners?
-        # TODO: Alternatively, could just go with rounding everything.
-        {
-          matches = [ { app-id = "firefox"; } ];
-          excludes = [ { title = "Picture-in-Picture"; } ];
-          geometry-corner-radius = uniformCornerRadius 14.0;
-        }
-        {
-          matches = [ { app-id = "dev.zed.Zed"; } ];
-          geometry-corner-radius = uniformCornerRadius 10.0;
-        }
-      ];
+        open-floating = true;
+        open-focused = false;
+        border.enable = false;
+        geometry-corner-radius = uniformCornerRadius 0.0;
+
+        default-floating-position = {
+          x = 48;
+          y = 48;
+          relative-to="bottom-right";
+        };
+        max-height = 360;
+        min-height = 360;
+        max-width = 640;
+        min-width = 576;
+      }
+    ];
 
     layer-rules = [
       {
         matches = [ { namespace = "waybar"; } ];
-        shadow = {
-          enable = true;
-          spread = 5;
-        };
+        shadow = mkTiledShadow <| mkAlpha config.lib.stylix.colors.base00 0.6;
+        geometry-corner-radius = uniformCornerRadius 12.0;
       }
+
       {
         matches = [ { namespace = "wvkbd"; } ];
         shadow = {
           enable = true;
-          spread = 5;
+          softness = 20;
+          spread = 4;
+          offset = { x = 0.0; y = -4.0; };
+          color = mkAlpha "000000" 0.4;
         };
-      }
-      {
-        matches = [ { namespace = "swaync-control-center"; } ];
-        opacity = 0.9;
       }
     ];
   };

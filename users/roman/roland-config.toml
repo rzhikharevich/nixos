@@ -12,7 +12,7 @@ kind = "SwipeRight"
 action = "niri msg action focus-column-left"
 min_duration = 50
 min_distance = 5.0
-on_edge = {Left = 5}
+on_edge = {Left = 15}
 
 [[gestures]]
 num_fingers = 1
@@ -20,4 +20,4 @@ kind = "SwipeLeft"
 action = "niri msg action focus-column-right"
 min_duration = 50
 min_distance = 5.0
-on_edge = {Right = 5}
+on_edge = {Right = 15}

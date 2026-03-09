@@ -4,7 +4,7 @@
   services.swaync = {
     enable = true;
     settings = {
-      widgets = [ "buttons-grid" "dnd" "volume" "notifications" ];
+      widgets = [ "buttons-grid" "dnd" "volume" "title" "notifications" ];
 
       widget-config.buttons-grid = let
         mkToggle = cond: then-cmd: else-cmd: "${pkgs.bash}/bin/sh -c '[[ ${cond} ]] && ${then-cmd} || ${else-cmd}'";
@@ -24,7 +24,13 @@
     style = ''
       .control-center {
         margin: 8px;
-        box-shadow: 0 0 8px 2px black;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .notification-row .notification {
+        border-radius: 12px;
+        margin: 4px 0;
       }
     '';
   };
