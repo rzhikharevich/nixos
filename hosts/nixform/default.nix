@@ -111,8 +111,6 @@
   services.fprintd.enable = true;
   security.pam.services.hyprlock = {};
 
-  services.iio-niri.enable = true;
-
   services.upower = {
     enable = true;
     criticalPowerAction = "Hibernate";

@@ -117,12 +117,6 @@ in {
             (lib.mkHardenedUserService user appName {})
           ];
         }) //
-        lib.genAttrs [ "wluma" ] (appName: {
-          Service = lib.mkMerge [
-            config.rzhikharevich.hardeningDefaults
-            (lib.mkHardenedUserService user appName { usesShareDir = true; })
-          ];
-        }) //
         {
           roland = {
             Unit = {

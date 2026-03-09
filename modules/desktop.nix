@@ -75,7 +75,7 @@
       ])
 
       (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-        # pyusb
+        ptpython
       ]))
     ];
   };
