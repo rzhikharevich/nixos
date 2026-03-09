@@ -14,53 +14,22 @@ nix build .#nixosConfigurations.nixform.config.system.build.toplevel # Build int
 
 ## Architecture
 
-**Entry point:** `flake.nix` defines host configurations via the `mkHost` helper. Flake inputs:
-- `nixpkgs` (nixos-unstable) — base packages
-- `nixos-hardware` — Minisforum V3 hardware profile
-- `home-manager` — per-user home configuration
-- `stylix` — system-wide theming
-- `niri-flake` — Niri Wayland compositor
-- `fenix` — Rust toolchain management
+**Entry point:** `flake.nix` defines host configurations via the `mkHost` helper.
 
-`flake.nix` also defines `commonOverlays` (shared across all hosts) and `commonModules` (shared NixOS modules). Custom overlay helpers:
-- `pkgs.prerenderIcon { name, src, size }` — rasterizes an SVG to PNG via `rsvg-convert`
-- `pkgs.writePython3Script name source` — wraps `writers.writePython3Bin` with standard `flakeIgnore`
-
-**Shared config:**
-- `configuration.nix` — shared NixOS entry point (nix settings, locale, SSH, imports all modules and users)
-- `modules/desktop.nix` — desktop environment (audio, polkit, keyring, fish, niri, packages, fonts, stylix)
-- `modules/globals.nix` — custom NixOS options (e.g. `rzhikharevich.sshPubKeys`)
-- `modules/hardened-services.nix` — `rzhikharevich.hardenedServices` option; applies default systemd hardening to declared services
-- `modules/pam-no-fprint.nix` — defaults fingerprint auth to disabled in all PAM services
-- `modules/ssh-inhibit-suspend.nix` — system service that inhibits suspend while SSH sessions are active
-
-**Host-specific config:**
-- `hosts/nixform/default.nix` — nixform hardware config (boot, storage, networking, power, udev)
-- `hosts/nixform/hardware-configuration.nix` — hardware/filesystem config (LUKS-encrypted LVM, XFS root)
-
-**Library:**
-- `lib/default.nix` — extends `nixpkgs.lib` with project-specific helpers (polkit, hardening)
-- `lib/polkit.nix` — `mkPolkitAllow`: generates polkit rules granting a set of actions to a user
-- `lib/hardening.nix` — `mkHardenedUserService`: systemd hardening helpers for user services
-
-**Users:**
-- `users/greeter/default.nix` — greetd setup, greeter system user, polkit power rules
-- `users/greeter/niri.nix` — greeter niri session (wlgreet, power menu, virtual keyboard, swayidle)
-- `users/roman/default.nix` — user account definition + home-manager config (programs, styling, swayidle, wluma)
-- `users/roman/niri.nix` — niri compositor settings + session services (wvkbd, swaybg, monitor power)
-- `users/roman/waybar.nix` — waybar panel config and CSS
-- `users/roman/swaync.nix` — notification center config
-- `users/roman/hyprlock.nix` — lock screen config + hyprlock service
-- `users/roman/firefox.nix` — Firefox privacy/extension config
+**Structure:**
+- `configuration.nix` — shared NixOS entry point; imports all modules and users
+- `modules/` — shared NixOS modules (desktop, hardened services, globals, PAM, etc.)
+- `hosts/` — host-specific config (boot, storage, networking, hardware)
+- `users/` — per-user config; greeter has its own niri session, roman uses home-manager
+- `lib/` — extends `nixpkgs.lib` with project helpers (polkit rules, service hardening)
+- `overlays.nix` — custom overlay (`prerenderIcon`, `writePython3Script`, `roland`, `wvkbd`)
 
 **Key design decisions:**
-- SSH-key-only authentication; no password-based login. Keys are centralized via the custom `rzhikharevich.sshPubKeys` option in `modules/globals.nix`.
-- The greeter (`users/greeter/`) launches a dedicated niri session to host wlgreet, separate from the user's niri session.
-- Home-manager is integrated as a NixOS module (not standalone), configured within `users/roman/default.nix`.
-- Custom `lib/` extends `nixpkgs.lib` so helpers like `lib.mkPolkitAllow` are available in every module. Derivation-producing helpers live in the overlay (`pkgs.prerenderIcon`, `pkgs.writePython3Script`).
-- Systemd services declared via `rzhikharevich.hardenedServices` receive a strict hardening baseline by default; per-service overrides are merged on top.
+- SSH-key-only auth; keys centralized via `rzhikharevich.sshPubKeys` in `modules/globals.nix`.
+- The greeter launches a dedicated niri session to host wlgreet, separate from the user's niri session.
+- `lib/` extends `nixpkgs.lib` so helpers like `lib.mkPolkitAllow` are available everywhere. Derivation-producing helpers live in the overlay.
+- `rzhikharevich.hardenedServices` applies a strict systemd hardening baseline; per-service overrides are merged on top.
 - Service definitions stay in the same file as their related config (e.g. hyprlock service lives in `hyprlock.nix`).
-- Host-specific config (boot, storage, networking, hardware services) is separated from shared config to support adding new hosts via `mkHost`.
 
 ## Code Style
 
