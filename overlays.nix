@@ -5,6 +5,11 @@ final: prev: {
         ${src} \
         -o $out
     '';
+  colloidIcons = prev.colloid-icon-theme.override { colorVariants = ["grey"]; };
+  mkColloidIcon = name: path: final.prerenderIcon {
+    name = "${name}.png";
+    src = "${final.colloidIcons}/share/icons/Colloid-Grey-Dark/${path}";
+  };
   writePython3Script = name: opts: source:
     prev.writers.writePython3Bin name ({ flakeIgnore = [ "E265" "E501" ]; } // opts) source;
   roland = prev.rustPlatform.buildRustPackage {

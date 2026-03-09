@@ -1,57 +1,13 @@
 { config, pkgs, lib, ... }:
 let
-  colloidIcons = pkgs.colloid-icon-theme.override { colorVariants = ["grey"]; };
-  keyboardIcon = pkgs.prerenderIcon {
-    name = "keyboard-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/input-keyboard-virtual-show.svg";
-  };
-  overviewIcon = pkgs.prerenderIcon {
-    name = "overview-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/preferences-activities.svg";
-  };
-  notificationsIcon = pkgs.prerenderIcon {
-    name = "notifications-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/status/24/notification-active.svg";
-  };
-  maximizeIcon = pkgs.prerenderIcon {
-    name = "maximize-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/view-fullscreen.svg";
-  };
-  volumeIcon = pkgs.prerenderIcon {
-    name = "volume-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/status/24/audio-volume-high-panel.svg";
-  };
-  volumeMutedIcon = pkgs.prerenderIcon {
-    name = "volume-muted-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/status/24/audio-volume-muted-panel.svg";
-  };
-  batteryIcon = pkgs.prerenderIcon {
-    name = "battery-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/status/24/battery-good.svg";
-  };
-  batteryChargingIcon = pkgs.prerenderIcon {
-    name = "battery-charging-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/status/24/battery-full-charging.svg";
-  };
-  fuzzelIcon = pkgs.prerenderIcon {
-    name = "fuzzel-icon.png";
-    src = "${colloidIcons}/share/icons/Colloid-Grey-Dark/actions/24/search.svg";
-  };
-  iconButtonStyle = icon: ''
-    background-image: url("${icon}");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    min-width: 40px;
-    padding: 0 12px;
-  '';
-  iconModuleStyle = icon: ''
-    background-image: url("${icon}");
-    background-size: 24px;
-    background-repeat: no-repeat;
-    background-position: left center;
-    padding-left: 28px;
-  '';
+  inherit (pkgs) mkColloidIcon;
+  keyboardIcon = mkColloidIcon "keyboard-icon" "actions/24/input-keyboard-virtual-show.svg";
+  overviewIcon = mkColloidIcon "overview-icon" "actions/24/preferences-activities.svg";
+  notificationsIcon = mkColloidIcon "notifications-icon" "status/24/notification-active.svg";
+  maximizeIcon = mkColloidIcon "maximize-icon" "actions/24/view-fullscreen.svg";
+  volumeIcon = mkColloidIcon "volume-icon" "status/24/audio-volume-high-panel.svg";
+  volumeMutedIcon = mkColloidIcon "volume-muted-icon" "status/24/audio-volume-muted-panel.svg";
+  fuzzelIcon = mkColloidIcon "fuzzel-icon" "actions/24/search.svg";
 in {
   programs.waybar = {
     enable = true;
@@ -131,7 +87,7 @@ in {
         background-repeat: no-repeat;
         background-position: center;
         min-width: 64px;
-        margin: 3px 3px;
+        margin: 3px;
         border-radius: 8px;
         border: 1px solid alpha(black, 0.2);
         background-color: alpha(@base01, 0.9);
@@ -159,7 +115,7 @@ in {
       }
 
       #workspaces button {
-        margin: 3px 3px;
+        margin: 3px;
         min-width: 40px;
         border-radius: 8px;
         border: 1px solid alpha(black, 0.2);
@@ -181,17 +137,17 @@ in {
         border: 1px solid alpha(@base08, 0.4);
       }
 
-      #wireplumber,
-      #battery {
-        min-width: 24px;
-      }
-
       #wireplumber {
-        ${iconModuleStyle volumeIcon}
+        min-width: 24px;
+        background-image: url("${volumeIcon}");
+        background-size: 24px;
+        background-repeat: no-repeat;
+        background-position: left center;
+        padding-left: 28px;
       }
 
       #wireplumber.muted {
-        ${iconModuleStyle volumeMutedIcon}
+        background-image: url("${volumeMutedIcon}");
         padding-left: 0;
       }
 

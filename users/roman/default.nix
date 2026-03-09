@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 let
   inherit (config.rzhikharevich) startUserUnit stopUserUnit;
-  colloidIcons = pkgs.colloid-icon-theme.override { colorVariants = ["grey"]; };
 in {
   users.users.roman = {
     uid = 1000;
@@ -76,7 +75,7 @@ in {
       # polarity = "dark";
       icons = {
         enable = true;
-        package = colloidIcons;
+        package = pkgs.colloidIcons;
         light = "Colloid-Grey-Light";
         dark = "Colloid-Grey-Dark";
       };
