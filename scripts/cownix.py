@@ -6,6 +6,7 @@ import asyncinotify
 from dataclasses import dataclass
 import json
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -86,33 +87,39 @@ async def write(args):
         editor = os.environ.get("EDITOR", "nano")
         if args.execute:
             watcher = asyncio.create_task(watch_and_exec(p, args.execute))
+            proc = None
             try:
-                proc = await asyncio.create_subprocess_exec(editor, str(p))
+                proc = await asyncio.create_subprocess_shell(f"{editor} {shlex.quote(path)}")
                 await proc.wait()
+            except (asyncio.CancelledError, KeyboardInterrupt):
+                pass
             finally:
+                if proc is not None and proc.returncode is None:
+                    proc.terminate()
+
                 watcher.cancel()
                 try:
                     await watcher
-                except asyncio.CancelledError:
+                except (asyncio.CancelledError, KeyboardInterrupt):
                     pass
         else:
-            subprocess.call([editor, str(p)])
+            subprocess.call([editor, p])
+
+        subprocess.call(["diff", "--color", "--unified", target, p])
 
         if args.restore_on_close:
             await restore(RestoreArgs(path=path))
 
 
 async def watch_and_exec(path, cmd):
-    with asyncinotify.Inotify() as inotify, open("/home/roman/log.txt", "w") as f:
+    with asyncinotify.Inotify() as inotify:
         inotify.add_watch(
             path.parent,
             asyncinotify.Mask.MOVED_TO | asyncinotify.Mask.MODIFY,
         )
         async for event in inotify:
-            print(event, file=f, flush=True)
             if str(event.name) == path.name:
-                rc = subprocess.call(cmd, shell=True)
-                print(rc, file=f, flush=True)
+                subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 @dataclass(frozen=True)
