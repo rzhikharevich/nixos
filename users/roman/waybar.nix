@@ -8,6 +8,15 @@ let
   volumeIcon = mkColloidIcon "volume-icon" "status/24/audio-volume-high-panel.svg";
   volumeMutedIcon = mkColloidIcon "volume-muted-icon" "status/24/audio-volume-muted-panel.svg";
   fuzzelIcon = mkColloidIcon "fuzzel-icon" "actions/24/search.svg";
+  rotateIcon = mkColloidIcon "rotate-icon" "actions/24/screen-rotate-auto-on.svg";
+  rotateScript = pkgs.writeShellScript "toggle-rotation" ''
+    current=$(${pkgs.niri}/bin/niri msg --json focused-output | ${pkgs.jq}/bin/jq -r '.logical.transform')
+    if [ "$current" = "Normal" ]; then
+      ${pkgs.niri}/bin/niri msg output eDP-1 transform 90
+    else
+      ${pkgs.niri}/bin/niri msg output eDP-1 transform normal
+    fi
+  '';
 in {
   programs.waybar = {
     enable = true;
@@ -20,7 +29,7 @@ in {
       margin-right = 8;
       modules-left = [ "custom/fuzzel" "custom/overview" "custom/maximize" "niri/workspaces" ];
       modules-center = [ "clock" ];
-      modules-right = [ "niri/language" "wireplumber" "upower" "custom/keyboard" "custom/notifications" ];
+      modules-right = [ "niri/language" "wireplumber" "upower" "custom/rotate" "custom/keyboard" "custom/notifications" ];
       "custom/fuzzel" = {
         format = " ";
         tooltip-format = "Launch application";
@@ -40,6 +49,11 @@ in {
         format = " ";
         tooltip-format = "Toggle notification center";
         on-click = "${pkgs.swaynotificationcenter}/bin/swaync-client -t";
+      };
+      "custom/rotate" = {
+        format = " ";
+        tooltip-format = "Toggle screen rotation";
+        on-click = "${rotateScript}";
       };
       "custom/keyboard" = {
         format = " ";
@@ -82,7 +96,8 @@ in {
       #custom-overview,
       #custom-maximize,
       #custom-notifications,
-      #custom-keyboard {
+      #custom-keyboard,
+      #custom-rotate {
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -112,6 +127,10 @@ in {
 
       #custom-keyboard {
         background-image: url("${keyboardIcon}");
+      }
+
+      #custom-rotate {
+        background-image: url("${rotateIcon}");
       }
 
       #workspaces button {
