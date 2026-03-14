@@ -27,9 +27,9 @@ in {
       margin-top = 4;
       margin-left = 8;
       margin-right = 8;
-      modules-left = [ "custom/fuzzel" "custom/overview" "custom/maximize" "niri/workspaces" ];
+      modules-left = [ "custom/overview" "custom/maximize" "niri/workspaces" ];
       modules-center = [ "clock" ];
-      modules-right = [ "niri/language" "wireplumber" "upower" "custom/rotate" "custom/keyboard" "custom/notifications" ];
+      modules-right = [ "niri/language" "wireplumber" "upower" "custom/rotate" "custom/keyboard" "custom/notifications" "custom/fuzzel" ];
       "custom/fuzzel" = {
         format = " ";
         tooltip-format = "Launch application";
