@@ -10,6 +10,7 @@ let
   fuzzelIcon = mkColloidIcon "fuzzel-icon" "actions/24/search.svg";
   rotateIcon = mkColloidIcon "rotate-icon" "actions/24/screen-rotate-auto-on.svg";
   rotateScript = pkgs.writeShellScript "toggle-rotation" ''
+    ${pkgs.niri}/bin/niri msg action do-screen-transition
     current=$(${pkgs.niri}/bin/niri msg --json focused-output | ${pkgs.jq}/bin/jq -r '.logical.transform')
     if [ "$current" = "Normal" ]; then
       ${pkgs.niri}/bin/niri msg output eDP-1 transform 90
