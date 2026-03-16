@@ -23,6 +23,8 @@
     '';
   };
 
+  programs.steam.enable = true;
+
   documentation.man.cache.enable = false;
 
   niri-flake.cache.enable = false;
@@ -50,7 +52,9 @@
       gnumake
       hdparm
       htop
+      hwloc
       iw
+      jq
       ncdu
       nvd
       pciutils
@@ -59,6 +63,7 @@
       pstree
       ripgrep
       strace
+      telegram-desktop
       tmux
       pkgs.linuxPackages_latest.turbostat
       usbutils
