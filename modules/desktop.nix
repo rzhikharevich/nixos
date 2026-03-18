@@ -68,6 +68,7 @@
       pkgs.linuxPackages_latest.turbostat
       usbutils
       wirelesstools
+      xwayland-satellite
       xxd
 
       (pkgs.fenix.complete.withComponents [
