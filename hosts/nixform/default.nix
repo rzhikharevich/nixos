@@ -20,6 +20,9 @@
       # can't be prevented from receiving IRQs).
       "irqaffinity=0,1,8,9"
 
+      # Micro-benchmarking:
+      "isolcpus=4,12" "nohz_full=4,12"
+
       # threadirqs is interesting since it would presumably bring IRQs under lavd's control but
       # it's probably more trouble (overhead) than it's worth.
 
