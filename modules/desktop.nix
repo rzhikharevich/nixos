@@ -48,6 +48,7 @@
       fastfetch
       file
       gcc
+      gh
       git
       gnumake
       hdparm
