@@ -63,18 +63,44 @@ in
     hotkey-overlay.skip-at-startup = true;
 
     spawn-at-startup = [
-      { argv = [
-        "${pkgs.swayidle}/bin/swayidle" "-w"
-        "before-sleep" "${pkgs.niri}/bin/niri msg action power-off-monitors"
-        "after-resume" "${pkgs.niri}/bin/niri msg action power-on-monitors"
-        "timeout" "30" "${pkgs.systemd}/bin/systemctl suspend"
-      ]; }
-      { argv = [ "${pkgs.wvkbd}/bin/wvkbd-deskintl" "--hidden" "-L" "400" "--fn" "sans 20" ]; }
-      { argv = [ "sh" "-c" "${pkgs.wlgreet}/bin/wlgreet --config ${wlgreetConfig}; ${pkgs.niri}/bin/niri msg action quit --skip-confirmation" ]; }
+      {
+        argv = [
+          "${pkgs.swayidle}/bin/swayidle"
+          "-w"
+          "before-sleep"
+          "${pkgs.niri}/bin/niri msg action power-off-monitors"
+          "after-resume"
+          "${pkgs.niri}/bin/niri msg action power-on-monitors"
+          "timeout"
+          "30"
+          "${pkgs.systemd}/bin/systemctl suspend"
+        ];
+      }
+      {
+        argv = [
+          "${pkgs.wvkbd}/bin/wvkbd-deskintl"
+          "--hidden"
+          "-L"
+          "400"
+          "--fn"
+          "sans 20"
+        ];
+      }
+      {
+        argv = [
+          "sh"
+          "-c"
+          "${pkgs.wlgreet}/bin/wlgreet --config ${wlgreetConfig}; ${pkgs.niri}/bin/niri msg action quit --skip-confirmation"
+        ];
+      }
     ];
 
     binds = {
-      "XF86AudioRaiseVolume".action.spawn = [ "pkill" "-SIGRTMIN" "wvkbd-deskintl" ];
+      "XF86AudioRaiseVolume".action.spawn = [
+        "pkill"
+        "-SIGRTMIN"
+        "wvkbd-deskintl"
+      ];
       "XF86AudioLowerVolume".action.spawn = [ "${powerMenu}" ];
     };
   };

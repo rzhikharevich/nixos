@@ -137,6 +137,9 @@ in
             binary = {
               path = lib.getExe pkgs.nil;
             };
+            initialization_options = {
+              formatting.command = [ (lib.getExe pkgs.nixfmt) ];
+            };
           };
           clangd = {
             binary = {
@@ -150,7 +153,10 @@ in
         languages = {
           Nix = {
             tab_size = 2;
-            language_servers = [ "nil" "!nixd" ];
+            language_servers = [
+              "nil"
+              "!nixd"
+            ];
           };
         };
       };

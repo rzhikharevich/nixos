@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -17,7 +22,11 @@
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+        "pipe-operators"
+      ];
       download-buffer-size = 1024 * 1048576;
       # extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
       trusted-users = [ "@wheel" ];

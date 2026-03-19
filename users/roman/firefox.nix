@@ -65,7 +65,10 @@
           "fanboy-thirdparty_social"
         ];
         userSettings = [
-          [ "showIconBadge" "false" ]
+          [
+            "showIconBadge"
+            "false"
+          ]
         ];
       };
     };

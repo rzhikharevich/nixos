@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -21,7 +26,8 @@
       "irqaffinity=0,1,8,9"
 
       # Micro-benchmarking:
-      "isolcpus=4,12" "nohz_full=4,12"
+      "isolcpus=4,12"
+      "nohz_full=4,12"
 
       # threadirqs is interesting since it would presumably bring IRQs under lavd's control but
       # it's probably more trouble (overhead) than it's worth.
@@ -42,7 +48,8 @@
       # RCU grace periods and therefore let idle CPUs sleep for longer. rcu_nocbs= is required for
       # it to work on a given CPU, enable it for all.
       #   - https://lwn.net/Articles/988638
-      "rcutree.enable_rcu_lazy=1" "rcu_nocbs=all"
+      "rcutree.enable_rcu_lazy=1"
+      "rcu_nocbs=all"
 
       # PCIe ASPM might be negotiated to be off by the BIOS for spurious reasons, force enable it.
       #   - https://wireless.docs.kernel.org/en/latest/en/users/documentation/aspm.html
@@ -112,7 +119,7 @@
   hardware.enableAllFirmware = true;
 
   services.fprintd.enable = true;
-  security.pam.services.hyprlock = {};
+  security.pam.services.hyprlock = { };
 
   services.upower = {
     enable = true;

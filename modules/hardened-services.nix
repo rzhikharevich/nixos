@@ -14,15 +14,16 @@ let
     MemoryDenyWriteExecute = true;
     RestrictRealtime = true;
     LockPersonality = true;
-    RestrictAddressFamilies = ["AF_UNIX"];
+    RestrictAddressFamilies = [ "AF_UNIX" ];
     SystemCallArchitectures = "native";
-    SystemCallFilter = "@system-service";  # TODO: Consider stricter default here.
+    SystemCallFilter = "@system-service"; # TODO: Consider stricter default here.
     SystemCallErrorNumber = "EPERM";
   };
-in {
+in
+{
   options.rzhikharevich.hardenedServices = lib.mkOption {
     type = lib.types.attrsOf lib.types.attrs;
-    default = {};
+    default = { };
   };
 
   options.rzhikharevich.hardeningDefaults = lib.mkOption {
@@ -31,10 +32,14 @@ in {
     description = "Default systemd service hardening options";
   };
 
-  config.systemd.services = lib.mapAttrs (_: svc: svc // {
-    serviceConfig = lib.mkMerge [
-      hardeningDefaults
-      (svc.serviceConfig or {})
-    ];
-  }) config.rzhikharevich.hardenedServices;
+  config.systemd.services = lib.mapAttrs (
+    _: svc:
+    svc
+    // {
+      serviceConfig = lib.mkMerge [
+        hardeningDefaults
+        (svc.serviceConfig or { })
+      ];
+    }
+  ) config.rzhikharevich.hardenedServices;
 }

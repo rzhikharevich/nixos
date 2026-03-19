@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (pkgs) mkColloidIcon;
   keyboardIcon = mkColloidIcon "keyboard-icon" "actions/24/input-keyboard-virtual-show.svg";
@@ -18,7 +23,8 @@ let
       ${pkgs.niri}/bin/niri msg output eDP-1 transform normal
     fi
   '';
-in {
+in
+{
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -28,9 +34,21 @@ in {
       margin-top = 4;
       margin-left = 8;
       margin-right = 8;
-      modules-left = [ "custom/overview" "custom/maximize" "niri/workspaces" ];
+      modules-left = [
+        "custom/overview"
+        "custom/maximize"
+        "niri/workspaces"
+      ];
       modules-center = [ "clock" ];
-      modules-right = [ "niri/language" "wireplumber" "upower" "custom/rotate" "custom/keyboard" "custom/notifications" "custom/fuzzel" ];
+      modules-right = [
+        "niri/language"
+        "wireplumber"
+        "upower"
+        "custom/rotate"
+        "custom/keyboard"
+        "custom/notifications"
+        "custom/fuzzel"
+      ];
       "custom/fuzzel" = {
         format = " ";
         tooltip-format = "Launch application";
@@ -70,8 +88,8 @@ in {
         format-muted = "";
       };
       upower = {
-         format = " {percentage}";
-         format-charging = " {percentage}";
+        format = " {percentage}";
+        format-charging = " {percentage}";
       };
     };
     style = ''

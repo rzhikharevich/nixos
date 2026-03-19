@@ -1,28 +1,40 @@
-{ config, osConfig, lib, pkgs, ... }:
+{
+  config,
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 let
   graphicalSessionUnit = {
     PartOf = "graphical-session.target";
     After = "graphical-session.target";
   };
-  uniformCornerRadius = r: lib.genAttrs
-    [ "bottom-left" "bottom-right" "top-left" "top-right" ]
-    (_: r);
+  uniformCornerRadius =
+    r: lib.genAttrs [ "bottom-left" "bottom-right" "top-left" "top-right" ] (_: r);
   mkAlpha = color: alpha: "#${color}${lib.trivial.toHexString (builtins.floor (alpha * 255))}";
   mkTiledShadow = color: {
     enable = true;
     softness = 12;
     spread = 2;
-    offset = { x = 0.0; y = 4.0; };
+    offset = {
+      x = 0.0;
+      y = 4.0;
+    };
     color = color;
   };
   mkFloatingShadow = color: {
     enable = true;
     softness = 25;
     spread = 5;
-    offset = { x = 0.0; y = 4.0; };
+    offset = {
+      x = 0.0;
+      y = 4.0;
+    };
     color = color;
   };
-in {
+in
+{
   programs.niri.settings = {
     input = {
       keyboard.xkb = {
@@ -85,25 +97,41 @@ in {
     };
 
     binds = {
-      "Super+Q".action.close-window = [];
-      "Super+A".action.toggle-overview = [];
-      "Super+S".action.spawn = [ "${pkgs.swaynotificationcenter}/bin/swaync-client" "-t" ];
+      "Super+Q".action.close-window = [ ];
+      "Super+A".action.toggle-overview = [ ];
+      "Super+S".action.spawn = [
+        "${pkgs.swaynotificationcenter}/bin/swaync-client"
+        "-t"
+      ];
       "Super+D".action.spawn = [ "${pkgs.fuzzel}/bin/fuzzel" ];
-      "Super+F".action.toggle-column-tabbed-display = [];
-      "Super+M".action.maximize-column = [];
-      "Super+L".action.spawn = [ "${pkgs.systemd}/bin/systemctl" "--user" "start" "hyprlock" ];
+      "Super+F".action.toggle-column-tabbed-display = [ ];
+      "Super+M".action.maximize-column = [ ];
+      "Super+L".action.spawn = [
+        "${pkgs.systemd}/bin/systemctl"
+        "--user"
+        "start"
+        "hyprlock"
+      ];
       "Super+1".action.spawn = [ "${pkgs.foot}/bin/foot" ];
       "Super+2".action.spawn = [ "${pkgs.firefox}/bin/firefox" ];
-      "Super+Shift+E".action.quit = [];
-      "Super+T".action.toggle-window-floating = [];
-      "Super+Left".action.focus-column-left = [];
-      "Super+Right".action.focus-column-right = [];
-      "Super+Up".action.focus-window-or-workspace-up = [];
-      "Super+Down".action.focus-window-or-workspace-down = [];
-      "Ctrl+Super+Left".action.consume-or-expel-window-left = [];
-      "Ctrl+Super+Right".action.consume-or-expel-window-right = [];
-      "XF86AudioRaiseVolume".action.spawn = [ "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%+" ];
-      "XF86AudioLowerVolume".action.spawn = [ "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%-" ];
+      "Super+Shift+E".action.quit = [ ];
+      "Super+T".action.toggle-window-floating = [ ];
+      "Super+Left".action.focus-column-left = [ ];
+      "Super+Right".action.focus-column-right = [ ];
+      "Super+Up".action.focus-window-or-workspace-up = [ ];
+      "Super+Down".action.focus-window-or-workspace-down = [ ];
+      "Ctrl+Super+Left".action.consume-or-expel-window-left = [ ];
+      "Ctrl+Super+Right".action.consume-or-expel-window-right = [ ];
+      "XF86AudioRaiseVolume".action.spawn = [
+        "${pkgs.brightnessctl}/bin/brightnessctl"
+        "set"
+        "5%+"
+      ];
+      "XF86AudioLowerVolume".action.spawn = [
+        "${pkgs.brightnessctl}/bin/brightnessctl"
+        "set"
+        "5%-"
+      ];
     };
 
     layout = {
@@ -123,16 +151,17 @@ in {
       {
         clip-to-geometry = true;
         geometry-corner-radius = uniformCornerRadius 12.0;
-        shadow =
-          (mkTiledShadow <| mkAlpha config.lib.stylix.colors.base0D 0.4) //
-          { inactive-color = (mkAlpha config.lib.stylix.colors.base03 0.4); };
+        shadow = (mkTiledShadow <| mkAlpha config.lib.stylix.colors.base0D 0.4) // {
+          inactive-color = (mkAlpha config.lib.stylix.colors.base03 0.4);
+        };
         border.width = 2;
       }
 
       {
         matches = [ { is-floating = true; } ];
-        shadow = mkFloatingShadow (mkAlpha config.lib.stylix.colors.base0D 0.3) //
-          { inactive-color = mkAlpha config.lib.stylix.colors.base03 0.3; };
+        shadow = mkFloatingShadow (mkAlpha config.lib.stylix.colors.base0D 0.3) // {
+          inactive-color = mkAlpha config.lib.stylix.colors.base03 0.3;
+        };
       }
 
       {
@@ -142,10 +171,12 @@ in {
       }
 
       {
-        matches = [ {
-          app-id = "firefox";
-          title = "Picture-in-Picture";
-        } ];
+        matches = [
+          {
+            app-id = "firefox";
+            title = "Picture-in-Picture";
+          }
+        ];
 
         open-floating = true;
         open-focused = false;
@@ -155,7 +186,7 @@ in {
         default-floating-position = {
           x = 48;
           y = 48;
-          relative-to="bottom-right";
+          relative-to = "bottom-right";
         };
         max-height = 360;
         min-height = 360;
@@ -177,7 +208,10 @@ in {
           enable = true;
           softness = 20;
           spread = 4;
-          offset = { x = 0.0; y = -4.0; };
+          offset = {
+            x = 0.0;
+            y = -4.0;
+          };
           color = mkAlpha "000000" 0.4;
         };
       }
@@ -201,7 +235,8 @@ in {
   systemd.user.services.wvkbd = {
     Unit = {
       Description = "On-screen keyboard";
-    } // graphicalSessionUnit;
+    }
+    // graphicalSessionUnit;
     Service = {
       ExecStart = "${pkgs.wvkbd}/bin/wvkbd-deskintl --hidden -L 500 --fn \"sans 20\"";
       Restart = "on-failure";
@@ -212,7 +247,8 @@ in {
   systemd.user.services.swaybg = {
     Unit = {
       Description = "Desktop background";
-    } // graphicalSessionUnit;
+    }
+    // graphicalSessionUnit;
     Service = {
       ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i ${config.stylix.image}";
       Restart = "on-failure";

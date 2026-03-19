@@ -1,9 +1,11 @@
 lib: {
-  mkPolkitAllow = user: actionIds:
+  mkPolkitAllow =
+    user: actionIds:
     let
       conds = map (id: ''action.id == "${id}"'') actionIds;
       joined = builtins.concatStringsSep " ||\n       " conds;
-    in ''
+    in
+    ''
       polkit.addRule(function(action, subject) {
         if ((${joined}) &&
             subject.user == "${user}") {

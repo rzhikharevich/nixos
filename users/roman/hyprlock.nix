@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   programs.hyprlock = {
@@ -44,12 +49,14 @@
         }
         {
           monitor = "";
-          text = "cmd[] " + (lib.strings.join "; " [
-            "if [ -n \"$FPRINTFAIL\" ]"
-            "then echo 💥"
-            "else echo $FPRINTPROMPT"
-            "fi"
-          ]);
+          text =
+            "cmd[] "
+            + (lib.strings.join "; " [
+              "if [ -n \"$FPRINTFAIL\" ]"
+              "then echo 💥"
+              "else echo $FPRINTPROMPT"
+              "fi"
+            ]);
           font_size = 32;
           position = "248, 280";
           halign = "center";
