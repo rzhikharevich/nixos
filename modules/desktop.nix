@@ -91,6 +91,14 @@
     jetbrains-mono
   ];
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.niri = {
+      "org.freedesktop.portal.FileChooser" = [ "gtk" ];
+    };
+  };
+
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/linux-vt.yaml";
