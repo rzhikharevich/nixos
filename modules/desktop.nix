@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   services.pipewire = {
@@ -39,7 +39,7 @@
   environment = {
     variables = {
       NIXOS_OZONE_WL = "1";
-      SYSTEMD_PAGER = "";  # Super annoying most of the time.
+      SYSTEMD_PAGER = ""; # Super annoying most of the time.
     };
     systemPackages = with pkgs; [
       brightnessctl
@@ -74,9 +74,11 @@
 
       config.rzhikharevich.rustToolchain
 
-      (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-        ptpython
-      ]))
+      (pkgs.python3.withPackages (
+        python-pkgs: with python-pkgs; [
+          ptpython
+        ]
+      ))
     ];
   };
 

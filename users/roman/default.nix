@@ -120,7 +120,6 @@ in
       userSettings = {
         base_keymap = "VSCode";
         wrap_guides = [ 100 ];
-        hour_format = "hour24";
         auto_update = false;
 
         node = {
@@ -139,11 +138,19 @@ in
               path = lib.getExe pkgs.nil;
             };
           };
+          clangd = {
+            binary = {
+              path = lib.getExe' pkgs.clang-tools "clangd";
+            };
+          };
         };
+
+        show_edit_predictions = false;
 
         languages = {
           Nix = {
             tab_size = 2;
+            language_servers = [ "nil" "!nixd" ];
           };
         };
       };
