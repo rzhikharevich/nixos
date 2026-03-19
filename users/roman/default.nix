@@ -1,17 +1,33 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (config.rzhikharevich) startUserUnit stopUserUnit;
-in {
+in
+{
   users.users.roman = {
     uid = 1000;
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "input" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "input"
+    ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
   };
 
   home-manager.users.roman = {
-    imports = [ ./niri.nix ./hyprlock.nix ./firefox.nix ./waybar.nix ./swaync.nix ];
+    imports = [
+      ./niri.nix
+      ./hyprlock.nix
+      ./firefox.nix
+      ./waybar.nix
+      ./swaync.nix
+    ];
 
     home.packages = [
       (pkgs.writePython3Script "cownix" {
@@ -100,36 +116,67 @@ in {
     };
 
     programs.zed-editor = {
-        enable = true;
-        userSettings = {
-          wrap_guides = [ 100 ];
+      enable = true;
+      userSettings = {
+        base_keymap = "VSCode";
+        wrap_guides = [ 100 ];
+        hour_format = "hour24";
+        auto_update = false;
+
+        node = {
+          path = lib.getExe pkgs.nodejs;
+          npm_path = lib.getExe' pkgs.nodejs "npm";
         };
-        extensions = [ "toml" "nix" ];
+
+        lsp = {
+          rust-analyzer = {
+            binary = {
+              path = lib.getExe' config.rzhikharevich.rustToolchain "rust-analyzer";
+            };
+          };
+          nil = {
+            binary = {
+              path = lib.getExe pkgs.nil;
+            };
+          };
+        };
+
+        languages = {
+          Nix = {
+            tab_size = 2;
+          };
+        };
+      };
+      extensions = [
+        "toml"
+        "nix"
+      ];
     };
 
     systemd.user.services =
-      let user = config.users.users.roman;
+      let
+        user = config.users.users.roman;
       in
-        lib.genAttrs [ "swaybg" "swayidle" ] (appName: {
-          Service = lib.mkMerge [
-            config.rzhikharevich.hardeningDefaults
-            (lib.mkHardenedUserService user appName {})
-          ];
-        }) //
-        {
-          roland = {
-            Unit = {
-              Description = "Touch gestures";
-              PartOf = "graphical-session.target";
-              After = "graphical-session.target";
-            };
-            Service = {
-              ExecStart = "${pkgs.roland}/bin/roland --config /home/roman/.config/roland/config.toml";
-              Restart = "on-failure";
-            };
-            Install.WantedBy = [ "graphical-session.target" ];
+      lib.genAttrs [ "swaybg" "swayidle" ] (appName: {
+        Service = lib.mkMerge [
+          config.rzhikharevich.hardeningDefaults
+          (lib.mkHardenedUserService user appName { })
+        ];
+      })
+      // {
+        roland = {
+          Unit = {
+            Description = "Touch gestures";
+            PartOf = "graphical-session.target";
+            After = "graphical-session.target";
           };
+          Service = {
+            ExecStart = "${pkgs.roland}/bin/roland --config /home/roman/.config/roland/config.toml";
+            Restart = "on-failure";
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
         };
+      };
 
     xdg.configFile."roland/config.toml".source = ./roland-config.toml;
 

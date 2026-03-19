@@ -16,5 +16,17 @@
       type = lib.types.raw;
       default = unit: "${pkgs.systemd}/bin/systemctl --user stop ${unit}";
     };
+
+    rustToolchain = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.fenix.complete.withComponents [
+        "cargo"
+        "clippy"
+        "rust-analyzer"
+        "rust-src"
+        "rustc"
+        "rustfmt"
+      ];
+    };
   };
 }

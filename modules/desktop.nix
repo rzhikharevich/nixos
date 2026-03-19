@@ -72,14 +72,7 @@
       xwayland-satellite
       xxd
 
-      (pkgs.fenix.complete.withComponents [
-         "cargo"
-         "clippy"
-         "rust-analyzer"
-         "rust-src"
-         "rustc"
-         "rustfmt"
-      ])
+      config.rzhikharevich.rustToolchain
 
       (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
         ptpython
