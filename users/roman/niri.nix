@@ -218,19 +218,19 @@ in
     ];
   };
 
-  systemd.user.services.niri-monitor-power-manager = {
-    Unit = {
-      Description = "Niri monitor power manager";
-      Before = "user-sleep.target";
-    };
-    Service = {
-      Type = "oneshot";
-      RemainAfterExit = "yes";
-      ExecStart = "${pkgs.niri}/bin/niri msg action power-off-monitors";
-      ExecStop = "${pkgs.niri}/bin/niri msg action power-on-monitors";
-    };
-    Install.WantedBy = [ "user-sleep.target" ];
-  };
+  # systemd.user.services.niri-monitor-power-manager = {
+  #   Unit = {
+  #     Description = "Niri monitor power manager";
+  #     Before = "user-sleep.target";
+  #   };
+  #   Service = {
+  #     Type = "oneshot";
+  #     RemainAfterExit = "yes";
+  #     ExecStart = "${pkgs.niri}/bin/niri msg action power-off-monitors";
+  #     ExecStop = "${pkgs.niri}/bin/niri msg action power-on-monitors";
+  #   };
+  #   Install.WantedBy = [ "user-sleep.target" ];
+  # };
 
   systemd.user.services.wvkbd = {
     Unit = {
