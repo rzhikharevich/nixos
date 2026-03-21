@@ -103,7 +103,7 @@ in
         "${pkgs.swaynotificationcenter}/bin/swaync-client"
         "-t"
       ];
-      "Super+D".action.spawn = [ "${pkgs.toggleUserUnit "fuzzel"}" ];
+      "Ctrl+Space".action.spawn = [ "${pkgs.toggleUserUnit "fuzzel"}" ];
       "Super+F".action.toggle-column-tabbed-display = [ ];
       "Super+M".action.maximize-column = [ ];
       "Super+L".action.spawn = [
@@ -112,8 +112,6 @@ in
         "start"
         "hyprlock"
       ];
-      "Super+1".action.spawn = [ "${pkgs.foot}/bin/foot" ];
-      "Super+2".action.spawn = [ "${pkgs.firefox}/bin/firefox" ];
       "Super+Shift+E".action.quit = [ ];
       "Super+T".action.toggle-window-floating = [ ];
       "Super+Left".action.focus-column-left = [ ];
@@ -132,7 +130,13 @@ in
         "set"
         "5%-"
       ];
-    };
+    }
+    // lib.listToAttrs (
+      map (i: {
+        name = "Super+${toString i}";
+        value.action.focus-workspace = i;
+      }) (lib.range 1 5)
+    );
 
     layout = {
       always-center-single-column = true;
