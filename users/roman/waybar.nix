@@ -51,8 +51,8 @@ in
       ];
       "custom/fuzzel" = {
         format = " ";
-        tooltip-format = "Launch application";
-        on-click = "${pkgs.fuzzel}/bin/fuzzel";
+        tooltip-format = "Toggle app launcher";
+        on-click = "${pkgs.toggleUserUnit "fuzzel"}";
       };
       "custom/overview" = {
         format = " ";

@@ -103,7 +103,7 @@ in
         "${pkgs.swaynotificationcenter}/bin/swaync-client"
         "-t"
       ];
-      "Super+D".action.spawn = [ "${pkgs.fuzzel}/bin/fuzzel" ];
+      "Super+D".action.spawn = [ "${pkgs.toggleUserUnit "fuzzel"}" ];
       "Super+F".action.toggle-column-tabbed-display = [ ];
       "Super+M".action.maximize-column = [ ];
       "Super+L".action.spawn = [
@@ -242,6 +242,16 @@ in
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  systemd.user.services.fuzzel = {
+    Unit = {
+      Description = "Application launcher";
+    }
+    // graphicalSessionUnit;
+    Service = {
+      ExecStart = "${pkgs.fuzzel}/bin/fuzzel";
+    };
   };
 
   systemd.user.services.swaybg = {

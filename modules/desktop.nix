@@ -57,6 +57,7 @@
       iw
       jq
       ncdu
+      nixfmt
       nvd
       pciutils
       powerstat

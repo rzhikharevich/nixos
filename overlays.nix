@@ -1,4 +1,14 @@
 final: prev: {
+  toggleUserUnit =
+    unit:
+    prev.writeShellScript "toggle-${unit}" ''
+      if ${prev.systemd}/bin/systemctl --user is-active --quiet ${unit}; then
+        ${prev.systemd}/bin/systemctl --user stop ${unit}
+      else
+        ${prev.systemd}/bin/systemctl --user start ${unit}
+      fi
+    '';
+
   prerenderIcon =
     {
       name ? "prerendered-icon.png",

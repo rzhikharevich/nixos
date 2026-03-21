@@ -105,6 +105,7 @@ in
         vertical-pad = 12;
         inner-pad = 8;
         border-radius = 12;
+        launch-prefix = "${pkgs.systemd}/bin/systemd-run --user --scope --";
       };
     };
 

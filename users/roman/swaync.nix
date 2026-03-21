@@ -4,7 +4,15 @@
   lib,
   ...
 }:
-
+let
+  inherit (pkgs) mkColloidIcon;
+  brightnessIcon = mkColloidIcon "brightness-icon" "status/24/display-brightness-symbolic.svg";
+  swayncVolumeIcon = mkColloidIcon "swaync-volume-icon" "status/24/audio-volume-high-panel.svg";
+  swayncNotificationsIcon = mkColloidIcon "swaync-notifications-icon" "status/24/notification-active.svg";
+  wifiIcon = mkColloidIcon "wifi-icon" "status/24/network-wireless-signal-excellent.svg";
+  bluetoothIcon = mkColloidIcon "bluetooth-icon" "status/24/bluetooth-active.svg";
+  powerProfileIcon = mkColloidIcon "power-profile-icon" "status/24/battery-profile-performance.svg";
+in
 {
   services.swaync = {
     enable = true;
@@ -13,6 +21,8 @@
         "buttons-grid"
         "dnd"
         "volume"
+        "backlight"
+        "mpris"
         "title"
         "notifications"
       ];
@@ -25,16 +35,41 @@
           mkState = cond: mkToggle cond "echo true" "echo false";
         in
         {
+          # Workaround: FlowBox cells fill available width and buttons
+          # default to halign=FILL. Proper fix: patch buttonsGrid.vala to
+          # set halign=CENTER on each button.
+          buttons-per-row = 9;
           actions = [
             {
-              label = "Wi-Fi";
+              label = " ";
               type = "toggle";
               active = true;
               command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "nmcli radio wifi on" "nmcli radio wifi off";
               update-command = mkState "$(nmcli radio wifi) == enabled";
             }
+            {
+              label = " ";
+              type = "toggle";
+              active = true;
+              command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "bluetoothctl power on" "bluetoothctl power off";
+              update-command = mkState "$(bluetoothctl show | grep 'Powered: yes')";
+            }
+            {
+              label = " ";
+              type = "toggle";
+              command =
+                mkToggle "$SWAYNC_TOGGLE_STATE == true" "powerprofilesctl set balanced"
+                  "powerprofilesctl set power-saver";
+              update-command = mkState "$(powerprofilesctl get) == balanced";
+            }
           ];
         };
+      widget-config.volume.label = " ";
+      widget-config.backlight = {
+        label = " ";
+        device = "amdgpu_bl1";
+        min = 5;
+      };
     };
     style = ''
       * {
@@ -121,6 +156,14 @@
 
       .widget-title {
         margin: 4px 0;
+        background-image: url("${swayncNotificationsIcon}");
+        background-size: 24px;
+        background-repeat: no-repeat;
+        background-position: 16px center;
+      }
+
+      .widget-title > label {
+        margin-left: 36px;
       }
 
       .widget-title > button {
@@ -158,6 +201,9 @@
         border-radius: 8px;
         border: 1px solid alpha(black, 0.2);
         box-shadow: inset 0 1px 0 alpha(white, 0.06), 0 1px 2px alpha(black, 0.4);
+        margin: 3px;
+        padding: 0;
+        min-height: 32px;
       }
 
       .widget-buttons-grid > flowbox > flowboxchild > button:hover {
@@ -169,6 +215,79 @@
         background-image: radial-gradient(ellipse at 50% 30%, alpha(white, 0.14), transparent 70%);
         background-color: alpha(@base0D, 0.9);
         border: 1px solid alpha(white, 0.1);
+      }
+
+      .widget-buttons-grid > flowbox > flowboxchild > button > label {
+        background-size: 24px;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-width: 24px;
+        min-height: 24px;
+        font-size: 0;
+      }
+
+      .widget-buttons-grid > flowbox > flowboxchild:nth-child(1) > button > label {
+        background-image: url("${wifiIcon}");
+      }
+
+      .widget-buttons-grid > flowbox > flowboxchild:nth-child(2) > button > label {
+        background-image: url("${bluetoothIcon}");
+      }
+
+      .widget-buttons-grid > flowbox > flowboxchild:nth-child(3) > button > label {
+        background-image: url("${powerProfileIcon}");
+      }
+
+      .widget-volume > box > label,
+      .widget-backlight > label {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-width: 24px;
+        min-height: 24px;
+        font-size: 0;
+      }
+
+      .widget-volume > box > label {
+        background-image: url("${swayncVolumeIcon}");
+      }
+
+      .widget-backlight > label {
+        background-image: url("${brightnessIcon}");
+      }
+
+      .widget {
+        padding: 8px;
+      }
+
+      .widget-backlight scale trough {
+        background-color: @base01;
+        border-radius: 8px;
+        border: 1px solid alpha(black, 0.2);
+      }
+
+      .widget-backlight scale trough highlight {
+        background-color: @base0D;
+        border-radius: 8px;
+      }
+
+      .widget-backlight scale slider {
+        background-color: @base05;
+      }
+
+      .widget-mpris {
+        padding: 0;
+      }
+
+      .widget-mpris .widget-mpris-player {
+        background-color: @base01;
+        border-radius: 12px;
+        border: 1px solid alpha(black, 0.2);
+        box-shadow: inset 0 1px 0 alpha(white, 0.06), 0 1px 2px alpha(black, 0.3);
+      }
+
+      .widget-mpris .widget-mpris-player button:hover {
+        background-color: @base02;
       }
 
       .widget-volume scale trough {
