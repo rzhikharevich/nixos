@@ -47,6 +47,7 @@
       claude-code
       fastfetch
       file
+      flow-control
       gcc
       gh
       git
