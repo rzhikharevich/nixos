@@ -62,5 +62,16 @@
     };
   };
 
+  programs.nano.nanorc = ''
+    set autoindent
+    set linenumbers
+    set tabstospaces
+    set tabsize 4
+    set softwrap
+    set minibar
+    set stateflags
+    set nohelp
+  '';
+
   users.users.root.openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
 }
