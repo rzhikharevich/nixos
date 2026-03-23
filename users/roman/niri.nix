@@ -65,6 +65,8 @@ in
 
     cursor.hide-when-typing = true;
 
+    hotkey-overlay.skip-at-startup = true;
+
     animations = {
       workspace-switch.kind.spring = {
         damping-ratio = 0.9;
