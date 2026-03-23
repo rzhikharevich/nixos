@@ -10,6 +10,7 @@
     ./modules/pam-no-fprint.nix
     ./modules/ssh-inhibit-suspend.nix
     ./modules/desktop.nix
+    ./modules/kanata.nix
     ./users/greeter/default.nix
     ./users/roman/default.nix
   ];
