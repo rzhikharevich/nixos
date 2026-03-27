@@ -37,52 +37,6 @@ in
     internalInterfaces = [ "vbr" ];
   };
 
-  systemd.services."microvm@monaco".serviceConfig.ExecStart =
-    let
-      stateDir = "/var/lib/microvms";
-      vsockNotifyProxy = pkgs.writePython3Script "vsock-notify-proxy" { doCheck = false; } ''
-        import asyncio
-        import os
-        import socket
-
-        notify_socket = os.environ["NOTIFY_SOCKET"]
-        notify = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
-        log_file = open("/tmp/vsock_proxy.log", "w")
-
-        async def handle(reader, writer):
-            chunks = []
-            while True:
-                chunk = await reader.read(65536)
-                if not chunk:
-                    break
-                chunks.append(chunk)
-                if chunk.endswith(b"\n"):
-                    break
-            writer.close()
-            data = b"".join(chunks)
-            if data:
-                print("data:", repr(data), file=log_file, flush=True)
-                notify.sendto(data, notify_socket)
-
-        async def main():
-            server = await asyncio.start_unix_server(handle, path="notify.vsock_8888")
-            await server.serve_forever()
-
-        asyncio.run(main())
-      '';
-      wrapper = pkgs.writeShellScript "microvm-monaco-run" ''
-        script=$(${pkgs.coreutils}/bin/mktemp)
-        ${pkgs.gnused}/bin/sed \
-          '/socat.*UNIX-LISTEN.*vsock.*fork/c\  ${vsockNotifyProxy}/bin/vsock-notify-proxy &' \
-          ${stateDir}/monaco/current/bin/microvm-run > "$script"
-        exec ${pkgs.bash}/bin/bash "$script"
-      '';
-    in
-    pkgs.lib.mkForce [
-      ""
-      (toString wrapper)
-    ];
-
   microvm.vms.monaco = {
     autostart = false;
     config = {

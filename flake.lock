@@ -189,15 +189,16 @@
         "spectrum": "spectrum"
       },
       "locked": {
-        "lastModified": 1774448302,
-        "narHash": "sha256-Z7QLau4WR38/pMPNVH3MEGeMybBTaAzn+PUCErMngFw=",
-        "owner": "microvm-nix",
+        "lastModified": 1774640964,
+        "narHash": "sha256-6VDQni4vUerMJv/W7rE+322qpv6KaIYvz347i4ChaKg=",
+        "owner": "rzhikharevich",
         "repo": "microvm.nix",
-        "rev": "da28962a2ba84718895b7325f600686c3b4ee099",
+        "rev": "c4f9d8f9c190c115adbde2e6e8639ed8193e86f0",
         "type": "github"
       },
       "original": {
-        "owner": "microvm-nix",
+        "owner": "rzhikharevich",
+        "ref": "cloud-hv-notify-proxy-fix",
         "repo": "microvm.nix",
         "type": "github"
       }

@@ -25,7 +25,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     microvm = {
-      url = "github:microvm-nix/microvm.nix";
+      url = "github:rzhikharevich/microvm.nix/cloud-hv-notify-proxy-fix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
