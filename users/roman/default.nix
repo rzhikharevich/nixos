@@ -35,6 +35,17 @@ in
       } (builtins.readFile ../../scripts/cownix.py))
     ];
 
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      matchBlocks."100.64.0.*" = {
+        extraOptions = {
+          StrictHostKeyChecking = "no";
+          UserKnownHostsFile = "/dev/null";
+        };
+      };
+    };
+
     programs.fish.enable = true;
     programs.foot.enable = true;
 

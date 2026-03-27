@@ -12,9 +12,6 @@
 
   boot = {
     kernelParams = [
-      # TODO: Reconsider iommu=pt.
-      "iommu=pt"
-
       # TODO: Test amd_pstate=passive with manually set minimum frequencies (which default to the
       # min non-linear frequency = ~1100 MHz, not the absolute minimum = ~400 MHz which is what
       # active does in power-saving mode).
@@ -101,6 +98,10 @@
     networkmanager = {
       enable = true;
       wifi.backend = "iwd";
+      unmanaged = [
+        "interface-name:vbr"
+        "interface-name:vm-*"
+      ];
     };
     wireless.iwd = {
       enable = true;

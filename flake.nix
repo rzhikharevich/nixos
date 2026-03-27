@@ -24,6 +24,10 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -34,6 +38,7 @@
       stylix,
       niri-flake,
       fenix,
+      microvm,
       ...
     }:
     let
@@ -48,11 +53,14 @@
       commonModules = [
         ./configuration.nix
         home-manager.nixosModules.default
+        microvm.nixosModules.host
+        ./modules/microvm.nix
       ];
 
       mkHost =
         hostModule: extraModules:
         lib.nixosSystem {
+          specialArgs = { inherit inputs; };
           modules = [
             { nixpkgs.overlays = commonOverlays; }
           ]
