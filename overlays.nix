@@ -58,6 +58,11 @@ final: prev:
     })
   ];
 }
+// prev.lib.optionalAttrs prev.stdenv.isDarwin {
+  rvctl = prev.writeShellScriptBin "rvctl" ''
+    exec ${final.revisor}/bin/rvctl -s "$HOME/.local/state/revisor/control.sock" "$@"
+  '';
+}
 // prev.lib.optionalAttrs prev.stdenv.isLinux {
   roland = prev.rustPlatform.buildRustPackage {
     pname = "roland";

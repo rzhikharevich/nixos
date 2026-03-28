@@ -68,6 +68,26 @@
         "type": "github"
       }
     },
+    "darwin_exec": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774727679,
+        "narHash": "sha256-B4oylPSeipxmnwNGBwE+EedKLoDu42JDO9a2EIvnFhA=",
+        "owner": "rzhikharevich",
+        "repo": "darwin_exec",
+        "rev": "e200e0d08e7f167c73b904a001e356ff37064a3d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rzhikharevich",
+        "repo": "darwin_exec",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -368,8 +388,29 @@
         "type": "github"
       }
     },
+    "revisor": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774734321,
+        "narHash": "sha256-QeCwug0Nr3ZvQ+9sy90zWkAnpFMkhPnwDU7IZtxmAGA=",
+        "owner": "rzhikharevich",
+        "repo": "revisor",
+        "rev": "d1e8c6ef8b71acd8246ea24d2d92debc40d9a26c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rzhikharevich",
+        "repo": "revisor",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "darwin_exec": "darwin_exec",
         "fenix": "fenix",
         "home-manager": "home-manager",
         "microvm": "microvm",
@@ -377,6 +418,7 @@
         "nix-darwin": "nix-darwin",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "revisor": "revisor",
         "stylix": "stylix"
       }
     },

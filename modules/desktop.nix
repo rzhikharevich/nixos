@@ -34,10 +34,6 @@
     };
   };
 
-  fonts.packages = with pkgs; [
-    jetbrains-mono
-  ];
-
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];

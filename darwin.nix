@@ -68,4 +68,26 @@
   nix.optimise.automatic = true;
 
   security.pam.services.sudo_local.touchIdAuth = true;
+
+  homebrew = {
+    enable = true;
+    onActivation = {
+      autoUpdate = false;
+      upgrade = false;
+      cleanup = "zap";
+    };
+    brews = [
+      "batt"
+      "sleepwatcher"
+    ];
+    casks = [
+      "ungoogled-chromium"
+      "halloy"
+      "hammerspoon"
+      "iina"
+      "obsidian"
+      "secretive"
+      "transmission"
+    ];
+  };
 }

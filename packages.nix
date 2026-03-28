@@ -5,11 +5,13 @@
 }:
 let
   linuxOnly = pkg: if isLinux then pkg else null;
+  darwinOnly = pkg: if !isLinux then pkg else null;
 in
 builtins.filter (pkg: pkg != null) (
   with pkgs;
   [
     age
+    (darwinOnly blueutil)
     (linuxOnly brightnessctl)
     clang
     claude-code
@@ -35,6 +37,7 @@ builtins.filter (pkg: pkg != null) (
     pstree
     pv
     ripgrep
+    (darwinOnly skhd)
     (linuxOnly strace)
     (linuxOnly telegram-desktop)
     tmux
@@ -43,6 +46,7 @@ builtins.filter (pkg: pkg != null) (
     (linuxOnly wirelesstools)
     (linuxOnly xwayland-satellite)
     xxd
+    (darwinOnly yabai)
 
     config.rzhikharevich.rustToolchain
 

@@ -32,6 +32,14 @@
       url = "github:rzhikharevich/microvm.nix/cloud-hv-notify-proxy-fix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darwin_exec = {
+      url = "github:rzhikharevich/darwin_exec";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    revisor = {
+      url = "github:rzhikharevich/revisor";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -45,6 +53,8 @@
       niri-flake,
       fenix,
       microvm,
+      darwin_exec,
+      revisor,
       ...
     }:
     let
@@ -52,6 +62,15 @@
 
       commonOverlays = [
         fenix.overlays.default
+        (
+          _: prev:
+          {
+            revisor = revisor.packages.${prev.stdenv.hostPlatform.system}.default;
+          }
+          // prev.lib.optionalAttrs prev.stdenv.isDarwin {
+            darwin_exec = darwin_exec.packages.${prev.stdenv.hostPlatform.system}.default;
+          }
+        )
         (import ./overlays.nix)
       ];
 
