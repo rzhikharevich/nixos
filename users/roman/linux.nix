@@ -22,6 +22,7 @@ in
 
   home-manager.users.roman = {
     imports = [
+      ./shared.nix
       ./niri.nix
       ./hyprlock.nix
       ./firefox.nix
@@ -35,18 +36,6 @@ in
       } (builtins.readFile ../../scripts/cownix.py))
     ];
 
-    programs.ssh = {
-      enable = true;
-      enableDefaultConfig = false;
-      matchBlocks."100.64.0.*" = {
-        extraOptions = {
-          StrictHostKeyChecking = "no";
-          UserKnownHostsFile = "/dev/null";
-        };
-      };
-    };
-
-    programs.fish.enable = true;
     programs.foot.enable = true;
 
     dconf.settings."org/gnome/desktop/interface" = {
@@ -117,13 +106,6 @@ in
         inner-pad = 8;
         border-radius = 12;
         launch-prefix = "${pkgs.systemd}/bin/systemd-run --user --scope --";
-      };
-    };
-
-    programs.claude-code = {
-      enable = true;
-      rules = {
-        rust-code-style = ./claude/rules/rust-code-style.md;
       };
     };
 
@@ -204,7 +186,5 @@ in
       };
 
     xdg.configFile."roland/config.toml".source = ./roland-config.toml;
-
-    home.stateVersion = "25.11";
   };
 }

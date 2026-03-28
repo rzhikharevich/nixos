@@ -11,18 +11,6 @@
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
-  home-manager = {
-    useUserPackages = true;
-    useGlobalPkgs = true;
-  };
-
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      set fish_greeting
-    '';
-  };
-
   programs.steam.enable = true;
 
   documentation.man.cache.enable = false;
@@ -39,48 +27,23 @@
   environment = {
     variables = {
       NIXOS_OZONE_WL = "1";
-      SYSTEMD_PAGER = ""; # Super annoying most of the time.
+      SYSTEMD_PAGER = "";
     };
     systemPackages = with pkgs; [
       brightnessctl
-      clang
-      claude-code
-      fastfetch
-      file
       flow-control
-      gcc
-      gh
-      git
-      gnumake
       hdparm
-      htop
       hwloc
       iw
-      jq
-      ncdu
-      nixfmt
-      nvd
       pciutils
       powerstat
       powertop
-      pstree
-      ripgrep
       strace
       telegram-desktop
-      tmux
       pkgs.linuxPackages_latest.turbostat
       usbutils
       wirelesstools
       xwayland-satellite
-      xxd
-
-      config.rzhikharevich.rustToolchain
-
-      (pkgs.python3.withPackages (
-        python-pkgs: with python-pkgs; [
-          ptpython
-        ]
-      ))
     ];
   };
 

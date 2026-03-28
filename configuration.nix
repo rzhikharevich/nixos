@@ -1,70 +1,14 @@
 {
   config,
+  pkgs,
+  lib,
+  isLinux,
+  isDarwin,
   ...
 }:
 
-{
-  imports = [
-    ./modules/globals.nix
-    ./modules/hardened-services.nix
-    ./modules/pam-no-fprint.nix
-    ./modules/ssh-inhibit-suspend.nix
-    ./modules/desktop.nix
-    ./modules/kanata.nix
-    ./users/greeter/default.nix
-    ./users/roman/default.nix
-  ];
-
-  rzhikharevich.sshPubKeys = [
-    "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDgxhKulUZwvKQ8HvCHDEiGLX29UzUdr+Lor55EdcKzE roman@nixform"
-  ];
-
-  boot.tmp.cleanOnBoot = true;
-
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-        "pipe-operators"
-      ];
-      download-buffer-size = 1024 * 1048576;
-      # extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
-      trusted-users = [ "@wheel" ];
-    };
-
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-
-    optimise = {
-      automatic = true;
-      dates = "weekly";
-    };
-  };
-
-  nixpkgs.config.allowUnfree = true;
-
-  time.timeZone = "Europe/London";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "us";
-  };
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-    };
-  };
-
-  programs.nano.nanorc = ''
+let
+  nanoConfig = ''
     set autoindent
     set linenumbers
     set tabstospaces
@@ -81,6 +25,96 @@
     set mouse
     set smarthome
   '';
+in
 
-  users.users.root.openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
+{
+  imports = [
+    ./modules/globals.nix
+  ];
+
+  config = lib.mkMerge [
+    {
+      rzhikharevich.sshPubKeys = [
+        "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDgxhKulUZwvKQ8HvCHDEiGLX29UzUdr+Lor55EdcKzE roman@nixform"
+      ];
+
+      nix.settings = {
+        experimental-features = [
+          "nix-command"
+          "flakes"
+          "pipe-operators"
+        ];
+        download-buffer-size = 1024 * 1048576;
+        # extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
+        trusted-users = [ "@wheel" ];
+      };
+
+      nixpkgs.config.allowUnfree = true;
+
+      time.timeZone = "Europe/London";
+
+      home-manager = {
+        useUserPackages = true;
+        useGlobalPkgs = true;
+      };
+
+      programs.fish = {
+        enable = true;
+        interactiveShellInit = ''
+          set fish_greeting
+        '';
+      };
+
+      environment.systemPackages = with pkgs; [
+        clang
+        claude-code
+        fastfetch
+        file
+        gcc
+        gh
+        git
+        gnumake
+        htop
+        jq
+        ncdu
+        nixfmt
+        nvd
+        pstree
+        ripgrep
+        tmux
+        xxd
+
+        config.rzhikharevich.rustToolchain
+
+        (pkgs.python3.withPackages (
+          python-pkgs: with python-pkgs; [
+            ptpython
+          ]
+        ))
+      ];
+
+      services.openssh = {
+        enable = true;
+      } // lib.optionalAttrs isLinux {
+        settings = {
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+        };
+      } // lib.optionalAttrs isDarwin {
+        extraConfig = ''
+          PasswordAuthentication no
+          KbdInteractiveAuthentication no
+        '';
+      };
+    }
+
+    (lib.mkIf isLinux {
+      programs.nano.nanorc = nanoConfig;
+    })
+
+    (lib.mkIf isDarwin {
+      environment.etc."nanorc".text = nanoConfig;
+    })
+  ];
 }

@@ -11,6 +11,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,11 +33,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
   outputs =
     inputs@{
       self,
       nixpkgs,
       nixos-hardware,
+      nix-darwin,
       home-manager,
       stylix,
       niri-flake,
@@ -45,37 +51,70 @@
       lib = import ./lib { inherit inputs; };
 
       commonOverlays = [
-        niri-flake.overlays.niri
         fenix.overlays.default
         (import ./overlays.nix)
       ];
 
-      commonModules = [
+      nixosOverlays = [
+        niri-flake.overlays.niri
+      ] ++ commonOverlays;
+
+      commonNixosModules = [
         ./configuration.nix
+        ./linux.nix
         home-manager.nixosModules.default
         microvm.nixosModules.host
         ./modules/microvm.nix
       ];
 
+      commonDarwinModules = [
+        ./configuration.nix
+        ./darwin.nix
+        home-manager.darwinModules.default
+      ];
+
       mkHost =
         hostModule: extraModules:
         lib.nixosSystem {
-          specialArgs = { inherit inputs; };
+          specialArgs = {
+            inherit inputs;
+            isLinux = true;
+            isDarwin = false;
+          };
+          modules = [
+            { nixpkgs.overlays = nixosOverlays; }
+          ]
+          ++ commonNixosModules
+          ++ [ hostModule ]
+          ++ extraModules;
+        };
+
+      mkDarwinHost =
+        hostModule: extraModules:
+        nix-darwin.lib.darwinSystem {
+          specialArgs = {
+            inherit inputs;
+            isLinux = false;
+            isDarwin = true;
+          };
           modules = [
             { nixpkgs.overlays = commonOverlays; }
           ]
-          ++ commonModules
+          ++ commonDarwinModules
           ++ [ hostModule ]
           ++ extraModules;
         };
     in
     {
       packages.x86_64-linux.default = fenix.packages.x86_64-linux.minimal.toolchain;
+
       nixosConfigurations.nixform = mkHost ./hosts/nixform [
         nixos-hardware.nixosModules.minisforum-v3
         nixos-hardware.nixosModules.common-cpu-amd-zenpower
         niri-flake.nixosModules.niri
         stylix.nixosModules.stylix
       ];
+
+      darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [];
     };
 }

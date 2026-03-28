@@ -1,13 +1,26 @@
-final: prev: {
+final: prev:
+{
   toggleUserUnit =
     unit:
-    prev.writeShellScript "toggle-${unit}" ''
-      if ${prev.systemd}/bin/systemctl --user is-active --quiet ${unit}; then
-        ${prev.systemd}/bin/systemctl --user stop ${unit}
-      else
-        ${prev.systemd}/bin/systemctl --user start ${unit}
-      fi
-    '';
+    if prev.stdenv.isDarwin
+    then
+      prev.writeShellScript "toggle-${unit}" ''
+        uid=$(/usr/bin/id -u)
+        label=${unit}
+        if /bin/launchctl print "gui/$uid/$label" 2>/dev/null | /usr/bin/grep -q "state = running"; then
+          /bin/launchctl kill SIGTERM "gui/$uid/$label"
+        else
+          /bin/launchctl kickstart "gui/$uid/$label"
+        fi
+      ''
+    else
+      prev.writeShellScript "toggle-${unit}" ''
+        if ${prev.systemd}/bin/systemctl --user is-active --quiet ${unit}; then
+          ${prev.systemd}/bin/systemctl --user stop ${unit}
+        else
+          ${prev.systemd}/bin/systemctl --user start ${unit}
+        fi
+      '';
 
   prerenderIcon =
     {
@@ -38,6 +51,15 @@ final: prev: {
       }
       // opts
     ) source;
+  pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+    (python-final: python-prev: {
+      picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
+        doCheck = false;
+      });
+    })
+  ];
+}
+// prev.lib.optionalAttrs prev.stdenv.isLinux {
   roland = prev.rustPlatform.buildRustPackage {
     pname = "roland";
     version = "0.1.0";
@@ -64,11 +86,4 @@ final: prev: {
     ];
     meta.mainProgram = "wvkbd-deskintl";
   };
-  pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-    (python-final: python-prev: {
-      picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
-        doCheck = false;
-      });
-    })
-  ];
 }

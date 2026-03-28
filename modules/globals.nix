@@ -6,15 +6,20 @@
       description = "List of SSH public keys";
     };
 
-    # Might want to override in some configs eventually.
     startUserUnit = lib.mkOption {
       type = lib.types.raw;
-      default = unit: "${pkgs.systemd}/bin/systemctl --user start ${unit}";
+      default =
+        if pkgs.stdenv.isDarwin
+        then unit: "/bin/launchctl kickstart gui/$(/usr/bin/id -u)/${unit}"
+        else unit: "${pkgs.systemd}/bin/systemctl --user start ${unit}";
     };
 
     stopUserUnit = lib.mkOption {
       type = lib.types.raw;
-      default = unit: "${pkgs.systemd}/bin/systemctl --user stop ${unit}";
+      default =
+        if pkgs.stdenv.isDarwin
+        then unit: "/bin/launchctl kill SIGTERM gui/$(/usr/bin/id -u)/${unit}"
+        else unit: "${pkgs.systemd}/bin/systemctl --user stop ${unit}";
     };
 
     rustToolchain = lib.mkOption {
