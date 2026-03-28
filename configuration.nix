@@ -73,6 +73,13 @@
     set minibar
     set stateflags
     set nohelp
+    set guidestripe 100
+    set magic
+    set constantshow
+    set indicator
+    set historylog
+    set mouse
+    set smarthome
   '';
 
   users.users.root.openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
