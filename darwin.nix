@@ -9,6 +9,11 @@
     ./users/roman/darwin.nix
   ];
 
+  environment.systemPackages = import ./packages.nix {
+    inherit pkgs config;
+    isLinux = false;
+  };
+
   nix.gc = {
     automatic = true;
     interval = {

@@ -66,34 +66,6 @@ in
         '';
       };
 
-      environment.systemPackages = with pkgs; [
-        clang
-        claude-code
-        fastfetch
-        file
-        gcc
-        gh
-        git
-        gnumake
-        htop
-        jq
-        ncdu
-        nixfmt
-        nvd
-        pstree
-        ripgrep
-        tmux
-        xxd
-
-        config.rzhikharevich.rustToolchain
-
-        (pkgs.python3.withPackages (
-          python-pkgs: with python-pkgs; [
-            ptpython
-          ]
-        ))
-      ];
-
       services.openssh = {
         enable = true;
       } // lib.optionalAttrs isLinux {
@@ -109,7 +81,7 @@ in
       };
     }
 
-    (lib.mkIf isLinux {
+    (lib.optionalAttrs isLinux {
       programs.nano.nanorc = nanoConfig;
     })
 

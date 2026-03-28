@@ -29,22 +29,10 @@
       NIXOS_OZONE_WL = "1";
       SYSTEMD_PAGER = "";
     };
-    systemPackages = with pkgs; [
-      brightnessctl
-      flow-control
-      hdparm
-      hwloc
-      iw
-      pciutils
-      powerstat
-      powertop
-      strace
-      telegram-desktop
-      pkgs.linuxPackages_latest.turbostat
-      usbutils
-      wirelesstools
-      xwayland-satellite
-    ];
+    systemPackages = import ../packages.nix {
+      inherit pkgs config;
+      isLinux = true;
+    };
   };
 
   fonts.packages = with pkgs; [
