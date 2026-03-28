@@ -69,12 +69,14 @@ in
 
       services.openssh = {
         enable = true;
-      } // lib.optionalAttrs isLinux {
+      }
+      // lib.optionalAttrs isLinux {
         settings = {
           PasswordAuthentication = false;
           KbdInteractiveAuthentication = false;
         };
-      } // lib.optionalAttrs isDarwin {
+      }
+      // lib.optionalAttrs isDarwin {
         extraConfig = ''
           PasswordAuthentication no
           KbdInteractiveAuthentication no

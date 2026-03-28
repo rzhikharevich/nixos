@@ -2,8 +2,7 @@ final: prev:
 {
   toggleUserUnit =
     unit:
-    if prev.stdenv.isDarwin
-    then
+    if prev.stdenv.isDarwin then
       prev.writeShellScript "toggle-${unit}" ''
         uid=$(/usr/bin/id -u)
         label=${unit}

@@ -57,7 +57,8 @@
 
       nixosOverlays = [
         niri-flake.overlays.niri
-      ] ++ commonOverlays;
+      ]
+      ++ commonOverlays;
 
       commonNixosModules = [
         ./configuration.nix
@@ -115,6 +116,6 @@
         stylix.nixosModules.stylix
       ];
 
-      darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [];
+      darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [ ];
     };
 }
