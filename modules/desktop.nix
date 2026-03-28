@@ -22,7 +22,6 @@
   };
 
   programs.dconf.enable = true;
-  # programs.ccache.enable = true;
 
   environment = {
     variables = {

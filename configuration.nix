@@ -46,9 +46,10 @@ in
           "pipe-operators"
         ];
         download-buffer-size = 1024 * 1048576;
-        # extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
         trusted-users = [ "@wheel" ];
       };
+
+      nix.gc.options = "--delete-older-than 30d";
 
       nixpkgs.config.allowUnfree = true;
 

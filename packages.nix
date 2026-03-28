@@ -9,9 +9,11 @@ in
 builtins.filter (pkg: pkg != null) (
   with pkgs;
   [
+    age
     (linuxOnly brightnessctl)
     clang
     claude-code
+    cmake
     fastfetch
     file
     (linuxOnly flow-control)
@@ -31,6 +33,7 @@ builtins.filter (pkg: pkg != null) (
     (linuxOnly powerstat)
     (linuxOnly powertop)
     pstree
+    pv
     ripgrep
     (linuxOnly strace)
     (linuxOnly telegram-desktop)

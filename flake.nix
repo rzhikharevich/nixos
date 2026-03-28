@@ -93,7 +93,7 @@
         hostModule: extraModules:
         nix-darwin.lib.darwinSystem {
           specialArgs = {
-            inherit inputs;
+            inherit inputs self;
             isLinux = false;
             isDarwin = true;
           };
