@@ -21,15 +21,18 @@ let
       modules = [
         microvm.nixosModules.microvm
         microvmBase
-        ({ pkgs, ... }: {
-          system.activationScripts.terminfo.text = ''
-            mkdir -p /run/terminfo
-            for dir in ${pkgs.ncurses}/share/terminfo/*; do
-              canonical=$(basename "''${dir%%~nix~case~hack~*}")
-              cp -r "$dir" "/run/terminfo/$canonical"
-            done
-          '';
-        })
+        (
+          { pkgs, ... }:
+          {
+            system.activationScripts.terminfo.text = ''
+              mkdir -p /run/terminfo
+              for dir in ${pkgs.ncurses}/share/terminfo/*; do
+                canonical=$(basename "''${dir%%~nix~case~hack~*}")
+                cp -r "$dir" "/run/terminfo/$canonical"
+              done
+            '';
+          }
+        )
         {
           networking.hostName = "microvm-${name}";
 
