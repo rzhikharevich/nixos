@@ -1,3 +1,4 @@
+{ sshPubKeys }:
 { pkgs, ... }:
 
 {
@@ -24,6 +25,10 @@
   networking.useDHCP = false;
   networking.firewall.enable = false;
   networking.tempAddresses = "disabled";
+  networking.nameservers = [
+    "8.8.8.8"
+    "1.1.1.1"
+  ];
 
   systemd.network.enable = true;
   systemd.network.wait-online.enable = false;
@@ -54,4 +59,26 @@
       source = "${pkgs.pam}/bin/unix_chkpwd";
     };
   };
+
+  microvm.shares = [
+    {
+      proto = "virtiofs";
+      tag = "ro-store";
+      source = "/nix/store";
+      mountPoint = "/nix/.ro-store";
+    }
+  ];
+
+  services.openssh = {
+    enable = true;
+    hostKeys = [
+      {
+        path = "/etc/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+    ];
+  };
+  users.users.root.openssh.authorizedKeys.keys = sshPubKeys;
+
+  system.stateVersion = "25.11";
 }

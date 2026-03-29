@@ -57,6 +57,23 @@
     };
   };
 
+  services.virby = {
+    enable = true;
+    cores = 4;
+    memory = 4096;
+    onDemand = {
+      enable = true;
+      ttl = 30;
+    };
+  };
+
+  nix.settings = {
+    extra-substituters = [ "https://virby-nix-darwin.cachix.org" ];
+    extra-trusted-public-keys = [
+      "virby-nix-darwin.cachix.org-1:z9GiEZeBU5bEeoDQjyfHPMGPBaIQJOOvYOOjGMKIlLo="
+    ];
+  };
+
   nix.gc = {
     automatic = true;
     interval = {

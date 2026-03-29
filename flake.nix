@@ -32,6 +32,7 @@
       url = "github:rzhikharevich/microvm.nix/cloud-hv-notify-proxy-fix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    virby.url = "github:quinneden/virby-nix-darwin";
     darwin_exec = {
       url = "github:rzhikharevich/darwin_exec";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,6 +54,7 @@
       niri-flake,
       fenix,
       microvm,
+      virby,
       darwin_exec,
       revisor,
       ...
@@ -84,13 +86,14 @@
         ./linux.nix
         home-manager.nixosModules.default
         microvm.nixosModules.host
-        ./modules/microvm.nix
+        ./modules/microvm-linux.nix
       ];
 
       commonDarwinModules = [
         ./configuration.nix
         ./darwin.nix
         home-manager.darwinModules.default
+        virby.darwinModules.default
       ];
 
       mkHost =
@@ -135,6 +138,8 @@
         stylix.nixosModules.stylix
       ];
 
-      darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [ ];
+      darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [
+        ./modules/microvm-darwin.nix
+      ];
     };
 }

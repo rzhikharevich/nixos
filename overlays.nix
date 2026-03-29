@@ -62,6 +62,73 @@ final: prev:
   rvctl = prev.writeShellScriptBin "rvctl" ''
     exec ${final.revisor}/bin/rvctl -s "$HOME/.local/state/revisor/control.sock" "$@"
   '';
+  vmnet-broker = prev.stdenv.mkDerivation {
+    pname = "vmnet-broker";
+    version = "0-unstable-2026-03-28";
+    src = prev.fetchFromGitHub {
+      owner = "nirs";
+      repo = "vmnet-broker";
+      rev = "96a744daa587939fc9f5bb81411d5d8f09255db3";
+      hash = "sha256-z3TMcnAj/M02Q8kjp0zUeqFpKR7Lbakq7tsQzMq4bq4=";
+    };
+    nativeBuildInputs = [ prev.darwin.sigtool ];
+    buildInputs = [ prev.apple-sdk_26 ];
+    postPatch = ''
+      mkdir -p include
+      cat > include/version.h <<'EOF'
+      #ifndef VERSION_H
+      #define VERSION_H
+      #define GIT_VERSION "0-unstable-2026-03-28"
+      #define GIT_COMMIT "96a744d"
+      #endif
+      EOF
+      substituteInPlace Makefile \
+        --replace-fail 'codesign -f -v --entitlements entitlements.plist -s -' 'true #'
+    '';
+    preBuild = ''
+      makeFlagsArray+=(
+        "CFLAGS=-Wall -Wextra -O2 -Iinclude -mmacosx-version-min=26.0"
+        "LDFLAGS=-framework CoreFoundation -framework vmnet -mmacosx-version-min=26.0"
+      )
+    '';
+    buildFlags = [ "vmnet-broker" ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp vmnet-broker $out/bin/
+    '';
+    postFixup = ''
+      codesign -f --entitlements ${./files/vmnet-entitlements.plist} -s - "$out/bin/vmnet-broker"
+    '';
+  };
+  vmnet-helper = prev.stdenv.mkDerivation {
+    pname = "vmnet-helper";
+    version = "0.10.0";
+    src = prev.fetchFromGitHub {
+      owner = "nirs";
+      repo = "vmnet-helper";
+      rev = "v0.10.0";
+      hash = "sha256-sAwXbRVBVeQEG2nvtl/4djg6wUWMd8/vOMjzW2ZiqSM=";
+    };
+    nativeBuildInputs = [
+      prev.meson
+      prev.ninja
+      prev.python3
+      prev.darwin.sigtool
+    ];
+    buildInputs = [ prev.apple-sdk_26 ];
+    postPatch = ''
+      cat > gen-version <<'EOF'
+      #!/usr/bin/env python3
+      import sys
+      output = sys.argv[1]
+      with open(output, "w") as f:
+          f.write('#define GIT_VERSION "v0.10.0"\n#define GIT_COMMIT  "release"\n')
+      EOF
+    '';
+    postFixup = ''
+      codesign -f --entitlements ${./files/vmnet-entitlements.plist} -s - "$out/bin/vmnet-helper"
+    '';
+  };
 }
 // prev.lib.optionalAttrs prev.stdenv.isLinux {
   roland = prev.rustPlatform.buildRustPackage {

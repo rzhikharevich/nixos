@@ -46,7 +46,7 @@ in
           "pipe-operators"
         ];
         download-buffer-size = 1024 * 1048576;
-        trusted-users = [ "@wheel" ];
+        trusted-users = [ "roman" ];
       };
 
       nix.gc.options = "--delete-older-than 30d";
