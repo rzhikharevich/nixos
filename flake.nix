@@ -64,16 +64,7 @@
 
       commonOverlays = [
         fenix.overlays.default
-        (
-          _: prev:
-          {
-            revisor = revisor.packages.${prev.stdenv.hostPlatform.system}.default;
-          }
-          // prev.lib.optionalAttrs prev.stdenv.isDarwin {
-            darwin_exec = darwin_exec.packages.${prev.stdenv.hostPlatform.system}.default;
-          }
-        )
-        (import ./overlays.nix)
+        (import ./overlays.nix { inherit inputs; })
       ];
 
       nixosOverlays = [

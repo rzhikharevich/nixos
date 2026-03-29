@@ -21,8 +21,17 @@ let
       modules = [
         microvm.nixosModules.microvm
         microvmBase
+        ({ pkgs, ... }: {
+          system.activationScripts.terminfo.text = ''
+            mkdir -p /run/terminfo
+            for dir in ${pkgs.ncurses}/share/terminfo/*; do
+              canonical=$(basename "''${dir%%~nix~case~hack~*}")
+              cp -r "$dir" "/run/terminfo/$canonical"
+            done
+          '';
+        })
         {
-          networking.hostName = name;
+          networking.hostName = "microvm-${name}";
 
           microvm = {
             inherit (vm) vcpu mem;
@@ -40,6 +49,18 @@ let
             matchConfig.Name = "e*";
             DHCP = "ipv4";
             dhcpV4Config.ClientIdentifier = "mac";
+          };
+
+          # Compile terminfo from source to avoid case-insensitive
+          # nix store mangling directory names (NixOS/nix#10746).
+          environment.variables.TERMINFO_DIRS = "/run/terminfo";
+
+          services.avahi = {
+            enable = true;
+            publish = {
+              enable = true;
+              addresses = true;
+            };
           };
         }
       ];

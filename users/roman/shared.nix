@@ -14,7 +14,7 @@
     enable = true;
     enableDefaultConfig = false;
     matchBlocks = {
-      "100.64.0.*" = {
+      "100.64.0.* microvm-*.local" = {
         extraOptions = {
           StrictHostKeyChecking = "no";
           UserKnownHostsFile = "/dev/null";
