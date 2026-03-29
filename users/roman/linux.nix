@@ -109,57 +109,6 @@ in
       };
     };
 
-    programs.zed-editor = {
-      enable = true;
-      userSettings = {
-        base_keymap = "VSCode";
-        wrap_guides = [ 100 ];
-        auto_update = false;
-
-        node = {
-          path = lib.getExe pkgs.nodejs;
-          npm_path = lib.getExe' pkgs.nodejs "npm";
-        };
-
-        lsp = {
-          rust-analyzer = {
-            binary = {
-              path = lib.getExe' config.rzhikharevich.rustToolchain "rust-analyzer";
-            };
-          };
-          nil = {
-            binary = {
-              path = lib.getExe pkgs.nil;
-            };
-            initialization_options = {
-              formatting.command = [ (lib.getExe pkgs.nixfmt) ];
-            };
-          };
-          clangd = {
-            binary = {
-              path = lib.getExe' pkgs.clang-tools "clangd";
-            };
-          };
-        };
-
-        show_edit_predictions = false;
-
-        languages = {
-          Nix = {
-            tab_size = 2;
-            language_servers = [
-              "nil"
-              "!nixd"
-            ];
-          };
-        };
-      };
-      extensions = [
-        "toml"
-        "nix"
-      ];
-    };
-
     systemd.user.services =
       let
         user = config.users.users.roman;
