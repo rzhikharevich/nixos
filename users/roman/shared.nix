@@ -109,6 +109,12 @@
     };
   };
 
+  home.packages = [
+    (pkgs.writePython3Script "cownix" {
+      libraries = lib.optionals pkgs.stdenv.isLinux [ pkgs.python3Packages.asyncinotify ];
+    } (builtins.readFile ../../scripts/cownix.py))
+  ];
+
   home.sessionPath = [ "$HOME/.local/bin" ];
 
   home.stateVersion = "25.11";

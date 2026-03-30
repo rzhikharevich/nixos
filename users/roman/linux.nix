@@ -30,12 +30,6 @@ in
       ./swaync.nix
     ];
 
-    home.packages = [
-      (pkgs.writePython3Script "cownix" {
-        libraries = [ pkgs.python3Packages.asyncinotify ];
-      } (builtins.readFile ../../scripts/cownix.py))
-    ];
-
     programs.foot.enable = true;
 
     dconf.settings."org/gnome/desktop/interface" = {

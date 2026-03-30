@@ -2,7 +2,6 @@
 
 import argparse
 import asyncio
-import asyncinotify
 from dataclasses import dataclass
 import json
 import os
@@ -11,6 +10,11 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+try:
+    import asyncinotify
+except ImportError:
+    asyncinotify = None
 
 STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local" / "state")) / "cownix"
 STATE_FILE = STATE_DIR / "cownix.json"
@@ -33,10 +37,12 @@ def parse_args():
         "-o", "--open", action="store_true",
         help="Open the file in $EDITOR",
     )
-    write_parser.add_argument(
-        "-x", "--execute", metavar="CMD",
-        help="Run CMD on each file modification (requires --open)",
-    )
+    if asyncinotify:
+        write_parser.add_argument(
+            "-x", "--execute", metavar="CMD",
+            help="Run CMD on each file modification (requires --open)",
+        )
+    write_parser.set_defaults(execute=None)
     write_parser.add_argument(
         "-r", "--restore-on-close", action="store_true",
         help="Restore the file after $EDITOR is closed",
