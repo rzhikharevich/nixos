@@ -67,10 +67,6 @@ in
         '';
       };
 
-      fonts.packages = with pkgs; [
-        jetbrains-mono
-      ];
-
       services.openssh = {
         enable = true;
       }

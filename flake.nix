@@ -48,6 +48,11 @@
       url = "github:rzhikharevich/darwin_darkmode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
+    foundryvtt = {
+      url = "github:reckenrode/nix-foundryvtt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -65,6 +70,8 @@
       darwin_exec,
       darwin_darkmode,
       revisor,
+      nixos-apple-silicon,
+      foundryvtt,
       ...
     }:
     let
@@ -84,8 +91,6 @@
         ./configuration.nix
         ./linux.nix
         home-manager.nixosModules.default
-        microvm.nixosModules.host
-        ./modules/microvm-linux.nix
       ];
 
       commonDarwinModules = [
@@ -135,6 +140,18 @@
         nixos-hardware.nixosModules.common-cpu-amd-zenpower
         niri-flake.nixosModules.niri
         stylix.nixosModules.stylix
+        microvm.nixosModules.host
+        ./modules/microvm-linux.nix
+        ./modules/desktop.nix
+        ./modules/pam-no-fprint.nix
+        ./modules/kanata.nix
+        ./users/greeter/default.nix
+        ./users/roman/linux.nix
+      ];
+
+      nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
+        nixos-apple-silicon.nixosModules.apple-silicon-support
+        foundryvtt.nixosModules.foundryvtt
       ];
 
       darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [

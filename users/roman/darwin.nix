@@ -13,6 +13,7 @@
   home-manager.users.roman = {
     imports = [
       ./shared.nix
+      ./zed.nix
       inputs.revisor.homeManagerModules.default
     ];
 

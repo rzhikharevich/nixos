@@ -49,6 +49,10 @@
     };
   };
 
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+  ];
+
   environment = {
     pathsToLink = [ "/Applications" ];
     systemPackages = import ./packages.nix {

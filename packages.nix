@@ -12,7 +12,6 @@ builtins.filter (pkg: pkg != null) (
   [
     age
     (darwinOnly blueutil)
-    (linuxOnly brightnessctl)
     clang
     claude-code
     cmake
@@ -40,12 +39,9 @@ builtins.filter (pkg: pkg != null) (
     (darwinOnly rvctl)
     (darwinOnly skhd)
     (linuxOnly strace)
-    (linuxOnly telegram-desktop)
     tmux
-    (linuxOnly pkgs.linuxPackages_latest.turbostat)
     (linuxOnly usbutils)
     (linuxOnly wirelesstools)
-    (linuxOnly xwayland-satellite)
     xxd
     (darwinOnly yabai)
 

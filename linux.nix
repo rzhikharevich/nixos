@@ -1,18 +1,20 @@
 {
   config,
+  pkgs,
   ...
 }:
 
 {
   imports = [
     ./modules/hardened-services.nix
-    ./modules/pam-no-fprint.nix
     ./modules/ssh-inhibit-suspend.nix
-    ./modules/desktop.nix
-    ./modules/kanata.nix
-    ./users/greeter/default.nix
-    ./users/roman/linux.nix
+    ./users/roman/linux-base.nix
   ];
+
+  environment.systemPackages = import ./packages.nix {
+    inherit pkgs config;
+    isLinux = true;
+  };
 
   boot.tmp.cleanOnBoot = true;
 

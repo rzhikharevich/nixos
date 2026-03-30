@@ -8,21 +8,13 @@ let
   inherit (config.rzhikharevich) startUserUnit stopUserUnit;
 in
 {
-  users.users.roman = {
-    uid = 1000;
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "input"
-    ];
-    shell = pkgs.fish;
-    openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
-  };
+  imports = [ ./linux-base.nix ];
+
+  users.users.roman.extraGroups = [ "networkmanager" ];
 
   home-manager.users.roman = {
     imports = [
-      ./shared.nix
+      ./zed.nix
       ./niri.nix
       ./hyprlock.nix
       ./firefox.nix

@@ -23,15 +23,21 @@
 
   programs.dconf.enable = true;
 
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+  ];
+
   environment = {
     variables = {
       NIXOS_OZONE_WL = "1";
       SYSTEMD_PAGER = "";
     };
-    systemPackages = import ../packages.nix {
-      inherit pkgs config;
-      isLinux = true;
-    };
+    systemPackages = with pkgs; [
+      brightnessctl
+      linuxPackages_latest.turbostat
+      telegram-desktop
+      xwayland-satellite
+    ];
   };
 
   xdg.portal = {
