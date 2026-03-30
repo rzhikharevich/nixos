@@ -64,6 +64,7 @@ final: prev:
 }
 // prev.lib.optionalAttrs prev.stdenv.isDarwin {
   darwin_exec = inputs.darwin_exec.packages.${prev.stdenv.hostPlatform.system}.default;
+  darwin_darkmode = inputs.darwin_darkmode.packages.${prev.stdenv.hostPlatform.system}.default;
   rvctl = prev.writeShellScriptBin "rvctl" ''
     exec ${final.revisor}/bin/rvctl -s "$HOME/.local/state/revisor/control.sock" "$@"
   '';

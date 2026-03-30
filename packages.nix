@@ -37,6 +37,7 @@ builtins.filter (pkg: pkg != null) (
     pstree
     pv
     ripgrep
+    (darwinOnly rvctl)
     (darwinOnly skhd)
     (linuxOnly strace)
     (linuxOnly telegram-desktop)

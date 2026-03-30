@@ -68,6 +68,26 @@
         "type": "github"
       }
     },
+    "darwin_darkmode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774829460,
+        "narHash": "sha256-3CVdEZdip8U6Ykx1UhPvygzuzHwg70B21A1H1+8FD/s=",
+        "owner": "rzhikharevich",
+        "repo": "darwin_darkmode",
+        "rev": "f1fd6161318869cbcfb5af7a462a753418fa7fb2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rzhikharevich",
+        "repo": "darwin_darkmode",
+        "type": "github"
+      }
+    },
     "darwin_exec": {
       "inputs": {
         "nixpkgs": [
@@ -410,6 +430,7 @@
     },
     "root": {
       "inputs": {
+        "darwin_darkmode": "darwin_darkmode",
         "darwin_exec": "darwin_exec",
         "fenix": "fenix",
         "home-manager": "home-manager",

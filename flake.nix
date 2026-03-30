@@ -44,6 +44,10 @@
       url = "github:rzhikharevich/revisor";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darwin_darkmode = {
+      url = "github:rzhikharevich/darwin_darkmode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -59,6 +63,7 @@
       microvm,
       virby,
       darwin_exec,
+      darwin_darkmode,
       revisor,
       ...
     }:
