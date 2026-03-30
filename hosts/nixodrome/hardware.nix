@@ -14,7 +14,7 @@
   hardware.asahi.setupAsahiSound = false;
 
   hardware.asahi.peripheralFirmwareDirectory = pkgs.requireFile {
-    name = "asahi-blobs";
+    name = "asahi";
     hashMode = "recursive";
     hash = "sha256-Zeebe6rsqt8cZWNZdQ5wckOgR+FBtsLoPMALmwSwPTQ=";
     message = "nix-store --add-fixed sha256 --recursive <path-to-asahi-esp>/asahi";
