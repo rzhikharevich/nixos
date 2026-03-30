@@ -24,6 +24,7 @@ let
         (
           { pkgs, ... }:
           {
+            # NixOS/nix#10746
             system.activationScripts.terminfo.text = ''
               mkdir -p /run/terminfo
               for dir in ${pkgs.ncurses}/share/terminfo/*; do
@@ -54,8 +55,6 @@ let
             dhcpV4Config.ClientIdentifier = "mac";
           };
 
-          # Compile terminfo from source to avoid case-insensitive
-          # nix store mangling directory names (NixOS/nix#10746).
           environment.variables.TERMINFO_DIRS = "/run/terminfo";
 
           services.avahi = {
