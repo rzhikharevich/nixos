@@ -32,7 +32,10 @@
       url = "github:rzhikharevich/microvm.nix/cloud-hv-notify-proxy-fix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    virby.url = "github:quinneden/virby-nix-darwin";
+    virby = {
+      url = "github:quinneden/virby-nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     darwin_exec = {
       url = "github:rzhikharevich/darwin_exec";
       inputs.nixpkgs.follows = "nixpkgs";
