@@ -56,7 +56,7 @@
       "pcie_aspm=force"
     ];
     extraModprobeConfig = ''
-      options iwlwifi power_save=1 uapsd_disable=3
+      options iwlwifi power_save=1 uapsd_disable=0
       options iwlmvm power_scheme=3
     '';
     loader = {
