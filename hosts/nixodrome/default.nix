@@ -62,10 +62,12 @@
 
   services.foundryvtt = {
     enable = true;
-    package = inputs.foundryvtt.packages.${pkgs.system}.foundryvtt_13.overrideAttrs (_: {
-      majorVersion = "13";
-      build = "351";
-    });
+    package =
+      inputs.foundryvtt.packages.${pkgs.stdenv.hostPlatform.system}.foundryvtt_13.overrideAttrs
+        (_: {
+          majorVersion = "13";
+          build = "351";
+        });
     hostName = "192.168.50.117";
     minifyStaticFiles = true;
     proxySSL = false;
