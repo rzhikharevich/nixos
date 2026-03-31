@@ -1,5 +1,5 @@
 {
-  config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -8,6 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    (inputs.self + /modules/ssh-inhibit-suspend.nix)
   ];
 
   boot = {

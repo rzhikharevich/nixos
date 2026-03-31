@@ -7,7 +7,6 @@
 {
   imports = [
     ./modules/hardened-services.nix
-    ./modules/ssh-inhibit-suspend.nix
     ./users/roman/linux-base.nix
   ];
 
