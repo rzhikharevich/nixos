@@ -25,25 +25,43 @@
         NSAutomaticPeriodSubstitutionEnabled = false;
         NSAutomaticQuoteSubstitutionEnabled = false;
         NSAutomaticSpellingCorrectionEnabled = false;
+        NSDocumentSaveNewDocumentsToCloud = false;
+        NSNavPanelExpandedStateForSaveMode = true;
       };
 
       dock = {
         autohide = true;
         orientation = "left";
+        scroll-to-open = true;
         static-only = true;
         persistent-apps = [ ];
+        persistent-others = [
+          {
+            folder = {
+              arrangement = "date-added";
+              displayas = "folder";
+              path = "${config.users.users.${config.system.primaryUser}.home}/Downloads";
+              showas = "grid";
+            };
+          }
+        ];
       };
 
       finder = {
-        AppleShowAllFiles = true;
         AppleShowAllExtensions = true;
+        AppleShowAllFiles = false;
+        FXDefaultSearchScope = "SCcf";
+        FXEnableExtensionChangeWarning = false;
         FXPreferredViewStyle = "Nlsv";
         ShowPathbar = true;
         ShowStatusBar = true;
+        _FXShowPosixPathInTitle = true;
       };
 
       trackpad = {
         Clicking = true;
+        TrackpadFourFingerVertSwipeGesture = 2;
+        TrackpadRightClick = true;
         TrackpadThreeFingerDrag = true;
       };
     };
