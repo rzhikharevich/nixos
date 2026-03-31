@@ -50,6 +50,8 @@
 
   services.fprintd.enable = true;
 
+  services.hardware.bolt.enable = true;
+
   # Reportedly, suspending fingerprint readers (i.e. 27c6:6092 in this case) might cause issues.
   # Additionally, don't suspend input devices for obvious reasons.
   services.udev.extraRules = ''
