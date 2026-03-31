@@ -22,9 +22,8 @@
     };
 
     initrd = {
-      availableKernelModules = [
+      kernelModules = [
         "tg3"
-        "dwc3_apple"
       ];
       systemd.enable = true;
       systemd.users.root.shell = "/bin/systemd-tty-ask-password-agent";
