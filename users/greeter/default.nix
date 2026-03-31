@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   services.greetd = {
     enable = true;
@@ -27,6 +32,8 @@
 
   home-manager.users.greeter = {
     imports = [ ./niri.nix ];
+
+    gtk.gtk4.theme = null;
 
     home.stateVersion = "25.11";
   };
