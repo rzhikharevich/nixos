@@ -6,7 +6,7 @@
 
 {
   users.users.roman = {
-    uid = 1000;
+    uid = if config.networking.hostName == "nixodrome" then 1001 else 1000;
     isNormalUser = true;
     extraGroups = [
       "wheel"
