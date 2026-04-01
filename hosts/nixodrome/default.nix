@@ -12,6 +12,7 @@
   ];
 
   networking.hostName = "nixodrome";
+  networking.hostId = "69ba052a";
 
   networking.wireless.iwd = {
     enable = true;
@@ -128,6 +129,8 @@
       };
     })
   ];
+
+  boot.supportedFilesystems = [ "zfs" ];
 
   system.stateVersion = "25.11";
 }
