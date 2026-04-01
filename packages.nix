@@ -27,6 +27,7 @@ builtins.filter (pkg: pkg != null) (
     (linuxOnly hwloc)
     (linuxOnly iw)
     jq
+    nano
     ncdu
     nixfmt
     nvd
