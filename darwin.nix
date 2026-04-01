@@ -69,6 +69,7 @@
 
   fonts.packages = with pkgs; [
     jetbrains-mono
+    nerd-fonts.meslo-lg
   ];
 
   environment = {
