@@ -11,6 +11,9 @@
     ./boot.nix
   ];
 
+  #  boot.kernelPackage = pkgs.linux-asahi;
+  #  boot.zfs.package = config.boot.kernelPackages.zfs_2_4;
+
   networking.hostName = "nixodrome";
   networking.hostId = "69ba052a";
 
@@ -130,7 +133,24 @@
     })
   ];
 
-  boot.supportedFilesystems = [ "zfs" ];
+  boot = {
+    supportedFilesystems = [ "zfs" ];
+    zfs = {
+      forceImportRoot = false;
+      extraPools = [ "ark" ];
+      requestEncryptionCredentials = true;
+    };
+  };
+
+  services.zfs = {
+    autoScrub.enable = true;
+    trim.enable = true;
+  };
+
+  systemd.services.foundryvtt = {
+    after = [ "zfs.target" ];
+    requires = [ "zfs.target" ];
+  };
 
   system.stateVersion = "25.11";
 }
