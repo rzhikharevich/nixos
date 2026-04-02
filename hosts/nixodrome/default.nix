@@ -76,6 +76,12 @@
     minifyStaticFiles = true;
     proxySSL = false;
     upnp = false;
+    dataDir = "/ark/fvtt";
+  };
+
+  systemd.services.foundryvtt = {
+    after = [ "zfs.target" ];
+    requires = [ "zfs.target" ];
   };
 
   networking.firewall = {
@@ -145,11 +151,6 @@
   services.zfs = {
     autoScrub.enable = true;
     trim.enable = true;
-  };
-
-  systemd.services.foundryvtt = {
-    after = [ "zfs.target" ];
-    requires = [ "zfs.target" ];
   };
 
   system.stateVersion = "25.11";
