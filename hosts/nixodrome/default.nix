@@ -9,6 +9,7 @@
   imports = [
     ./hardware.nix
     ./boot.nix
+    ./nginx.nix
   ];
 
   #  boot.kernelPackage = pkgs.linux-asahi;
@@ -72,7 +73,7 @@
           majorVersion = "13";
           build = "351";
         });
-    hostName = "192.168.50.117";
+    hostName = "fvtt.rzhikharevi.ch";
     minifyStaticFiles = true;
     proxySSL = false;
     upnp = false;
@@ -86,8 +87,6 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 30000 ];
-    allowedUDPPorts = [ 30000 ];
   };
 
   programs.ccache.enable = true;
