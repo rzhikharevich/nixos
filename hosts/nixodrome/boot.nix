@@ -9,6 +9,7 @@
       "log_buf_len=1M"
       "rcutree.enable_rcu_lazy=1"
       "rcu_nocbs=all"
+      "zswap.enabled=1"
     ];
 
     loader = {
