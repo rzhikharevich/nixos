@@ -12,9 +12,6 @@
     ./nginx.nix
   ];
 
-  #  boot.kernelPackage = pkgs.linux-asahi;
-  #  boot.zfs.package = config.boot.kernelPackages.zfs_2_4;
-
   networking.hostName = "nixodrome";
   networking.hostId = "69ba052a";
 
