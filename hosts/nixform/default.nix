@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   ...
 }:
 
@@ -45,6 +46,10 @@
     scheduler = "scx_lavd";
     extraArgs = [ "--autopower" ];
   };
+
+  environment.systemPackages = with pkgs; [
+    ungoogled-chromium
+  ];
 
   system.stateVersion = "25.11";
 }
