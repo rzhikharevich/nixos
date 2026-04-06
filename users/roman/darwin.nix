@@ -29,6 +29,19 @@
       match = ''host "microvm-*.local" exec "set h %n; launchctl kickstart gui/(id -u)/org.nixos.(string replace -r '\.local$' '''''' $h)"'';
     };
 
+    xdg.configFile = {
+      "hammerspoon/init.lua".source = ./hammerspoon/init.lua;
+      "hammerspoon/oled_mode.lua".source = pkgs.replaceVars ./hammerspoon/oled_mode.lua {
+        darwin_darkmode = pkgs.darwin_darkmode;
+      };
+      "hammerspoon/yabai_padding.lua".source = pkgs.replaceVars ./hammerspoon/yabai_padding.lua {
+        yabai = pkgs.yabai;
+      };
+      "hammerspoon/lgtv_init.lua".source = pkgs.replaceVars ./hammerspoon/lgtv_init.lua {
+        lgtv_remote = pkgs.lgtv-remote;
+      };
+    };
+
     services.revisor = {
       enable = true;
       units = {

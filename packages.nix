@@ -12,6 +12,7 @@ builtins.filter (pkg: pkg != null) (
   [
     age
     (darwinOnly blueutil)
+    (darwinOnly lgtv-remote)
     clang
     claude-code
     cmake
@@ -32,6 +33,7 @@ builtins.filter (pkg: pkg != null) (
     nixfmt
     nvd
     (linuxOnly pciutils)
+    (darwinOnly pipx)
     (linuxOnly powerstat)
     (linuxOnly powertop)
     pstree

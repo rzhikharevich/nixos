@@ -59,8 +59,29 @@ final: prev:
       picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
         doCheck = false;
       });
+      ws4py = python-prev.ws4py.overridePythonAttrs (oldAttrs: {
+        doCheck = false;
+      });
     })
   ];
+  lgtv-remote = prev.python3Packages.buildPythonApplication {
+    pname = "lgtv-remote";
+    version = "0.3";
+    src = prev.fetchFromGitHub {
+      owner = "klattimer";
+      repo = "LGWebOSRemote";
+      rev = "83b5e8be047fb900400184bc351de14634395563";
+      hash = "sha256-b2rPvf8OpKvg5au9XJ+Zo6377AM3y3jbnRnsQ1P4AtA=";
+    };
+    pyproject = true;
+    build-system = [ prev.python3Packages.setuptools ];
+    dependencies = with prev.python3Packages; [
+      wakeonlan
+      ws4py
+      requests
+      getmac
+    ];
+  };
 }
 // prev.lib.optionalAttrs prev.stdenv.isDarwin {
   darwin_exec = inputs.darwin_exec.packages.${prev.stdenv.hostPlatform.system}.default;

@@ -58,6 +58,8 @@
         _FXShowPosixPathInTitle = true;
       };
 
+      CustomUserPreferences."org.hammerspoon.Hammerspoon".MJConfigFile = "~/.config/hammerspoon/init.lua";
+
       trackpad = {
         Clicking = true;
         TrackpadFourFingerVertSwipeGesture = 2;
@@ -125,6 +127,7 @@
       "halloy"
       "hammerspoon"
       "iina"
+      "lm-studio"
       "obsidian"
       "secretive"
       "transmission"
