@@ -82,9 +82,7 @@
     requires = [ "zfs.target" ];
   };
 
-  networking.firewall = {
-    enable = true;
-  };
+  networking.firewall.enable = true;
 
   programs.ccache.enable = true;
   nix.settings = {
@@ -150,6 +148,26 @@
   };
 
   services.tailscale.enable = true;
+
+  services.syncthing = {
+    enable = true;
+    dataDir = "/ark/syncthing";
+    settings = {
+      devices = {
+        iphone.id = "DZ7EN2F-I64TTJS-FVUYRCR-SCMRWDF-GMXYRZL-2XHYVQ6-CPLGUKB-LGVQJQH";
+      };
+      folders = {
+        "Documents" = {
+          path = "/ark/syncthing/Documents";
+        };
+      };
+    };
+  };
+
+  systemd.services.syncthing = {
+    after = [ "zfs.target" ];
+    requires = [ "zfs.target" ];
+  };
 
   system.stateVersion = "25.11";
 }
