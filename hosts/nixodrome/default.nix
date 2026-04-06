@@ -153,12 +153,17 @@
     enable = true;
     dataDir = "/ark/syncthing";
     settings = {
+      options = {
+        relaysEnabled = false;
+        urAccepted = -1;
+      };
       devices = {
         iphone.id = "DZ7EN2F-I64TTJS-FVUYRCR-SCMRWDF-GMXYRZL-2XHYVQ6-CPLGUKB-LGVQJQH";
       };
       folders = {
         "Documents" = {
           path = "/ark/syncthing/Documents";
+          devices = [ "iphone" ];
         };
       };
     };
@@ -167,6 +172,11 @@
   systemd.services.syncthing = {
     after = [ "zfs.target" ];
     requires = [ "zfs.target" ];
+  };
+
+  networking.firewall.interfaces."tailscale0" = {
+    allowedTCPPorts = [ 22000 ];
+    allowedUDPPorts = [ 21027 22000 ];
   };
 
   system.stateVersion = "25.11";
