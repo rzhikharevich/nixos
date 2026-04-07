@@ -10,6 +10,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
@@ -59,6 +60,7 @@
     inputs@{
       self,
       nixpkgs,
+      nixpkgs-unstable,
       nixos-hardware,
       nix-darwin,
       home-manager,
@@ -79,6 +81,9 @@
 
       commonOverlays = [
         fenix.overlays.default
+        (final: prev: {
+          claude-code = (import nixpkgs-unstable { inherit (prev) system; config.allowUnfree = true; }).claude-code;
+        })
         (import ./overlays.nix { inherit inputs; })
       ];
 
