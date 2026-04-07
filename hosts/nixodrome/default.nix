@@ -159,11 +159,12 @@
       };
       devices = {
         iphone.id = "DZ7EN2F-I64TTJS-FVUYRCR-SCMRWDF-GMXYRZL-2XHYVQ6-CPLGUKB-LGVQJQH";
+        secretive.id = "QLFTICR-PDD46YZ-JXYXTW6-UDKK3H3-CULJHZA-WYIWO6Z-NOWNVW5-NEPWZQT";
       };
       folders = {
         "Documents" = {
           path = "/ark/syncthing/Documents";
-          devices = [ "iphone" ];
+          devices = [ "iphone" "secretive" ];
         };
       };
     };
