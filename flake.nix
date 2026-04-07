@@ -82,7 +82,11 @@
       commonOverlays = [
         fenix.overlays.default
         (final: prev: {
-          claude-code = (import nixpkgs-unstable { inherit (prev) system; config.allowUnfree = true; }).claude-code;
+          claude-code =
+            (import nixpkgs-unstable {
+              system = prev.stdenv.hostPlatform.system;
+              config.allowUnfree = true;
+            }).claude-code;
         })
         (import ./overlays.nix { inherit inputs; })
       ];
