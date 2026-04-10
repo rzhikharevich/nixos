@@ -72,7 +72,7 @@
         });
     hostName = "fvtt.rzhikharevi.ch";
     minifyStaticFiles = true;
-    proxySSL = false;
+    proxySSL = true;
     upnp = false;
     dataDir = "/ark/fvtt";
   };
