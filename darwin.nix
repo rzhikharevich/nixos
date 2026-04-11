@@ -84,8 +84,8 @@
 
   services.virby = {
     enable = true;
-    cores = 4;
-    memory = 4096;
+    cores = 8;
+    memory = 8192;
     onDemand = {
       enable = true;
       ttl = 30;
