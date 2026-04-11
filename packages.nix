@@ -16,6 +16,7 @@ builtins.filter (pkg: pkg != null) (
     clang
     claude-code
     cmake
+    codex
     fastfetch
     file
     (linuxOnly flow-control)
