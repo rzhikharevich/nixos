@@ -68,7 +68,7 @@
       inputs.foundryvtt.packages.${pkgs.stdenv.hostPlatform.system}.foundryvtt_13.overrideAttrs
         (_: {
           majorVersion = "13";
-          build = "348";
+          build = "351";
         });
     hostName = "fvtt.rzhikharevi.ch";
     minifyStaticFiles = true;
