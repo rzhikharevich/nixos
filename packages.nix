@@ -30,6 +30,7 @@ builtins.filter (pkg: pkg != null) (
     jq
     nano
     ncdu
+    (linuxOnly net-tools)
     nixfmt
     nvd
     (linuxOnly pciutils)
