@@ -43,6 +43,8 @@
     }
   ];
 
+  fileSystems."/nix/store".fsType = "virtiofs";
+
   systemd.sockets.systemd-journald-audit.enable = false;
   systemd.services.systemd-journald-audit.enable = false;
   systemd.sockets.sshd-vsock.enable = false;
