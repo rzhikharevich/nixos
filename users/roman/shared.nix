@@ -50,6 +50,21 @@
       };
   };
 
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name = "Roman Zhikharevich";
+        email = "rzhikharevich@gmail.com";
+      };
+
+      core = {
+        editor = "nano";
+        pager = "less -R --mouse";
+      };
+    };
+  };
+
   home.packages = [
     (pkgs.writePython3Script "cownix" {
       libraries = lib.optionals pkgs.stdenv.isLinux [ pkgs.python3Packages.asyncinotify ];
