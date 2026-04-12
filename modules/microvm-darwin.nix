@@ -29,7 +29,7 @@ let
               mkdir -p /run/terminfo
               for dir in ${pkgs.ncurses}/share/terminfo/*; do
                 canonical=$(basename "''${dir%%~nix~case~hack~*}")
-                cp -r "$dir" "/run/terminfo/$canonical"
+                ln -s "$dir" "/run/terminfo/$canonical"
               done
             '';
           }
