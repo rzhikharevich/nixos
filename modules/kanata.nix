@@ -96,16 +96,16 @@ else
               name = "kanata.cfg";
               text = ''
                 (defsrc
-                  caps i j k l v d c 1 2 3 4 5)
+                  caps i j k l v d c 1 2 3 4 5 spc)
 
                 (defalias
                   nav (layer-toggle custom))
 
                 (deflayer default
-                  @nav i j k l v d c 1 2 3 4 5)
+                  @nav i j k l v d c 1 2 3 4 5 spc)
 
                 (deflayer custom
-                  _ up left down right caps C-d C-c C-1 C-2 C-3 C-4 C-5)
+                  _ up left down right caps C-d C-c C-1 C-2 C-3 C-4 C-5 C-spc)
               '';
             }
           }
