@@ -12,6 +12,9 @@
 
   services.nginx = {
     enable = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
     virtualHosts."fvtt.rzhikharevi.ch" = {
       enableACME = true;
       forceSSL = true;
