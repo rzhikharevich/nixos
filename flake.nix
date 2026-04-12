@@ -158,6 +158,7 @@
 
       darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [
         ./modules/microvm-darwin.nix
+        ./modules/kanata.nix
       ];
     };
 }
