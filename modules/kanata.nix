@@ -4,21 +4,6 @@
   isLinux,
   ...
 }:
-let
-  commonKanataConfig = ''
-    (defsrc
-      caps i j k l v)
-
-    (defalias
-      nav (layer-toggle navigation))
-
-    (deflayer default
-      @nav i j k l v)
-
-    (deflayer navigation
-      _ up left down right caps)
-  '';
-in
 if isLinux then
   {
     services.udev.extraRules = ''
@@ -38,7 +23,19 @@ if isLinux then
           linux-device-detect-mode keyboard-only
           linux-output-device-bus-type USB
         '';
-        config = commonKanataConfig;
+        config = ''
+          (defsrc
+            caps i j k l v)
+
+          (defalias
+            nav (layer-toggle navigation))
+
+          (deflayer default
+            @nav i j k l v)
+
+          (deflayer navigation
+            _ up left down right caps)
+        '';
       };
     };
   }
@@ -49,7 +46,7 @@ else
     managerApp = "${karabinerAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager";
   in
   {
-    # Kernel extensions must reside in /Applications, not as symlinks.
+    # DriverKit extensions must reside in /Applications, not as symlinks.
     system.activationScripts.preActivation.text = ''
       set -euo pipefail
       mkdir -p /var/db/nix-darwin
@@ -98,9 +95,17 @@ else
             pkgs.writeTextFile {
               name = "kanata.cfg";
               text = ''
-                (defcfg process-unmapped-keys yes)
+                (defsrc
+                  caps i j k l v d c 1 2 3 4 5)
 
-                ${commonKanataConfig}
+                (defalias
+                  nav (layer-toggle custom))
+
+                (deflayer default
+                  @nav i j k l v d c 1 2 3 4 5)
+
+                (deflayer custom
+                  _ up left down right caps C-d C-c C-1 C-2 C-3 C-4 C-5)
               '';
             }
           }
