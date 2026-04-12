@@ -100,7 +100,7 @@ else
                 (defsrc
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
                   §
-                  caps i j k l v d c 1 2 3 4 5 spc
+                  caps i j k l v d x c o 1 2 3 4 5 spc
                   `)
 
                 (defalias
@@ -109,13 +109,13 @@ else
                 (deflayer default
                   🔅 🔆 ✗ ✗ ✗ ✗ ◀◀ ▶⏸ ▶▶ 🔇 🔉 🔊
                   `
-                  @nav i j k l v d c 1 2 3 4 5 spc
+                  @nav i j k l v d x c o 1 2 3 4 5 spc
                   §)
 
                 (deflayer custom
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
                   `
-                  _ up left down right caps C-d C-c C-1 C-2 C-3 C-4 C-5 C-spc
+                  _ up left down right caps C-d C-x C-c C-o C-1 C-2 C-3 C-4 C-5 C-spc
                   §)
               '';
             }
