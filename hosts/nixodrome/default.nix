@@ -189,5 +189,15 @@
     allowedUDPPorts = [ 21027 22000 ];
   };
 
+  networking.nftables.tables.syncthing-gui = {
+    family="inet";
+    content = ''
+      chain output {
+        type filter hook output priority filter; policy accept;
+        ip daddr 127.0.0.1 tcp dport 8384 meta skuid != ${toString config.users.users.syncthing.uid} drop;
+      }
+    '';
+  };
+
   system.stateVersion = "25.11";
 }
