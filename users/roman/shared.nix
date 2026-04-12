@@ -36,7 +36,10 @@
         nixodrome-boot = {
           hostname = "192.168.50.117";
           user = "root";
-          extraOptions.HostKeyAlias = "nixodrome-boot";
+          extraOptions = {
+            ConnectTimeout = "600";
+            HostKeyAlias = "nixodrome-boot";
+          };
         };
         nixodrome = {
           hostname = "192.168.50.117";
