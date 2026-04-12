@@ -152,10 +152,12 @@
   services.syncthing = {
     enable = true;
     dataDir = "/ark/syncthing";
+    guiPasswordFile = "/run/credentials/syncthing.service/gui-password";
     settings = {
       options = {
         relaysEnabled = false;
         urAccepted = -1;
+        localAnnounceEnabled = false;
       };
       devices = {
         iphone.id = "DZ7EN2F-I64TTJS-FVUYRCR-SCMRWDF-GMXYRZL-2XHYVQ6-CPLGUKB-LGVQJQH";
@@ -171,9 +173,16 @@
   };
 
   systemd.services.syncthing = {
+    serviceConfig = {
+      LoadCredential = "gui-password:/etc/secrets/syncthing-gui";
+    };
     after = [ "zfs.target" ];
     requires = [ "zfs.target" ];
   };
+
+  systemd.services.tailscaled.serviceConfig.Environment = [
+    "TS_DEBUG_FIREWALL_MODE=nftables"
+  ];
 
   networking.firewall.interfaces."tailscale0" = {
     allowedTCPPorts = [ 22000 ];

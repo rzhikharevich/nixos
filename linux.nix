@@ -35,5 +35,7 @@
     keyMap = "us";
   };
 
+  networking.nftables.enable = true;
+
   users.users.root.openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
 }
