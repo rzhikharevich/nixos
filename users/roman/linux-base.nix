@@ -10,7 +10,6 @@
     isNormalUser = true;
     extraGroups = [
       "wheel"
-      "input"
     ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
