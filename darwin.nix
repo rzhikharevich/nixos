@@ -127,6 +127,7 @@
       "halloy"
       "hammerspoon"
       "iina"
+      "linearmouse"
       "lm-studio"
       "obsidian"
       "secretive"
