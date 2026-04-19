@@ -262,11 +262,11 @@
         "spectrum": "spectrum"
       },
       "locked": {
-        "lastModified": 1774643420,
-        "narHash": "sha256-REY3oVqS//yDPFq6AZ6rhiAa/sS9HbTVl9IMLUGUrxc=",
+        "lastModified": 1776559430,
+        "narHash": "sha256-tjeEADEERizK99UFimjgiaQwSI+mnDD/vdIMAmdFcHg=",
         "owner": "rzhikharevich",
         "repo": "microvm.nix",
-        "rev": "0581c740422f7ea8c54a2f98a245a5f39167e649",
+        "rev": "735c87ae88467b2bace326b643753cc2430fe113",
         "type": "github"
       },
       "original": {
