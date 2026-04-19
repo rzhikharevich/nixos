@@ -195,6 +195,9 @@
       chain output {
         type filter hook output priority filter; policy accept;
         ip daddr 127.0.0.1 tcp dport 8384 meta skuid != ${toString config.users.users.syncthing.uid} drop;
+        ip6 daddr ::1 tcp dport 8384 meta skuid != ${toString config.users.users.syncthing.uid} drop;
+        ip daddr 127.0.0.1 tcp dport 30000 meta skuid != ${toString config.users.users.nginx.uid} drop;
+        ip6 daddr ::1 tcp dport 30000 meta skuid != ${toString config.users.users.nginx.uid} drop;
       }
     '';
   };
