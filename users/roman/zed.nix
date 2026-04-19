@@ -30,6 +30,7 @@
           };
           initialization_options = {
             formatting.command = [ (lib.getExe pkgs.nixfmt) ];
+            nix.flake.autoArchive = true;
           };
         };
         clangd = {
