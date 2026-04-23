@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   lib,
   pkgs,
@@ -6,6 +7,13 @@
 }:
 
 {
+  imports = lib.rzMatchDefault osConfig.networking.hostName [
+    [
+      "nixodrome"
+      [ (import ./hosts/nixodrome/default.nix) ]
+    ]
+  ] { default = [ ]; };
+
   programs.fish.enable = true;
 
   programs.claude-code = {
