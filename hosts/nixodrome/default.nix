@@ -166,7 +166,10 @@
       folders = {
         "Documents" = {
           path = "/ark/syncthing/Documents";
-          devices = [ "iphone" "secretive" ];
+          devices = [
+            "iphone"
+            "secretive"
+          ];
         };
       };
     };
@@ -186,11 +189,14 @@
 
   networking.firewall.interfaces."tailscale0" = {
     allowedTCPPorts = [ 22000 ];
-    allowedUDPPorts = [ 21027 22000 ];
+    allowedUDPPorts = [
+      21027
+      22000
+    ];
   };
 
   networking.nftables.tables.syncthing-gui = {
-    family="inet";
+    family = "inet";
     content = ''
       chain output {
         type filter hook output priority filter; policy accept;

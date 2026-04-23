@@ -47,7 +47,10 @@ in
           "pipe-operators"
         ];
         download-buffer-size = 1024 * 1048576;
-        allowed-users = [ "roman" "greeter" ];
+        allowed-users = [
+          "roman"
+          "greeter"
+        ];
         trusted-users = [ "roman" ];
       };
 
