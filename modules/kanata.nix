@@ -99,7 +99,7 @@ else
 
                 (defsrc
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
-                  §
+                  esc §
                   caps i j k l v q w d z x c o 1 2 3 4 5 spc
                   `)
 
@@ -108,13 +108,13 @@ else
 
                 (deflayer default
                   🔅 🔆 ✗ ✗ ✗ ✗ ◀◀ ▶⏸ ▶▶ 🔇 🔉 🔊
-                  `
+                  esc `
                   @nav i j k l v q w d z x c o 1 2 3 4 5 spc
                   §)
 
                 (deflayer custom
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
-                  `
+                  grv `
                   _ up left down right caps C-q C-w C-d C-z C-x C-c C-o C-1 C-2 C-3 C-4 C-5 C-spc
                   §)
               '';
@@ -125,6 +125,8 @@ else
         ProcessType = "Interactive";
         KeepAlive = true;
         RunAtLoad = true;
+        StandardOutPath = "/tmp/kanata.out";
+        StandardErrorPath = "/tmp/kanata.err";
       };
     };
   }
