@@ -18,4 +18,6 @@ in
 {
   rzMatchDefault = matchDefault;
   rzMatch = value: cases: matchDefault value cases { };
+
+  rzOptionalString = cond: s: if cond then s else "";
 }
