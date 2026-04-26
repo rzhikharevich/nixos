@@ -69,7 +69,21 @@ in
         enable = true;
         interactiveShellInit = ''
           set fish_greeting
-        '';
+        ''
+        + (
+          if isLinux then
+            ''
+              if test "$RZ_CLIENT_PLATFORM" = "darwin"
+                function fish_in_macos_terminal
+                  true
+                end
+              end
+            ''
+          else
+            ''
+              set -x RZ_CLIENT_PLATFORM darwin
+            ''
+        );
       };
 
       services.openssh = {
@@ -79,6 +93,7 @@ in
         settings = {
           PasswordAuthentication = false;
           KbdInteractiveAuthentication = false;
+          AcceptEnv = [ "RZ_CLIENT_PLATFORM" ];
         };
       }
       // lib.optionalAttrs isDarwin {

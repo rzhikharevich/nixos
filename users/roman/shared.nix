@@ -33,6 +33,7 @@
         };
       in
       {
+        "*".extraOptions.SendEnv = "RZ_CLIENT_PLATFORM";
         "100.64.0.* microvm-*.local" = {
           extraOptions.StrictHostKeyChecking = "no";
           userKnownHostsFile = "/dev/null";
