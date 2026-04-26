@@ -117,6 +117,9 @@
     }
   ];
 
+  # TODO: Check why it defaults to 33 despite 16k pages.
+  boot.kernel.sysctl."vm.mmap_rnd_bits" = 31;
+
   fileSystems."/" = {
     device = "/dev/mapper/cryptroot";
     fsType = "xfs";
