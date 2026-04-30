@@ -96,6 +96,7 @@
       commonDarwinModules = [
         ./configuration.nix
         ./darwin.nix
+        ./modules/kanata.nix
         home-manager.darwinModules.default
         virby.darwinModules.default
       ];
@@ -156,7 +157,10 @@
 
       darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [
         ./modules/microvm-darwin.nix
-        ./modules/kanata.nix
+      ];
+
+      darwinConfigurations.tenserise = mkDarwinHost ./hosts/tenserise [
+        ./modules/microvm-darwin.nix
       ];
     };
 }
