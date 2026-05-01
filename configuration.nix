@@ -38,6 +38,7 @@ in
         "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIbfIla3NlPdru/+T7qvipOiI3ZcGBhrI6dWhZn6YFnnBuVfbeqoe7k/DAgqTQb9MLlRNIwXJHb/90cU/+7xXV8= sec-one@secretive"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDgxhKulUZwvKQ8HvCHDEiGLX29UzUdr+Lor55EdcKzE roman@nixform"
         "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBwxpC2XM9Ialnbm51C5UCIW2ih9+tTBzkjWUc2Fv9ORFw4XCeTLSwHLQt+hLD5fm8E5lnF9QxV1Jt8/851jIyk= ShellFish@iPhone-Enclave"
+        "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLZO8MGZlwy/qapHY8/BcqImx8H/INpnUiY8mIRPu6g5T8BC6NMUbWToyM3P4Jz4hHMaXKEUlZK6qewrWrEcDPA= roman@tenserise"
       ];
 
       nix.settings = {
