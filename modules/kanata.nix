@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   isLinux,
@@ -44,6 +45,16 @@ else
     karabinerDriver = pkgs.kanata.passthru.darwinDriver;
     karabinerAppDir = "/Applications/.Nix-Karabiner";
     managerApp = "${karabinerAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager";
+    hasBuiltinIsoLayout = lib.rzMatch config.networking.hostName [
+      [
+        "secretive"
+        true
+      ]
+      [
+        "tenserise"
+        false
+      ]
+    ];
   in
   {
     # DriverKit extensions must reside in /Applications, not as symlinks.
@@ -99,24 +110,24 @@ else
 
                 (defsrc
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
-                  esc §
+                  esc ${lib.rzOptionalString hasBuiltinIsoLayout "§"}
                   caps i j k l v q w d z x c o 1 2 3 4 5 spc
-                  `)
+                  ${lib.rzOptionalString hasBuiltinIsoLayout "`"})
 
                 (defalias
                   nav (layer-toggle custom))
 
                 (deflayer default
                   🔅 🔆 ✗ ✗ ✗ ✗ ◀◀ ▶⏸ ▶▶ 🔇 🔉 🔊
-                  esc `
+                  esc ${lib.rzOptionalString hasBuiltinIsoLayout "`"}
                   @nav i j k l v q w d z x c o 1 2 3 4 5 spc
-                  §)
+                  ${lib.rzOptionalString hasBuiltinIsoLayout "§"})
 
                 (deflayer custom
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
-                  grv `
+                  grv ${lib.rzOptionalString hasBuiltinIsoLayout "`"}
                   _ up left down right caps C-q C-w C-d C-z C-x C-c C-o C-1 C-2 C-3 C-4 C-5 C-spc
-                  §)
+                  ${lib.rzOptionalString hasBuiltinIsoLayout "§"})
               '';
             }
           }

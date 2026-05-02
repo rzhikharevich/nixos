@@ -2,6 +2,7 @@
   self,
   config,
   pkgs,
+  lib,
   ...
 }:
 
@@ -84,13 +85,27 @@
 
   services.virby = {
     enable = true;
-    cores = 8;
-    memory = 8192;
     onDemand = {
       enable = true;
       ttl = 30;
     };
-  };
+  }
+  // lib.rzMatch config.networking.hostName [
+    [
+      "secretive"
+      {
+        cores = 8;
+        memory = 8192;
+      }
+    ]
+    [
+      "tenserise"
+      {
+        cores = 12;
+        memory = 32768;
+      }
+    ]
+  ];
 
   nix.settings = {
     extra-substituters = [ "https://virby-nix-darwin.cachix.org" ];
@@ -118,15 +133,20 @@
       upgrade = false;
       cleanup = "zap";
     };
+    taps = [
+      "xykong/tap"
+    ];
     brews = [
-      "batt"
       "sleepwatcher"
     ];
     casks = [
+      "dockdoor"
+      "flux-markdown"
       "ungoogled-chromium"
       "halloy"
       "hammerspoon"
       "iina"
+      "iterm2"
       "linearmouse"
       "lm-studio"
       "obsidian"
