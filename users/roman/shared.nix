@@ -65,6 +65,8 @@
   programs.git = {
     enable = true;
     settings = {
+      init.defaultBranch = "main";
+
       user = {
         name = "Roman Zhikharevich";
         email = "rzhikharevich@gmail.com";

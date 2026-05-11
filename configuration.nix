@@ -70,6 +70,7 @@ in
         enable = true;
         interactiveShellInit = ''
           set fish_greeting
+          alias ssh-local "ssh -o StrictHostKeyChecking=false -o UserKnownHostsFile=/dev/null"
         ''
         + (
           if isLinux then

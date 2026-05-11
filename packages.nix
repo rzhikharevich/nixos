@@ -24,6 +24,7 @@ builtins.filter (pkg: pkg != null) (
     gh
     git
     gnumake
+    hcloud
     (linuxOnly hdparm)
     htop
     (linuxOnly hwloc)

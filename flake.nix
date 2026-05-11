@@ -33,7 +33,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     virby = {
-      url = "github:quinneden/virby-nix-darwin";
+      url = "github:rzhikharevich/virby-nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     darwin_exec = {

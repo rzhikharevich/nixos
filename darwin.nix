@@ -137,6 +137,7 @@
       "xykong/tap"
     ];
     brews = [
+      "lume"
       "sleepwatcher"
     ];
     casks = [
