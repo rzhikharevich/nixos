@@ -152,6 +152,7 @@
       "lm-studio"
       "obsidian"
       "secretive"
+      "tailscale-app"
       "transmission"
     ];
   };
