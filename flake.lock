@@ -666,15 +666,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1776406961,
-        "narHash": "sha256-tEC8oqQ5qpZJJa2amUgVd/J706R6fmP3QjawOZaBRcA=",
-        "owner": "quinneden",
+        "lastModified": 1777775338,
+        "narHash": "sha256-cDQeuMT6t8y43zsBtnJfLHmRgifKHPPQcl5A4Oe9R+8=",
+        "owner": "rzhikharevich",
         "repo": "virby-nix-darwin",
-        "rev": "6ad5c37179391ccddaabe8fe64750cb0fc4b5670",
+        "rev": "2cebefed45f8151850d770e65a6efcd2fdb681b8",
         "type": "github"
       },
       "original": {
-        "owner": "quinneden",
+        "owner": "rzhikharevich",
         "repo": "virby-nix-darwin",
         "type": "github"
       }
