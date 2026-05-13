@@ -2,7 +2,6 @@
 { pkgs, ... }:
 
 {
-  boot.initrd.systemd.enable = false;
   boot.kernelParams = [
     "8250.nr_uarts=0"
     "audit=0"
