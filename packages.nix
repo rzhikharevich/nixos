@@ -33,6 +33,7 @@ builtins.filter (pkg: pkg != null) (
     nano
     ncdu
     (linuxOnly net-tools)
+    ninja
     nixfmt
     nvd
     (linuxOnly pciutils)
