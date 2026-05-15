@@ -141,7 +141,6 @@
       "sleepwatcher"
     ];
     casks = [
-      "dockdoor"
       "flux-markdown"
       "ungoogled-chromium"
       "halloy"
