@@ -38,6 +38,12 @@
             path = lib.getExe' pkgs.clang-tools "clangd";
           };
         };
+        basedpyright = {
+          binary = {
+            path = lib.getExe' pkgs.basedpyright "basedpyright-langserver";
+            arguments = [ "--stdio" ];
+          };
+        };
       };
 
       telemetry = {
@@ -55,6 +61,11 @@
             "!nixd"
           ];
         };
+        Python = {
+          language_servers = [
+            "basedpyright"
+          ];
+        };
       };
     }
     // lib.optionalAttrs pkgs.stdenv.isDarwin {
@@ -70,6 +81,7 @@
     extensions = [
       "toml"
       "nix"
+      "basedpyright"
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       "nightfox"
