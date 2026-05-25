@@ -14,6 +14,7 @@ builtins.filter (pkg: pkg != null) (
     (darwinOnly blueutil)
     (darwinOnly lgtv-remote)
     clang
+    clang-tools
     claude-code
     cmake
     codex
