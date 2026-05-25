@@ -141,6 +141,7 @@
       "sleepwatcher"
     ];
     casks = [
+      "discord"
       "flux-markdown"
       "ungoogled-chromium"
       "halloy"
