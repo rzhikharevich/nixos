@@ -46,6 +46,7 @@ builtins.filter (pkg: pkg != null) (
     ripgrep
     (darwinOnly rvctl)
     (darwinOnly skhd)
+    sops
     (linuxOnly strace)
     tmux
     (linuxOnly usbutils)
