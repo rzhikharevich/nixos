@@ -26,39 +26,37 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks =
+    settings =
       let
         nixodromeConfig = {
-          forwardAgent = true;
+          ForwardAgent = true;
         };
       in
       {
-        "*".extraOptions.SendEnv = "RZ_CLIENT_PLATFORM";
+        "*".SendEnv = "RZ_CLIENT_PLATFORM";
         "100.64.0.* microvm-*.local" = {
-          extraOptions.StrictHostKeyChecking = "no";
-          userKnownHostsFile = "/dev/null";
+          StrictHostKeyChecking = "no";
+          UserKnownHostsFile = "/dev/null";
         };
         hetzner-ubuntu-main = {
-          hostname = "157.90.114.181";
-          user = "root";
+          HostName = "157.90.114.181";
+          User = "root";
         };
         nixodrome-boot = {
-          hostname = "192.168.50.117";
-          user = "root";
-          extraOptions = {
-            ConnectTimeout = "600";
-            HostKeyAlias = "nixodrome-boot";
-          };
+          HostName = "192.168.50.117";
+          User = "root";
+          ConnectTimeout = 600;
+          HostKeyAlias = "nixodrome-boot";
         };
         nixodrome = {
-          hostname = "192.168.50.117";
+          HostName = "192.168.50.117";
         }
         // nixodromeConfig;
         nixodrone = {
-          hostname = "192.168.50.118";
+          HostName = "192.168.50.118";
         }
         // nixodromeConfig;
-        nixform.hostname = "192.168.50.31";
+        nixform.HostName = "192.168.50.31";
       };
   };
 
