@@ -38,7 +38,7 @@ builtins.filter (pkg: pkg != null) (
     nixfmt
     nvd
     (linuxOnly pciutils)
-    (darwinOnly pipx)
+#    (darwinOnly pipx)
     (linuxOnly powerstat)
     (linuxOnly powertop)
     pstree
