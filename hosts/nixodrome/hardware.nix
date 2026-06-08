@@ -36,8 +36,6 @@
           yay = lib.mkForce yes;
         in
         {
-          PREEMPT_VOLUNTARY = nope;
-          PREEMPT_NONE = nope;
           PREEMPT_LAZY = yay;
 
           RUST = yes;
