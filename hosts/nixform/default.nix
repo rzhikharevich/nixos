@@ -9,6 +9,7 @@
     ./hardware.nix
     ./boot.nix
     (inputs.self + /modules/ssh-inhibit-suspend.nix)
+    (inputs.self + /modules/tailscale.nix)
   ];
 
   users.users.roman.openssh.authorizedKeys.keys = [

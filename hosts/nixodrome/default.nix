@@ -10,6 +10,7 @@
     ./hardware.nix
     ./boot.nix
     ./nginx.nix
+    (inputs.self + /modules/tailscale.nix)
   ];
 
   networking.hostName = "nixodrome";
@@ -147,8 +148,6 @@
     trim.enable = true;
   };
 
-  services.tailscale.enable = true;
-
   services.syncthing = {
     enable = true;
     dataDir = "/ark/syncthing";
@@ -182,10 +181,6 @@
     after = [ "zfs.target" ];
     requires = [ "zfs.target" ];
   };
-
-  systemd.services.tailscaled.serviceConfig.Environment = [
-    "TS_DEBUG_FIREWALL_MODE=nftables"
-  ];
 
   networking.firewall.interfaces."tailscale0" = {
     allowedTCPPorts = [ 22000 ];
