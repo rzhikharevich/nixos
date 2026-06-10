@@ -65,11 +65,14 @@
 
   services.foundryvtt = {
     enable = true;
-    package =
-      (pkgs.callPackage "${inputs.foundryvtt}/pkgs/foundryvtt" { }).overrideAttrs (old: old // {
+    package = (pkgs.callPackage "${inputs.foundryvtt}/pkgs/foundryvtt" { }).overrideAttrs (
+      old:
+      old
+      // {
         majorVersion = "13";
         build = "351";
-      });
+      }
+    );
     hostName = "fvtt.rzhikharevi.ch";
     minifyStaticFiles = true;
     proxySSL = true;
