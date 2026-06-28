@@ -72,6 +72,7 @@
 
   fonts.packages = with pkgs; [
     jetbrains-mono
+    merriweather-sans
     nerd-fonts.meslo-lg
   ];
 
@@ -150,6 +151,7 @@
       "iterm2"
       "linearmouse"
       "lm-studio"
+      "microsoft-teams"
       "obsidian"
       "secretive"
       "tailscale-app"
