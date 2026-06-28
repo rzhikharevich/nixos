@@ -16,6 +16,11 @@
   networking.hostName = "nixodrome";
   networking.hostId = "69ba052a";
 
+  sops = {
+    defaultSopsFile = inputs.self + /secrets/nixodrome.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  };
+
   networking.wireless.iwd = {
     enable = true;
     settings = {
@@ -183,6 +188,37 @@
     };
     after = [ "zfs.target" ];
     requires = [ "zfs.target" ];
+  };
+
+  services.immich = {
+    enable = true;
+    port = 30001;
+    mediaLocation = "/ark/immich";
+  };
+
+  systemd.services.immich-server = {
+    after = [ "zfs.target" ];
+    requires = [ "zfs.target" ];
+  };
+
+  services.redis.servers.immich.logLevel = "warning";
+  services.postgresql.dataDir = "/ark/postgres";
+
+  systemd.services.postgresql = {
+    after = [ "zfs.target" ];
+    requires = [ "zfs.target" ];
+  };
+
+  systemd.tmpfiles.settings."10-ark" = {
+    "/ark/immich".d = {
+      user = "immich";
+      group = "immich";
+      mode = "2775";
+    };
+    "/ark/postgres".d = {
+      user = "postgres";
+      group = "postgres";
+    };
   };
 
   networking.firewall.interfaces."tailscale0" = {

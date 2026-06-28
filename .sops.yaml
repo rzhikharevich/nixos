@@ -1,0 +1,14 @@
+# sops-nix encryption config.
+#
+# roman:     admin key (~/.config/sops/age/keys.txt)
+# nixodrome: host SSH key derived to age (ssh-keyscan nixodrome | ssh-to-age)
+keys:
+  - &roman age1ydgepzkz9zqdrzzzc0tezpfv4n5exze0ehvs64hwpsc53kqmjp4st8ypm8
+  - &nixodrome age18x4320e72573u6usj80heq3mwghz5a3m3lmrp3hgqdua079ztgps8nasut
+
+creation_rules:
+  - path_regex: secrets/nixodrome\.yaml$
+    key_groups:
+      - age:
+          - *roman
+          - *nixodrome
