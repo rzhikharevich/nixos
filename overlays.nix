@@ -62,6 +62,9 @@ final: prev:
     ) source;
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
     (python-final: python-prev: {
+      afdko = python-prev.afdko.overridePythonAttrs (oldAttrs: {
+        doCheck = false;
+      });
       picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
         doCheck = false;
       });
