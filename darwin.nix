@@ -135,7 +135,10 @@
       extraFlags = [ "--force-cleanup" ];
     };
     taps = [
-      "xykong/tap"
+      {
+        name = "xykong/tap";
+        trusted = true;
+      }
     ];
     brews = [
       "lume"

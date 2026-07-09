@@ -30,6 +30,7 @@ builtins.filter (pkg: pkg != null) (
     htop
     (linuxOnly hwloc)
     (linuxOnly iw)
+    (darwinOnly iina)
     jq
     nano
     ncdu
@@ -50,6 +51,7 @@ builtins.filter (pkg: pkg != null) (
     (linuxOnly strace)
     tmux
     (linuxOnly usbutils)
+    (darwinOnly vlc-bin)
     (linuxOnly wirelesstools)
     xxd
     (darwinOnly yabai)
