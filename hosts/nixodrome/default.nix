@@ -242,5 +242,37 @@
     '';
   };
 
+  sops = {
+    secrets = {
+      pubproxy-wg-server-pubkey = {};
+      pubproxy-wg-client-privkey = {};
+    };
+    templates."pubproxy-wg.conf" = {
+      mode = "0400";
+      restartUnits = [ "wg-quick-pubproxy-wg.service" ];
+
+      content = ''
+        [Interface]
+        Address = 10.77.0.2/24
+        PrivateKey = ${config.sops.placeholder.pubproxy-wg-client-privkey}
+
+        [Peer]
+        PublicKey = ${config.sops.placeholder.pubproxy-wg-server-pubkey}
+        Endpoint = 10.0.0.16:51820
+        AllowedIPs = 10.77.0.0/24
+        PersistentKeepalive = 25
+      '';
+    };
+  };
+
+  networking.wg-quick.interfaces.pubproxy-wg = {
+    configFile = config.sops.templates."pubproxy-wg.conf".path;
+  };
+
+  networking.firewall.interfaces.pubproxy-wg.allowedTCPPorts = [
+    80
+    443
+  ];
+
   system.stateVersion = "25.11";
 }
