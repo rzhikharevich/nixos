@@ -11,6 +11,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  hardware.asahi.enable = true;
   hardware.asahi.setupAsahiSound = false;
 
   hardware.asahi.peripheralFirmwareDirectory = pkgs.requireFile {
