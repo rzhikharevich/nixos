@@ -10,6 +10,12 @@ final: prev:
       inherit (prev) config;
     }).claude-code;
 
+  blueutil =
+    (import inputs.nixpkgs-master {
+      inherit (prev.stdenv.hostPlatform) system;
+      inherit (prev) config;
+    }).blueutil;
+
   toggleUserUnit =
     unit:
     if prev.stdenv.isDarwin then
