@@ -4,12 +4,6 @@ final: prev:
 {
   revisor = inputs.revisor.packages.${prev.stdenv.hostPlatform.system}.default;
 
-  claude-code =
-    (import inputs.nixpkgs-master {
-      inherit (prev.stdenv.hostPlatform) system;
-      inherit (prev) config;
-    }).claude-code;
-
   blueutil =
     (import inputs.nixpkgs-master {
       inherit (prev.stdenv.hostPlatform) system;
