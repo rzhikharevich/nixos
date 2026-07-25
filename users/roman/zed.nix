@@ -35,7 +35,12 @@
         };
         clangd = {
           binary = {
-            path = lib.getExe' pkgs.clang-tools "clangd";
+            path = lib.rzMatchDefault osConfig.networking.hostName [
+              [
+                "tenserise"
+                "/usr/bin/clangd"
+              ]
+            ] { default = lib.getExe' pkgs.clang-tools "clangd"; };
           };
         };
         basedpyright = {

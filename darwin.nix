@@ -159,6 +159,7 @@
       "secretive"
       "tailscale-app"
       "transmission"
+      "visual-studio-code"
       "zoom"
     ];
   };
