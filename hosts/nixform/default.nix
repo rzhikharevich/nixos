@@ -52,6 +52,8 @@
     extraArgs = [ "--autopower" ];
   };
 
+  programs.fuse.enable = true;
+
   environment.systemPackages = with pkgs; [
     ungoogled-chromium
   ];
