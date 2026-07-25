@@ -35,6 +35,7 @@
 
     gtk.gtk4.theme = lib.mkForce null;
 
+    home.pointerCursor.enable = true;
     home.stateVersion = "25.11";
   };
 }

@@ -85,5 +85,6 @@
 
   home.sessionPath = [ "$HOME/.local/bin" ];
 
+  home.pointerCursor.enable = true;
   home.stateVersion = "25.11";
 }
