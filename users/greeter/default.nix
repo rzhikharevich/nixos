@@ -33,7 +33,7 @@
   home-manager.users.greeter = {
     imports = [ ./niri.nix ];
 
-    gtk.gtk4.theme = null;
+    gtk.gtk4.theme = lib.mkForce null;
 
     home.stateVersion = "25.11";
   };

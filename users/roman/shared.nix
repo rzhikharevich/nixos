@@ -85,7 +85,5 @@
 
   home.sessionPath = [ "$HOME/.local/bin" ];
 
-  gtk.gtk4.theme = config.gtk.theme;
-
   home.stateVersion = "25.11";
 }
