@@ -74,8 +74,8 @@
       old:
       old
       // {
-        majorVersion = "13";
-        build = "351";
+        majorVersion = "14";
+        build = "365";
       }
     );
     hostName = "fvtt.rzhikharevi.ch";

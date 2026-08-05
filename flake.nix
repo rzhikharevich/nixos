@@ -54,7 +54,7 @@
     };
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     foundryvtt = {
-      url = "github:reckenrode/nix-foundryvtt";
+      url = "github:rzhikharevich/nix-foundryvtt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
