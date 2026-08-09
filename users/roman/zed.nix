@@ -5,6 +5,11 @@
   ...
 }:
 
+let
+  mkRunInDevShell = pkg: bin: pkgs.writeShellScript "run-in-devshell" ''
+    ${lib.getExe' pkgs.nix "nix"} develop -c ${bin} || exec ${lib.getExe' pkg bin}
+  '';
+in
 {
   programs.zed-editor = {
     enable = true;
@@ -21,7 +26,7 @@
       lsp = {
         rust-analyzer = {
           binary = {
-            path = lib.getExe' osConfig.rzhikharevich.rustToolchain "rust-analyzer";
+            path = mkRunInDevShell osConfig.rzhikharevich.rustToolchain "rust-analyzer";
           };
         };
         nil = {
