@@ -22,6 +22,8 @@ in
       ./swaync.nix
     ];
 
+    home.pointerCursor.enable = true;
+
     programs.foot.enable = true;
 
     dconf.settings."org/gnome/desktop/interface" = {
