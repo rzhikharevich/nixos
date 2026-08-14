@@ -264,16 +264,15 @@
         "spectrum": "spectrum"
       },
       "locked": {
-        "lastModified": 1782617784,
-        "narHash": "sha256-E7D4JZ/mWUNvVLXWyA2Wi6lUBak3XDj3HRMXOqub2QQ=",
-        "owner": "rzhikharevich",
+        "lastModified": 1786300091,
+        "narHash": "sha256-4UFJOVGpaYtHW5yasSv80MaJxTBYdk2zyf3jhKtt0wA=",
+        "owner": "microvm-nix",
         "repo": "microvm.nix",
-        "rev": "396f5f28dae959f0a66fed7b2fc2d09b74cc69e6",
+        "rev": "71beea0076cd46dafcee97a5a2e7d00cbba5bd2f",
         "type": "github"
       },
       "original": {
-        "owner": "rzhikharevich",
-        "ref": "cloud-hv-notify-proxy-fix",
+        "owner": "microvm-nix",
         "repo": "microvm.nix",
         "type": "github"
       }
@@ -573,11 +572,11 @@
     "spectrum": {
       "flake": false,
       "locked": {
-        "lastModified": 1778940603,
-        "narHash": "sha256-voSM8dZNlaOWN3kbYFky+FNY6fFQOEw0xF+ZMpZKkCQ=",
+        "lastModified": 1785761586,
+        "narHash": "sha256-MWOMVqJJERwjQGgRIv8d6rlEBqbLM3VZWxHkNKIIZNw=",
         "ref": "refs/heads/main",
-        "rev": "367dd227f539267eae2b62770b4c17b88ac8c1f1",
-        "revCount": 1265,
+        "rev": "a7762d6f54b40560dd5255ce902e6e6a5d980fe9",
+        "revCount": 1416,
         "type": "git",
         "url": "https://spectrum-os.org/git/spectrum"
       },
