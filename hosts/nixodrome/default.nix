@@ -244,8 +244,8 @@
 
   sops = {
     secrets = {
-      pubproxy-wg-server-pubkey = {};
-      pubproxy-wg-client-privkey = {};
+      pubproxy-wg-server-pubkey = { };
+      pubproxy-wg-client-privkey = { };
     };
     templates."pubproxy-wg.conf" = {
       mode = "0400";
