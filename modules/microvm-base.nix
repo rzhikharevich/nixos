@@ -2,24 +2,29 @@
 { pkgs, ... }:
 
 {
-  boot.kernelParams = [
-    "8250.nr_uarts=0"
-    "audit=0"
-  ];
-  boot.initrd.includeDefaultModules = false;
-  boot.initrd.kernelModules = [
-    # vsock
-    "vsock"
-    "vmw_vsock_virtio_transport_common"
-    "vmw_vsock_virtio_transport"
-    # virtio (disk, net, fs, console, rng)
-    "virtio_pci"
-    "virtio_blk"
-    "virtio_net"
-    "virtiofs"
-    "virtio_console"
-    "virtio_rng"
-  ];
+  boot = {
+    kernelParams = [
+      "8250.nr_uarts=0"
+      "audit=0"
+    ];
+    initrd = {
+      includeDefaultModules = false;
+      kernelModules = [
+        # vsock
+        "vsock"
+        "vmw_vsock_virtio_transport_common"
+        "vmw_vsock_virtio_transport"
+        # virtio (disk, net, fs, console, rng)
+        "virtio_pci"
+        "virtio_blk"
+        "virtio_net"
+        "virtiofs"
+        "virtio_console"
+        "virtio_rng"
+      ];
+      systemd.enable = true;
+    };
+  };
 
   networking.useDHCP = false;
   networking.firewall.enable = false;
