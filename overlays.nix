@@ -65,6 +65,16 @@ final: prev:
       ws4py = python-prev.ws4py.overridePythonAttrs (oldAttrs: {
         doCheck = false;
       });
+      # The v0.16.0 GitHub archive was regenerated, but nixpkgs still carries
+      # the old fixed-output hash.
+      nanoemoji = python-prev.nanoemoji.overridePythonAttrs (oldAttrs: {
+        src = prev.fetchFromGitHub {
+          owner = "googlefonts";
+          repo = "nanoemoji";
+          tag = "v${oldAttrs.version}";
+          hash = "sha256-FysyKC01XBnRiur5RR9fcsTxQqE8x0JJHSoe3q6JtKc=";
+        };
+      });
     })
   ];
   lgtv-remote = prev.python3Packages.buildPythonApplication {
