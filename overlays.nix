@@ -4,12 +4,6 @@ final: prev:
 {
   revisor = inputs.revisor.packages.${prev.stdenv.hostPlatform.system}.default;
 
-  blueutil =
-    (import inputs.nixpkgs-master {
-      inherit (prev.stdenv.hostPlatform) system;
-      inherit (prev) config;
-    }).blueutil;
-
   toggleUserUnit =
     unit:
     if prev.stdenv.isDarwin then
