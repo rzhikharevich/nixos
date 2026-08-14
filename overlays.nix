@@ -6,7 +6,7 @@ final: prev:
 
   toggleUserUnit =
     unit:
-    if prev.stdenv.isDarwin then
+    if prev.stdenv.hostPlatform.isDarwin then
       prev.writeShellScript "toggle-${unit}" ''
         uid=$(/usr/bin/id -u)
         label=${unit}
@@ -86,7 +86,7 @@ final: prev:
     ];
   };
 }
-// prev.lib.optionalAttrs prev.stdenv.isDarwin {
+// prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
   darwin_exec = inputs.darwin_exec.packages.${prev.stdenv.hostPlatform.system}.default;
   darwin_darkmode = inputs.darwin_darkmode.packages.${prev.stdenv.hostPlatform.system}.default;
   rvctl = prev.writeShellScriptBin "rvctl" ''
@@ -94,7 +94,7 @@ final: prev:
   '';
   inherit (prev.callPackages ./packages/vmnet.nix { }) vmnet-broker vmnet-helper;
 }
-// prev.lib.optionalAttrs prev.stdenv.isLinux {
+// prev.lib.optionalAttrs prev.stdenv.hostPlatform.isLinux {
   roland = prev.rustPlatform.buildRustPackage {
     pname = "roland";
     version = "0.1.0";

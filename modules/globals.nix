@@ -9,7 +9,7 @@
     startUserUnit = lib.mkOption {
       type = lib.types.raw;
       default =
-        if pkgs.stdenv.isDarwin then
+        if pkgs.stdenv.hostPlatform.isDarwin then
           unit: "/bin/launchctl kickstart gui/$(/usr/bin/id -u)/${unit}"
         else
           unit: "${pkgs.systemd}/bin/systemctl --user start ${unit}";
@@ -18,7 +18,7 @@
     stopUserUnit = lib.mkOption {
       type = lib.types.raw;
       default =
-        if pkgs.stdenv.isDarwin then
+        if pkgs.stdenv.hostPlatform.isDarwin then
           unit: "/bin/launchctl kill SIGTERM gui/$(/usr/bin/id -u)/${unit}"
         else
           unit: "${pkgs.systemd}/bin/systemctl --user stop ${unit}";

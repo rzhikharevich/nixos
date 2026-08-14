@@ -81,7 +81,18 @@
     let
       lib = import ./lib { inherit inputs; };
 
+      # Fenix still reads the deprecated stdenv platform aliases. Keep those
+      # aliases warning-free while the dependency is evaluated.
+      fenixPlatformCompatibility =
+        _final: prev: {
+          stdenv = prev.stdenv // {
+            isLinux = prev.stdenv.hostPlatform.isLinux;
+            isDarwin = prev.stdenv.hostPlatform.isDarwin;
+          };
+        };
+
       commonOverlays = [
+        fenixPlatformCompatibility
         fenix.overlays.default
         (import ./overlays.nix { inherit inputs; })
       ];
@@ -138,7 +149,11 @@
         };
     in
     {
-      packages.x86_64-linux.default = fenix.packages.x86_64-linux.minimal.toolchain;
+      packages.x86_64-linux.default =
+        (import nixpkgs {
+          system = "x86_64-linux";
+          overlays = commonOverlays;
+        }).fenix.minimal.toolchain;
 
       nixosConfigurations.nixform = mkHost ./hosts/nixform [
         nixos-hardware.nixosModules.minisforum-v3
@@ -158,6 +173,8 @@
         nixos-apple-silicon.nixosModules.apple-silicon-support
         foundryvtt.nixosModules.foundryvtt
         inputs.sops-nix.nixosModules.sops
+        microvm.nixosModules.host
+        ./modules/microvm-linux.nix
       ];
 
       darwinConfigurations.secretive = mkDarwinHost ./hosts/secretive [

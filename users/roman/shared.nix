@@ -79,7 +79,7 @@
 
   home.packages = [
     (pkgs.writePython3Script "cownix" {
-      libraries = lib.optionals pkgs.stdenv.isLinux [ pkgs.python3Packages.asyncinotify ];
+      libraries = lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.python3Packages.asyncinotify ];
     } (builtins.readFile ../../scripts/cownix.py))
   ];
 

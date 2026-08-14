@@ -78,7 +78,7 @@ in
         };
       };
     }
-    // lib.optionalAttrs pkgs.stdenv.isDarwin {
+    // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
       buffer_font_family = "JetBrains Mono";
       buffer_font_size = 15;
       ui_font_size = 16;
@@ -93,7 +93,7 @@ in
       "nix"
       "basedpyright"
     ]
-    ++ lib.optionals pkgs.stdenv.isDarwin [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       "nightfox"
     ];
   };
