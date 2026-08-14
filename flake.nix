@@ -33,7 +33,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     microvm = {
-      url = "github:rzhikharevich/microvm.nix/cloud-hv-notify-proxy-fix";
+      url = "github:microvm-nix/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     virby = {
@@ -83,13 +83,12 @@
 
       # Fenix still reads the deprecated stdenv platform aliases. Keep those
       # aliases warning-free while the dependency is evaluated.
-      fenixPlatformCompatibility =
-        _final: prev: {
-          stdenv = prev.stdenv // {
-            isLinux = prev.stdenv.hostPlatform.isLinux;
-            isDarwin = prev.stdenv.hostPlatform.isDarwin;
-          };
+      fenixPlatformCompatibility = _final: prev: {
+        stdenv = prev.stdenv // {
+          isLinux = prev.stdenv.hostPlatform.isLinux;
+          isDarwin = prev.stdenv.hostPlatform.isDarwin;
         };
+      };
 
       commonOverlays = [
         fenixPlatformCompatibility
