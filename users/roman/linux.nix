@@ -20,6 +20,7 @@ in
       ./firefox.nix
       ./waybar.nix
       ./swaync.nix
+      ./sunsetr.nix
     ];
 
     home.pointerCursor.enable = true;

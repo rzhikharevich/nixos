@@ -12,6 +12,7 @@ let
   wifiIcon = mkColloidIcon "wifi-icon" "status/24/network-wireless-signal-excellent.svg";
   bluetoothIcon = mkColloidIcon "bluetooth-icon" "status/24/bluetooth-active.svg";
   powerProfileIcon = mkColloidIcon "power-profile-icon" "status/24/battery-profile-performance.svg";
+  sunsetrIcon = mkColloidIcon "sunsetr-icon" "status/24/night-light-symbolic.svg";
 in
 {
   services.swaync = {
@@ -61,6 +62,15 @@ in
                 mkToggle "$SWAYNC_TOGGLE_STATE == true" "powerprofilesctl set balanced"
                   "powerprofilesctl set power-saver";
               update-command = mkState "$(powerprofilesctl get) == balanced";
+            }
+            {
+              label = " ";
+              type = "toggle";
+              active = true;
+              command =
+                mkToggle "$SWAYNC_TOGGLE_STATE == true" "${pkgs.systemd}/bin/systemctl --user start sunsetr.service"
+                  "${pkgs.systemd}/bin/systemctl --user stop sunsetr.service";
+              update-command = mkState "$(${pkgs.systemd}/bin/systemctl --user is-active sunsetr.service) == active";
             }
           ];
         };
@@ -236,6 +246,10 @@ in
 
       .widget-buttons-grid > flowbox > flowboxchild:nth-child(3) > button > label {
         background-image: url("${powerProfileIcon}");
+      }
+
+      .widget-buttons-grid > flowbox > flowboxchild:nth-child(4) > button > label {
+        background-image: url("${sunsetrIcon}");
       }
 
       .widget-volume > box > label,
