@@ -26,6 +26,11 @@ in
       };
 
       lsp = {
+        asm-lsp = {
+          binary = {
+            path = lib.getExe' pkgs.asm-lsp "asm-lsp";
+          };
+        };
         rust-analyzer = {
           binary = {
             path = mkRunInDevShell osConfig.rzhikharevich.rustToolchain "rust-analyzer";
@@ -91,6 +96,7 @@ in
       };
     };
     extensions = [
+      "assembly"
       "toml"
       "nix"
       "basedpyright"
