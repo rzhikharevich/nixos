@@ -107,6 +107,17 @@
         home-manager.nixosModules.default
       ];
 
+      desktopNixosModules = [
+        niri-flake.nixosModules.niri
+        stylix.nixosModules.stylix
+        microvm.nixosModules.host
+        ./modules/microvm-linux.nix
+        ./modules/desktop.nix
+        ./modules/kanata.nix
+        ./users/greeter/default.nix
+        ./users/roman/linux.nix
+      ];
+
       commonDarwinModules = [
         ./configuration.nix
         ./darwin.nix
@@ -154,19 +165,18 @@
           overlays = commonOverlays;
         }).fenix.minimal.toolchain;
 
-      nixosConfigurations.nixform = mkHost ./hosts/nixform [
-        nixos-hardware.nixosModules.minisforum-v3
-        nixos-hardware.nixosModules.common-cpu-amd-zenpower
-        niri-flake.nixosModules.niri
-        stylix.nixosModules.stylix
-        microvm.nixosModules.host
-        ./modules/microvm-linux.nix
-        ./modules/desktop.nix
-        ./modules/pam-no-fprint.nix
-        ./modules/kanata.nix
-        ./users/greeter/default.nix
-        ./users/roman/linux.nix
-      ];
+      nixosConfigurations.nixform = mkHost ./hosts/nixform (
+        [
+          nixos-hardware.nixosModules.minisforum-v3
+          nixos-hardware.nixosModules.common-cpu-amd-zenpower
+          ./modules/pam-no-fprint.nix
+        ]
+        ++ desktopNixosModules
+      );
+
+      nixosConfigurations.lagrange = mkHost ./hosts/lagrange (
+        [ nixos-hardware.nixosModules.common-cpu-amd-zenpower ] ++ desktopNixosModules
+      );
 
       nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
         nixos-apple-silicon.nixosModules.apple-silicon-support
