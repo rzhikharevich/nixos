@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  lib,
   ...
 }:
 
@@ -52,6 +53,33 @@
   environment.systemPackages = with pkgs; [
     ungoogled-chromium
   ];
+
+  home-manager.users.roman = {
+    programs.niri.settings.outputs."HDMI-A-1" = {
+      scale = 1;
+      variable-refresh-rate = "on-demand";
+      mode = {
+        width = 3840;
+        height = 2160;
+        refresh = 119.880;
+      };
+    };
+    stylix = {
+      image = pkgs.blackPixel;
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/pop.yaml";
+    };
+
+    programs.zed-editor = {
+      userSettings.theme = lib.mkForce {
+        light = "Dark OLED";
+        dark = "Dark OLED";
+      };
+
+      extensions = [
+        "dark-oled"
+      ];
+    };
+  };
 
   system.stateVersion = "26.05";
 }

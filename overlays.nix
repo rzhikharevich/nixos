@@ -25,6 +25,9 @@ final: prev:
         fi
       '';
 
+  blackPixel = prev.runCommand "black.png" { nativeBuildInputs = [ prev.imagemagick ]; } ''
+    magick -size 1x1 xc:black $out
+  '';
   prerenderIcon =
     {
       name ? "prerendered-icon.png",
