@@ -99,6 +99,11 @@ in
     };
 
     binds = {
+      "Super+B".action.spawn = [
+        "${lib.getExe' pkgs.procps "pkill"}"
+        "-SIGUSR1"
+        "waybar"
+      ];
       "Super+Q".action.close-window = [ ];
       "Super+A".action.toggle-overview = [ ];
       "Super+S".action.spawn = [
