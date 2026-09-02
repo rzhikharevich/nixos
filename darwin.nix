@@ -146,6 +146,7 @@
     ];
     casks = [
       "discord"
+      "google-chrome"
       "flux-markdown"
       "ungoogled-chromium"
       "halloy"
