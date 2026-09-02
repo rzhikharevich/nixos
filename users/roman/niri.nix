@@ -100,9 +100,16 @@ in
 
     binds = {
       "Super+B".action.spawn = [
-        "${lib.getExe' pkgs.procps "pkill"}"
-        "-SIGUSR1"
-        "waybar"
+        (
+          lib.toString
+          <| pkgs.writeShellScript "toggle-waybar" ''
+            if ${lib.getExe' pkgs.systemd "systemctl"} --user is-active waybar.service; then
+              ${lib.getExe' pkgs.systemd "systemctl"} --user stop waybar.service
+            else
+              ${lib.getExe' pkgs.systemd "systemctl"} --user start waybar.service
+            fi
+          ''
+        )
       ];
       "Super+Q".action.close-window = [ ];
       "Super+A".action.toggle-overview = [ ];
