@@ -16,6 +16,8 @@
   networking.hostName = "nixodrome";
   networking.hostId = "69ba052a";
 
+  users.users.roman.uid = 1001;
+
   sops = {
     defaultSopsFile = inputs.self + /secrets/nixodrome.yaml;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
