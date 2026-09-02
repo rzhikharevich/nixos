@@ -12,10 +12,6 @@
     (inputs.self + /modules/tailscale.nix)
   ];
 
-  users.users.roman.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2fP9JIo11WvBE8F0KKB3l8W/PU/54iPcH2liX0dAle root@tenserise"
-  ];
-
   networking = {
     hostName = "lagrange";
     networkmanager = {
@@ -34,8 +30,6 @@
     };
     useDHCP = false;
   };
-
-  security.pam.services.hyprlock = { };
 
   services.upower = {
     enable = true;

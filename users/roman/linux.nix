@@ -12,6 +12,8 @@ in
 
   users.users.roman.extraGroups = [ "networkmanager" ];
 
+  security.pam.services.hyprlock = { };
+
   home-manager.users.roman = {
     imports = [
       ./zed.nix
