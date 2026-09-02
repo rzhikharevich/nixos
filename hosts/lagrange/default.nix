@@ -54,6 +54,11 @@
     ungoogled-chromium
   ];
 
+  fonts.fontconfig.hinting = {
+    enable = true;
+    style = "medium";
+  };
+
   home-manager.users.roman = {
     programs.niri.settings.outputs."HDMI-A-1" = {
       scale = 1;
