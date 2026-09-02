@@ -9,7 +9,7 @@ let
   mkRunInDevShell =
     pkg: bin:
     pkgs.writeShellScript "run-in-devshell" ''
-      ${lib.getExe' pkgs.nix "nix"} develop -c ${bin} || exec ${lib.getExe' pkg bin}
+      ${lib.getExe' pkgs.nix "nix"} develop -c ${bin} "$@" || exec ${lib.getExe' pkg bin} "$@"
     '';
 in
 {
@@ -57,7 +57,7 @@ in
         };
         basedpyright = {
           binary = {
-            path = lib.getExe' pkgs.basedpyright "basedpyright-langserver";
+            path = mkRunInDevShell pkgs.basedpyright "basedpyright-langserver";
             arguments = [ "--stdio" ];
           };
         };
