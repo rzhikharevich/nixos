@@ -32,6 +32,7 @@ builtins.filter (pkg: pkg != null) (
     (linuxOnly iw)
     (darwinOnly iina)
     jq
+    mitmproxy
     nano
     ncdu
     (linuxOnly net-tools)
@@ -51,6 +52,7 @@ builtins.filter (pkg: pkg != null) (
     (linuxOnly strace)
     tmux
     (linuxOnly usbutils)
+    (darwinOnly utm)
     (darwinOnly vlc-bin)
     (linuxOnly wirelesstools)
     xxd
