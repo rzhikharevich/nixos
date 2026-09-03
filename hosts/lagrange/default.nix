@@ -51,12 +51,16 @@
   programs.fuse.enable = true;
 
   environment.systemPackages = with pkgs; [
+    inputs.hauntedcupofdotfiles.packages.x86_64-linux.dungeondraft
     ungoogled-chromium
   ];
 
-  fonts.fontconfig.hinting = {
-    enable = true;
-    style = "medium";
+  fonts.fontconfig = {
+    subpixel.lcdfilter = "none";
+    hinting = {
+      enable = true;
+      style = "medium";
+    };
   };
 
   home-manager.users.roman = {

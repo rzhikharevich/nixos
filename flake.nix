@@ -57,6 +57,10 @@
       url = "github:rzhikharevich/nix-foundryvtt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hauntedcupofdotfiles = {
+      url = "github:hauntedcupoftea/hauntedcupofdotfiles";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -76,6 +80,7 @@
       revisor,
       nixos-apple-silicon,
       foundryvtt,
+      hauntedcupofdotfiles,
       ...
     }:
     let
