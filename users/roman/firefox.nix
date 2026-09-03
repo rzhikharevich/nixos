@@ -14,6 +14,8 @@
         "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
         "browser.newtabpage.activity-stream.showWeather" = false;
 
+        "widget.use-xdg-desktop-portal.file-picker" = 1;
+
         "dom.min_background_timeout_value" = 10000;
         "beacon.enabled" = false;
         "privacy.resistFingerprinting" = true;
