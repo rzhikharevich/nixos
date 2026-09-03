@@ -39,6 +39,10 @@
     }
   ];
 
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     open = true;
@@ -53,6 +57,8 @@
     ACTION=="add", SUBSYSTEM=="pci", ATTR{class}=="0x0c0330", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
   '';
+
+  services.hardware.bolt.enable = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = true;
