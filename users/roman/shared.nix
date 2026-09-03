@@ -12,6 +12,10 @@
       "nixodrome"
       [ (import ./hosts/nixodrome/default.nix) ]
     ]
+    [
+      "lagrange"
+      [ (import ./hosts/lagrange/default.nix) ]
+    ]
   ] { default = [ ]; };
 
   programs.fish.enable = true;
