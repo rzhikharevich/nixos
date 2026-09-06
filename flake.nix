@@ -183,6 +183,8 @@
         [ nixos-hardware.nixosModules.common-cpu-amd-zenpower ] ++ desktopNixosModules
       );
 
+      nixosConfigurations.panther = mkHost ./hosts/panther [];
+
       nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
         nixos-apple-silicon.nixosModules.apple-silicon-support
         foundryvtt.nixosModules.foundryvtt
