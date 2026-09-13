@@ -70,6 +70,8 @@
     ];
   };
 
+  users.users.roman.extraGroups = [ "foundryvtt" ];
+
   services.foundryvtt = {
     enable = true;
     package = (pkgs.callPackage "${inputs.foundryvtt}/pkgs/foundryvtt" { }).overrideAttrs (
