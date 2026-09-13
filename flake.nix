@@ -18,6 +18,10 @@
       };
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -204,7 +208,7 @@
         [ nixos-hardware.nixosModules.common-cpu-amd-zenpower ] ++ desktopNixosModules
       );
 
-      nixosConfigurations.panther = mkHost ./hosts/panther [];
+      nixosConfigurations.panther = mkHost ./hosts/panther [ inputs.disko.nixosModules.disko ];
 
       nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
         nixos-apple-silicon.nixosModules.apple-silicon-support
