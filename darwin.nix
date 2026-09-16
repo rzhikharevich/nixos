@@ -108,13 +108,6 @@
     ]
   ];
 
-  nix.settings = {
-    #    extra-substituters = [ "https://virby-nix-darwin.cachix.org" ];
-    #    extra-trusted-public-keys = [
-    #      "virby-nix-darwin.cachix.org-1:z9GiEZeBU5bEeoDQjyfHPMGPBaIQJOOvYOOjGMKIlLo="
-    #    ];
-  };
-
   nix.gc = {
     automatic = true;
     interval = {
@@ -126,6 +119,7 @@
   nix.optimise.automatic = true;
 
   security.pam.services.sudo_local.touchIdAuth = true;
+
   homebrew = {
     enable = true;
     onActivation = {
