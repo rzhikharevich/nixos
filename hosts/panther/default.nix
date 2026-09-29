@@ -13,31 +13,59 @@
   networking = {
     hostId = "b0d86da2";
     hostName = "panther";
-    networkmanager = {
-      enable = true;
-      wifi.backend = "iwd";
-      unmanaged = [
-        "interface-name:vbr"
-        "interface-name:vm-*"
-      ];
-    };
     wireless.iwd = {
       enable = true;
       settings = {
-        Settings.AutoConnect = true;
+        General.EnableNetworkConfiguration = false;
+        Settings.AutoConnect = false;
       };
     };
     useDHCP = false;
   };
 
-  services.power-profiles-daemon.enable = true;
-  services.fwupd.enable = true;
-
-  services.scx = {
+  systemd.network = {
     enable = true;
-    scheduler = "scx_lavd";
-    extraArgs = [ "--autopilot" ];
+    wait-online.enable = false;
+    networks = {
+      "10-wired" = {
+        matchConfig.Type = "ether";
+        networkConfig = {
+          DHCP = "yes";
+          IPv6AcceptRA = true;
+        };
+        dhcpV4Config.RouteMetric = 100;
+        ipv6AcceptRAConfig.RouteMetric = 100;
+      };
+
+      "20-wireless" = {
+        matchConfig.Type = "wlan";
+        networkConfig = {
+          DHCP = "yes";
+          IPv6AcceptRA = true;
+        };
+        dhcpV4Config.RouteMetric = 200;
+        ipv6AcceptRAConfig.RouteMetric = 200;
+      };
+    };
   };
+
+  services.openssh.hostKeys = [
+    {
+      type = "rsa";
+      bits = 4096;
+      path = "/var/lib/ssh/ssh_host_rsa_key";
+    }
+    {
+      type = "ed25519";
+      path = "/var/lib/ssh/ssh_host_ed25519_key";
+    }
+  ];
+
+  # services.scx = {
+  #   enable = true;
+  #   scheduler = "scx_lavd";
+  #   extraArgs = [ "--autopilot" ];
+  # };
 
   system.stateVersion = "26.05";
 }
