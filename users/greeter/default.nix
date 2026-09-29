@@ -31,7 +31,15 @@
   };
 
   home-manager.users.greeter = {
-    imports = [ ./niri.nix ];
+    imports = [
+      ./niri.nix
+    ]
+    ++ (lib.rzMatchDefault config.networking.hostName [
+      [
+        "nixform"
+        [ (import ./hosts/nixform/default.nix) ]
+      ]
+    ] { default = [ ]; });
 
     gtk.gtk4.theme = lib.mkForce null;
 

@@ -19,6 +19,10 @@
       "nixform"
       [ (import ./hosts/nixform/default.nix) ]
     ]
+    [
+      "tenserise"
+      [ (import ./hosts/tenserise/default.nix) ]
+    ]
   ] { default = [ ]; };
 
   programs.fish.enable = true;

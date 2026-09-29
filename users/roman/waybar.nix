@@ -19,9 +19,9 @@ let
     ${pkgs.niri}/bin/niri msg action do-screen-transition
     current=$(${pkgs.niri}/bin/niri msg --json focused-output | ${pkgs.jq}/bin/jq -r '.logical.transform')
     if [ "$current" = "Normal" ]; then
-      ${pkgs.niri}/bin/niri msg output eDP-1 transform 90
+      ${pkgs.niri}/bin/niri msg output ${osConfig.rzhikharevich.touchDisplay} transform 90
     else
-      ${pkgs.niri}/bin/niri msg output eDP-1 transform normal
+      ${pkgs.niri}/bin/niri msg output ${osConfig.rzhikharevich.touchDisplay} transform normal
     fi
   '';
   touchOnly = x: if osConfig.rzhikharevich.touchDisplay != null then x else null;

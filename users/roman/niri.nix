@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   lib,
   pkgs,
   ...
@@ -49,6 +50,10 @@ in
         dwt = true;
         natural-scroll = true;
         click-method = "clickfinger";
+      };
+
+      touch = lib.optionalAttrs (osConfig.rzhikharevich.touchDisplay != null) {
+        map-to-output = "eDP-1";
       };
     };
 

@@ -9,8 +9,6 @@
   };
 
   programs.niri.settings = {
-    input.touch.map-to-output = "eDP-1";
-
     outputs = {
       "eDP-1" = {
         scale = 1.5;
