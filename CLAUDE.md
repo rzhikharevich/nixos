@@ -22,7 +22,7 @@ nix build .#nixosConfigurations.nixform.config.system.build.toplevel # Build int
 - `hosts/` — host-specific config (boot, storage, networking, hardware)
 - `users/` — per-user config; greeter has its own niri session, roman uses home-manager
 - `lib/` — extends `nixpkgs.lib` with project helpers (polkit rules, service hardening)
-- `overlays.nix` — custom overlay (`prerenderIcon`, `writePython3Script`, `roland`, `wvkbd`)
+- `overlays.nix` — custom overlay (`prerenderIcon`, `writePython3Script`, `wvkbd`)
 
 **Key design decisions:**
 - SSH-key-only auth; keys centralized via `rzhikharevich.sshPubKeys` in `modules/globals.nix`.

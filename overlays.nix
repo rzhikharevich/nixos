@@ -108,24 +108,6 @@ final: prev:
   inherit (prev.callPackages ./packages/vmnet.nix { }) vmnet-broker vmnet-helper;
 }
 // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isLinux {
-  roland = prev.rustPlatform.buildRustPackage {
-    pname = "roland";
-    version = "0.1.0";
-    src = prev.fetchFromGitHub {
-      owner = "oknozor";
-      repo = "roland";
-      rev = "78351b998528bd335947fb59ea3e10c331c33331";
-      hash = "sha256-wQCxgd2UavxWHKY4C3dZG/pRrLxSTDRajVgsO2E9GQM=";
-    };
-    cargoPatches = [ ./patches/roland.patch ];
-    cargoHash = "sha256-CWIlkNi6PSiXLEi1gc3uzIWYpQURQadoMqp+eFvt5Ew=";
-    doCheck = false;
-    nativeBuildInputs = [ prev.pkg-config ];
-    buildInputs = [
-      prev.libinput
-      prev.udev
-    ];
-  };
   wvkbd = prev.wvkbd.overrideAttrs {
     makeFlags = [ "LAYOUT=deskintl" ];
     patches = [

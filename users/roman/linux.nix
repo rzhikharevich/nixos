@@ -105,22 +105,6 @@ in
           config.rzhikharevich.hardeningDefaults
           (lib.mkHardenedUserService user appName { })
         ];
-      })
-      // {
-        roland = {
-          Unit = {
-            Description = "Touch gestures";
-            PartOf = "graphical-session.target";
-            After = "graphical-session.target";
-          };
-          Service = {
-            ExecStart = "${pkgs.roland}/bin/roland --config /home/roman/.config/roland/config.toml";
-            Restart = "on-failure";
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-      };
-
-    xdg.configFile."roland/config.toml".source = ./roland-config.toml;
+      });
   };
 }
