@@ -110,24 +110,24 @@ else
 
                 (defsrc
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
-                  esc ${lib.rzOptionalString hasBuiltinIsoLayout "§"}
+                  esc ${lib.optionalString hasBuiltinIsoLayout "§"}
                   caps i j k l v q w d z x c o 1 2 3 4 5 spc
-                  ${lib.rzOptionalString hasBuiltinIsoLayout "`"})
+                  ${lib.optionalString hasBuiltinIsoLayout "`"})
 
                 (defalias
                   nav (layer-toggle custom))
 
                 (deflayer default
                   🔅 🔆 ✗ ✗ ✗ ✗ ◀◀ ▶⏸ ▶▶ 🔇 🔉 🔊
-                  esc ${lib.rzOptionalString hasBuiltinIsoLayout "`"}
+                  esc ${lib.optionalString hasBuiltinIsoLayout "`"}
                   @nav i j k l v q w d z x c o 1 2 3 4 5 spc
-                  ${lib.rzOptionalString hasBuiltinIsoLayout "§"})
+                  ${lib.optionalString hasBuiltinIsoLayout "§"})
 
                 (deflayer custom
                   f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
-                  grv ${lib.rzOptionalString hasBuiltinIsoLayout "`"}
+                  grv ${lib.optionalString hasBuiltinIsoLayout "`"}
                   _ up left down right caps C-q C-w C-d C-z C-x C-c C-o C-1 C-2 C-3 C-4 C-5 C-spc
-                  ${lib.rzOptionalString hasBuiltinIsoLayout "§"})
+                  ${lib.optionalString hasBuiltinIsoLayout "§"})
               '';
             }
           }
