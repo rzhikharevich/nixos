@@ -75,12 +75,16 @@ in
           popups = 14;
         };
       };
-      image =
-        lib.mkDefault
-        <| pkgs.fetchurl {
+      # Stylix's Home Manager integration propagates the system wallpaper as
+      # a default, including its null default. Use a slightly stronger default
+      # so the fallback wins over null while host-specific Home Manager values
+      # can still override it.
+      image = lib.mkIf (config.stylix.image == null) (
+        lib.mkOverride 999 <| pkgs.fetchurl {
           url = "https://raw.githubusercontent.com/rzhikharevich/nixos-artefacts/f6e480efbf530c6eeeba2d361a7afab7ac322a6b/wallpapers/GreatWave.jpg";
           hash = "sha256-RKhIar3wMwo/5rWG5AdQbnOP4HX+C138Q5YeNY/acgY=";
-        };
+        }
+      );
       base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
       # polarity = "dark";
       icons = {
