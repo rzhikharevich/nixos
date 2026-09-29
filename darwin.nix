@@ -90,23 +90,7 @@
       enable = true;
       ttl = 30;
     };
-  }
-  // lib.rzMatch config.networking.hostName [
-    [
-      "secretive"
-      {
-        cores = 8;
-        memory = 8192;
-      }
-    ]
-    [
-      "tenserise"
-      {
-        cores = 12;
-        memory = 32768;
-      }
-    ]
-  ];
+  };
 
   nix.gc = {
     automatic = true;
