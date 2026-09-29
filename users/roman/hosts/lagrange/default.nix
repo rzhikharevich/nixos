@@ -8,7 +8,10 @@
   programs.mangohud = {
     enable = true;
     enableSessionWide = true;
-    settings.fps_limit = 116;
+    settings = {
+      fps_limit = 116;
+      no_display = true;
+    };
   };
 
   programs.niri.settings.window-rules = [
