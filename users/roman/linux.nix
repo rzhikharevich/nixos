@@ -75,7 +75,7 @@ in
           popups = 14;
         };
       };
-      # polarity = "dark";
+      polarity = "dark";
       icons = {
         enable = true;
         package = pkgs.colloidIcons;
