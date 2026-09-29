@@ -17,4 +17,10 @@
       variable-refresh-rate = true;
     }
   ];
+
+  programs.firefox.profiles.default.settings = {
+    "meida.hardware-video-decoding.enabled" = true;
+    "media.hardware-video-decoding-vulkan.enabled" = true;
+    "media.hardware-video-decoding-vulkan.direct-export.enabled" = true;
+  };
 }

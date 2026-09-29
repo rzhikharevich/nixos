@@ -29,6 +29,7 @@ in
 
     programs.foot.enable = true;
 
+    gtk.colorScheme = "dark";
     dconf.settings."org/gnome/desktop/interface" = {
       color-scheme = lib.mkForce "prefer-dark";
     };

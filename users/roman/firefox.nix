@@ -18,7 +18,9 @@
 
         "dom.min_background_timeout_value" = 10000;
         "beacon.enabled" = false;
-        "privacy.resistFingerprinting" = true;
+        "privacy.trackingprotection.enabled" = true;
+#        "privacy.resistFingerprinting" = true;
+#        "privacy.fingerprintingProtection.overrides" = "-CSSPrefersColorScheme";
 
         "extensions.pocket.enabled" = false;
         "extensions.htmlaboutaddons.recommendations.enabled" = false;
@@ -45,6 +47,12 @@
     policies = {
       DisableTelemetry = true;
       DisableFirefoxAccounts = true;
+
+      ExtensionSettings."addon@darkreader.org" = {
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+        installation_mode = "force_installed";
+        private_browsing = true;
+      };
 
       ExtensionSettings."uBlock0@raymondhill.net" = {
         install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";

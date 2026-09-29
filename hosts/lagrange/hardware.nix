@@ -1,14 +1,10 @@
 {
   lib,
-  modulesPath,
+  pkgs,
   ...
 }:
 
 {
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
-
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"
@@ -43,6 +39,12 @@
     enable = true;
     powerOnBoot = true;
   };
+
+  environment.sessionVariables = {
+    # TODO: Remove once this is fixed in Firefox.
+    "MOZ_DISABLE_RDD_SANDBOX" = "1";
+  };
+
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     open = true;
@@ -52,6 +54,7 @@
       #finegrained = true;
     };
   };
+  hardware.graphics.extraPackages = [ pkgs.nvidia-vaapi-driver ];
 
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="pci", ATTR{class}=="0x0c0330", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
