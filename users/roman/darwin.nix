@@ -21,6 +21,7 @@
     home.file.".local/bin/darwin_darkmode".source = "${pkgs.darwin_darkmode}/bin/darwin_darkmode";
     home.sessionPath = [ "/opt/homebrew/bin" ];
     home.sessionVariables.SSH_AUTH_SOCK = "/Users/roman/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
+    home.sessionVariables.SOPS_AGE_KEY_FILE = "/Users/roman/.config/sops/age/secure-enclave.txt";
 
     programs.ssh.settings."*".IdentityAgent =
       "/Users/roman/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
