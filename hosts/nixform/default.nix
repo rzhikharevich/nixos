@@ -12,6 +12,8 @@
     (inputs.self + /modules/tailscale.nix)
   ];
 
+  rzhikharevich.touchDisplay = "eDP-1";
+
   networking = {
     hostName = "nixform";
     networkmanager = {

@@ -18,4 +18,5 @@ in
 {
   rzMatchDefault = matchDefault;
   rzMatch = value: cases: matchDefault value cases { };
+  rzSkipNulls = xs: lib.filter (x: x != null) xs;
 }

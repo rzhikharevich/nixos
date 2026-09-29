@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   lib,
   ...
@@ -23,6 +24,8 @@ let
       ${pkgs.niri}/bin/niri msg output eDP-1 transform normal
     fi
   '';
+  touchOnly = x: if osConfig.rzhikharevich.touchDisplay != null then x else null;
+  touchOnlyString = s: if osConfig.rzhikharevich.touchDisplay != null then s else "";
 in
 {
   programs.waybar = {
@@ -40,12 +43,12 @@ in
         "niri/workspaces"
       ];
       modules-center = [ "clock" ];
-      modules-right = [
+      modules-right = lib.rzSkipNulls [
         "niri/language"
         "wireplumber"
         "upower"
-        "custom/rotate"
-        "custom/keyboard"
+        (touchOnly "custom/rotate")
+        (touchOnly "custom/keyboard")
         "custom/notifications"
         "custom/fuzzel"
       ];
@@ -69,16 +72,6 @@ in
         tooltip-format = "Toggle notification center";
         on-click = "${pkgs.swaynotificationcenter}/bin/swaync-client -t";
       };
-      "custom/rotate" = {
-        format = " ";
-        tooltip-format = "Toggle screen rotation";
-        on-click = "${rotateScript}";
-      };
-      "custom/keyboard" = {
-        format = " ";
-        tooltip-format = "Toggle on-screen keyboard";
-        on-click = "pkill -SIGRTMIN wvkbd-deskintl";
-      };
       "niri/language" = {
         "format-en" = "🇺🇸";
         "format-ru" = "🇷🇺";
@@ -90,6 +83,18 @@ in
       upower = {
         format = " {percentage}";
         format-charging = " {percentage}";
+      };
+    }
+    // lib.optionalAttrs (osConfig.rzhikharevich.touchDisplay != null) {
+      "custom/rotate" = {
+        format = " ";
+        tooltip-format = "Toggle screen rotation";
+        on-click = "${rotateScript}";
+      };
+      "custom/keyboard" = {
+        format = " ";
+        tooltip-format = "Toggle on-screen keyboard";
+        on-click = "pkill -SIGRTMIN wvkbd-deskintl";
       };
     };
     style = ''
@@ -111,12 +116,14 @@ in
         font-size: 24px;
       }
 
+      ${touchOnlyString ''
+        #custom-keyboard,
+        #custom-rotate,
+      ''}
       #custom-fuzzel,
       #custom-overview,
       #custom-maximize,
-      #custom-notifications,
-      #custom-keyboard,
-      #custom-rotate {
+      #custom-notifications {
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -144,13 +151,15 @@ in
         background-image: url("${notificationsIcon}");
       }
 
-      #custom-keyboard {
-        background-image: url("${keyboardIcon}");
-      }
+      ${touchOnlyString ''
+        #custom-keyboard {
+          background-image: url("${keyboardIcon}");
+        }
 
-      #custom-rotate {
-        background-image: url("${rotateIcon}");
-      }
+        #custom-rotate {
+          background-image: url("${rotateIcon}");
+        }
+      ''}
 
       #workspaces button {
         margin: 3px;
