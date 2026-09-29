@@ -1,6 +1,5 @@
 {
   osConfig,
-  config,
   lib,
   pkgs,
   ...
@@ -15,6 +14,10 @@
     [
       "lagrange"
       [ (import ./hosts/lagrange/default.nix) ]
+    ]
+    [
+      "nixform"
+      [ (import ./hosts/nixform/default.nix) ]
     ]
   ] { default = [ ]; };
 

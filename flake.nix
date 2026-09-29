@@ -86,6 +86,13 @@
     let
       lib = import ./lib { inherit inputs; };
 
+      forAllSystems = lib.genAttrs [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+      pkgsFor = system: import nixpkgs { inherit system; };
+
       # Fenix still reads the deprecated stdenv platform aliases. Keep those
       # aliases warning-free while the dependency is evaluated.
       fenixPlatformCompatibility = _final: prev: {
@@ -198,5 +205,22 @@
       darwinConfigurations.tenserise = mkDarwinHost ./hosts/tenserise [
         ./modules/microvm-darwin.nix
       ];
+
+      formatter = forAllSystems (
+        system:
+        let
+          pkgs = pkgsFor system;
+        in
+        pkgs.writeShellApplication {
+          name = "rzh-nixos-format";
+          runtimeInputs = with pkgs; [
+            nixfmt
+            treefmt
+          ];
+          text = ''
+            exec treefmt "$@"
+          '';
+        }
+      );
     };
 }

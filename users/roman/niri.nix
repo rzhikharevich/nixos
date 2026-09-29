@@ -50,21 +50,13 @@ in
         natural-scroll = true;
         click-method = "clickfinger";
       };
-
-      touch.map-to-output = "eDP-1";
-    };
-
-    outputs = {
-      "eDP-1" = {
-        scale = 1.5;
-        variable-refresh-rate = true;
-        backdrop-color = config.lib.stylix.colors.base00;
-      };
     };
 
     cursor.hide-when-typing = true;
 
     hotkey-overlay.skip-at-startup = true;
+
+    overview.backdrop-color = config.lib.stylix.colors.base00;
 
     animations = {
       workspace-switch.kind.spring = {

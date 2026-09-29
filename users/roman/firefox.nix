@@ -19,8 +19,8 @@
         "dom.min_background_timeout_value" = 10000;
         "beacon.enabled" = false;
         "privacy.trackingprotection.enabled" = true;
-#        "privacy.resistFingerprinting" = true;
-#        "privacy.fingerprintingProtection.overrides" = "-CSSPrefersColorScheme";
+        #        "privacy.resistFingerprinting" = true;
+        #        "privacy.fingerprintingProtection.overrides" = "-CSSPrefersColorScheme";
 
         "extensions.pocket.enabled" = false;
         "extensions.htmlaboutaddons.recommendations.enabled" = false;
