@@ -1,10 +1,14 @@
 {
-  lib,
+  inputs,
   pkgs,
   ...
 }:
 
 {
+  imports = [
+    (inputs.self + /modules/lvm.nix)
+  ];
+
   boot = {
     loader = {
       efi.canTouchEfiVariables = true;
@@ -19,10 +23,4 @@
 
     kernelPackages = pkgs.linuxPackages_latest;
   };
-
-  environment.etc."lvm/lvm.conf".text = lib.mkForce ''
-    devices {
-      issue_discards = 1
-    }
-  '';
 }

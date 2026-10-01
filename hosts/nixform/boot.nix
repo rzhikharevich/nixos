@@ -1,10 +1,15 @@
 {
+  inputs,
   pkgs,
   lib,
   ...
 }:
 
 {
+  imports = [
+    (inputs.self + /modules/lvm.nix)
+  ];
+
   boot = {
     kernelParams = [
       # TODO: Test amd_pstate=passive with manually set minimum frequencies (which default to the
@@ -71,10 +76,4 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl."vm.dirty_writeback_centisecs" = 1500;
   };
-
-  environment.etc."lvm/lvm.conf".text = lib.mkForce ''
-    devices {
-      issue_discards = 1
-    }
-  '';
 }
