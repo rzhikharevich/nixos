@@ -72,4 +72,21 @@
       size = 24;
     };
   };
+
+  services.upower = {
+    enable = true;
+    criticalPowerAction = "Hibernate";
+    noPollBatteries = true;
+  };
+
+  services.power-profiles-daemon.enable = true;
+  services.fwupd.enable = true;
+
+  services.scx = {
+    enable = true;
+    scheduler = "scx_lavd";
+    extraArgs = [ "--autopower" ];
+  };
+
+  programs.fuse.enable = true;
 }

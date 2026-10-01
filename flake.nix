@@ -126,6 +126,8 @@
         ./modules/microvm-linux.nix
         ./modules/desktop.nix
         ./modules/kanata.nix
+        ./modules/network-manager.nix
+        ./modules/tailscale.nix
         ./users/greeter/default.nix
         ./users/roman/linux.nix
       ];

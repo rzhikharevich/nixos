@@ -9,46 +9,11 @@
     ./hardware.nix
     ./boot.nix
     (inputs.self + /modules/ssh-inhibit-suspend.nix)
-    (inputs.self + /modules/tailscale.nix)
   ];
 
   rzhikharevich.touchDisplay = "eDP-1";
 
-  networking = {
-    hostName = "nixform";
-    networkmanager = {
-      enable = true;
-      wifi.backend = "iwd";
-      unmanaged = [
-        "interface-name:vbr"
-        "interface-name:vm-*"
-      ];
-    };
-    wireless.iwd = {
-      enable = true;
-      settings = {
-        Settings.AutoConnect = true;
-      };
-    };
-    useDHCP = false;
-  };
-
-  services.upower = {
-    enable = true;
-    criticalPowerAction = "Hibernate";
-    noPollBatteries = true;
-  };
-
-  services.power-profiles-daemon.enable = true;
-  services.fwupd.enable = true;
-
-  services.scx = {
-    enable = true;
-    scheduler = "scx_lavd";
-    extraArgs = [ "--autopower" ];
-  };
-
-  programs.fuse.enable = true;
+  networking.hostName = "nixform";
 
   environment.systemPackages = with pkgs; [
     ungoogled-chromium
