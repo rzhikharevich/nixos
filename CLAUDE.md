@@ -4,36 +4,42 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal NixOS/nix-darwin configuration. Currently a single NixOS host `nixform` (Minisforum V3, AMD). Flake-based, using NixOS unstable (25.11). Structured to support adding more hosts (including nix-darwin).
+Personal flake-based NixOS/nix-darwin configuration tracking `nixos-unstable`. The NixOS hosts are `nixform` (Minisforum V3, x86_64), `lagrange` (x86_64), and `nixodrome` (Apple Silicon, aarch64). The nix-darwin hosts are `secretive` and `tenserise` (both aarch64).
 
 ## Build Commands
 
 ```sh
-nix build .#nixosConfigurations.nixform.config.system.build.toplevel # Build into ./result for verification.
+nix build .#nixosConfigurations.HOSTNAME.config.system.build.toplevel
+nix build .#darwinConfigurations.HOSTNAME.system # Run on macOS.
 ```
+
+Substitute `lagrange` or `nixodrome` for the NixOS host, or `tenserise` for the Darwin host.
 
 ## Architecture
 
-**Entry point:** `flake.nix` defines host configurations via the `mkHost` helper.
+**Entry point:** `flake.nix` defines NixOS hosts with `mkHost` and nix-darwin hosts with `mkDarwinHost`. It assembles shared and platform-specific modules and overlays.
 
 **Structure:**
-- `configuration.nix` — shared NixOS entry point; imports all modules and users
-- `modules/` — shared NixOS modules (desktop, hardened services, globals, PAM, etc.)
-- `hosts/` — host-specific config (boot, storage, networking, hardware)
-- `users/` — per-user config; greeter has its own niri session, roman uses home-manager
+
+- `configuration.nix` — settings shared by NixOS and nix-darwin; `linux.nix` and `darwin.nix` add platform-specific settings
+- `modules/` — reusable system modules, including the Linux desktop, service hardening, and Linux/Darwin MicroVM adapters
+- `hosts/` — host-specific boot, hardware, networking, and services
+- `users/` — user and Home Manager modules; host-specific Home Manager imports are selected in `users/roman/shared.nix` and `users/greeter/default.nix`
 - `lib/` — extends `nixpkgs.lib` with project helpers (polkit rules, service hardening)
-- `overlays.nix` — custom overlay (`prerenderIcon`, `writePython3Script`, `wvkbd`)
+- `packages.nix` and `packages/` — common package list and local package definitions
+- `overlays.nix` — package overrides and derivation-producing helpers such as `prerenderIcon` and `writePython3Script`
 
 **Key design decisions:**
-- SSH-key-only auth; keys centralized via `rzhikharevich.sshPubKeys` in `modules/globals.nix`.
+
+- SSH-key-only auth; `rzhikharevich.sshPubKeys` is declared in `modules/globals.nix` and populated in `configuration.nix`.
 - The greeter launches a dedicated niri session to host wlgreet, separate from the user's niri session.
-- `lib/` extends `nixpkgs.lib` so helpers like `lib.mkPolkitAllow` are available everywhere. Derivation-producing helpers live in the overlay.
-- `rzhikharevich.hardenedServices` applies a strict systemd hardening baseline; per-service overrides are merged on top.
+- `rzhikharevich.hardenedServices` applies a strict systemd hardening baseline on NixOS; per-service overrides are merged on top.
+- `modules/microvm.nix` defines the VMs shared by the Linux and Darwin host adapters.
 - Service definitions stay in the same file as their related config (e.g. hyprlock service lives in `hyprlock.nix`).
 
 ## Code Style
 
-- Indentation: 2-space tabs.
+- Indentation: 2 spaces.
 - Show, don't tell. Prefer clear code over verbose commentary.
 - Code should be self-describing: use precise names for options, variables, and
   modules. Comments are for genuinely tricky logic — not restating what the code
