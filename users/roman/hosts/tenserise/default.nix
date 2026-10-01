@@ -1,6 +1,6 @@
 { ... }:
 {
   programs.zed-editor.userSettings.lsp = {
-    clangd.binary = "/usr/bin/clangd";
+    clangd.binary.path = "/usr/bin/clangd";
   };
 }
