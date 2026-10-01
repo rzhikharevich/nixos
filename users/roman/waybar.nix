@@ -26,6 +26,11 @@ let
   '';
   touchOnly = x: if osConfig.rzhikharevich.touchDisplay != null then x else null;
   touchOnlyString = s: if osConfig.rzhikharevich.touchDisplay != null then s else "";
+  mkCustomButton = tooltip: command: {
+    format = " ";
+    tooltip-format = tooltip;
+    on-click = command;
+  };
 in
 {
   programs.waybar = {
@@ -52,26 +57,11 @@ in
         "custom/notifications"
         "custom/fuzzel"
       ];
-      "custom/fuzzel" = {
-        format = " ";
-        tooltip-format = "Toggle app launcher";
-        on-click = "${pkgs.toggleUserUnit "fuzzel"}";
-      };
-      "custom/overview" = {
-        format = " ";
-        tooltip-format = "Toggle overview";
-        on-click = "${pkgs.niri}/bin/niri msg action toggle-overview";
-      };
-      "custom/maximize" = {
-        format = " ";
-        tooltip-format = "Toggle maximize column";
-        on-click = "${pkgs.niri}/bin/niri msg action maximize-column";
-      };
-      "custom/notifications" = {
-        format = " ";
-        tooltip-format = "Toggle notification center";
-        on-click = "${pkgs.swaynotificationcenter}/bin/swaync-client -t";
-      };
+      "custom/fuzzel" = mkCustomButton "Toggle app launcher" "${pkgs.toggleUserUnit "fuzzel"}";
+      "custom/overview" = mkCustomButton "Toggle overview" "${pkgs.niri}/bin/niri msg action toggle-overview";
+      "custom/maximize" = mkCustomButton "Toggle maximize column" "${pkgs.niri}/bin/niri msg action maximize-column";
+      "custom/notifications" =
+        mkCustomButton "Toggle notification center" "${pkgs.swaynotificationcenter}/bin/swaync-client -t";
       "niri/language" = {
         "format-en" = "🇺🇸";
         "format-ru" = "🇷🇺";
@@ -86,16 +76,8 @@ in
       };
     }
     // lib.optionalAttrs (osConfig.rzhikharevich.touchDisplay != null) {
-      "custom/rotate" = {
-        format = " ";
-        tooltip-format = "Toggle screen rotation";
-        on-click = "${rotateScript}";
-      };
-      "custom/keyboard" = {
-        format = " ";
-        tooltip-format = "Toggle on-screen keyboard";
-        on-click = "pkill -SIGRTMIN wvkbd-deskintl";
-      };
+      "custom/rotate" = mkCustomButton "Toggle screen rotation" "${rotateScript}";
+      "custom/keyboard" = mkCustomButton "Toggle on-screen keyboard" "pkill -SIGRTMIN wvkbd-deskintl";
     };
     style = ''
       * {

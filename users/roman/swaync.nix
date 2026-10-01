@@ -13,6 +13,54 @@ let
   bluetoothIcon = mkColloidIcon "bluetooth-icon" "status/24/bluetooth-active.svg";
   powerProfileIcon = mkColloidIcon "power-profile-icon" "status/24/battery-profile-performance.svg";
   sunsetrIcon = mkColloidIcon "sunsetr-icon" "status/24/night-light-symbolic.svg";
+  mkToggle =
+    cond: then-cmd: else-cmd:
+    "${pkgs.bash}/bin/sh -c '[[ ${cond} ]] && ${then-cmd} || ${else-cmd}'";
+  mkState = cond: mkToggle cond "echo true" "echo false";
+  buttons = [
+    {
+      icon = wifiIcon;
+      action = {
+        active = true;
+        command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "nmcli radio wifi on" "nmcli radio wifi off";
+        update-command = mkState "$(nmcli radio wifi) == enabled";
+      };
+    }
+    {
+      icon = bluetoothIcon;
+      action = {
+        active = true;
+        command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "bluetoothctl power on" "bluetoothctl power off";
+        update-command = mkState "$(bluetoothctl show | grep 'Powered: yes')";
+      };
+    }
+    {
+      icon = powerProfileIcon;
+      action = {
+        command =
+          mkToggle "$SWAYNC_TOGGLE_STATE == true" "powerprofilesctl set balanced"
+            "powerprofilesctl set power-saver";
+        update-command = mkState "$(powerprofilesctl get) == balanced";
+      };
+    }
+    {
+      icon = sunsetrIcon;
+      action = {
+        active = true;
+        command =
+          mkToggle "$SWAYNC_TOGGLE_STATE == true" "${pkgs.systemd}/bin/systemctl --user start sunsetr.service"
+            "${pkgs.systemd}/bin/systemctl --user stop sunsetr.service";
+        update-command = mkState "$(${pkgs.systemd}/bin/systemctl --user is-active sunsetr.service) == active";
+      };
+    }
+  ];
+  buttonIconCss = lib.concatStringsSep "\n" (
+    lib.imap1 (index: button: ''
+      .widget-buttons-grid > flowbox > flowboxchild:nth-child(${toString index}) > button > label {
+        background-image: url("${button.icon}");
+      }
+    '') buttons
+  );
 in
 {
   services.swaync = {
@@ -28,52 +76,13 @@ in
         "notifications"
       ];
 
-      widget-config.buttons-grid =
-        let
-          mkToggle =
-            cond: then-cmd: else-cmd:
-            "${pkgs.bash}/bin/sh -c '[[ ${cond} ]] && ${then-cmd} || ${else-cmd}'";
-          mkState = cond: mkToggle cond "echo true" "echo false";
-        in
-        {
-          # Workaround: FlowBox cells fill available width and buttons
-          # default to halign=FILL. Proper fix: patch buttonsGrid.vala to
-          # set halign=CENTER on each button.
-          buttons-per-row = 9;
-          actions = [
-            {
-              label = " ";
-              type = "toggle";
-              active = true;
-              command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "nmcli radio wifi on" "nmcli radio wifi off";
-              update-command = mkState "$(nmcli radio wifi) == enabled";
-            }
-            {
-              label = " ";
-              type = "toggle";
-              active = true;
-              command = mkToggle "$SWAYNC_TOGGLE_STATE == true" "bluetoothctl power on" "bluetoothctl power off";
-              update-command = mkState "$(bluetoothctl show | grep 'Powered: yes')";
-            }
-            {
-              label = " ";
-              type = "toggle";
-              command =
-                mkToggle "$SWAYNC_TOGGLE_STATE == true" "powerprofilesctl set balanced"
-                  "powerprofilesctl set power-saver";
-              update-command = mkState "$(powerprofilesctl get) == balanced";
-            }
-            {
-              label = " ";
-              type = "toggle";
-              active = true;
-              command =
-                mkToggle "$SWAYNC_TOGGLE_STATE == true" "${pkgs.systemd}/bin/systemctl --user start sunsetr.service"
-                  "${pkgs.systemd}/bin/systemctl --user stop sunsetr.service";
-              update-command = mkState "$(${pkgs.systemd}/bin/systemctl --user is-active sunsetr.service) == active";
-            }
-          ];
-        };
+      widget-config.buttons-grid = {
+        # Workaround: FlowBox cells fill available width and buttons
+        # default to halign=FILL. Proper fix: patch buttonsGrid.vala to
+        # set halign=CENTER on each button.
+        buttons-per-row = 9;
+        actions = map (button: { label = " "; type = "toggle"; } // button.action) buttons;
+      };
       widget-config.volume.label = " ";
       widget-config.backlight = {
         label = " ";
@@ -236,21 +245,7 @@ in
         font-size: 0;
       }
 
-      .widget-buttons-grid > flowbox > flowboxchild:nth-child(1) > button > label {
-        background-image: url("${wifiIcon}");
-      }
-
-      .widget-buttons-grid > flowbox > flowboxchild:nth-child(2) > button > label {
-        background-image: url("${bluetoothIcon}");
-      }
-
-      .widget-buttons-grid > flowbox > flowboxchild:nth-child(3) > button > label {
-        background-image: url("${powerProfileIcon}");
-      }
-
-      .widget-buttons-grid > flowbox > flowboxchild:nth-child(4) > button > label {
-        background-image: url("${sunsetrIcon}");
-      }
+      ${buttonIconCss}
 
       .widget-volume > box > label,
       .widget-backlight > label {
@@ -274,18 +269,21 @@ in
         padding: 8px;
       }
 
-      .widget-backlight scale trough {
+      .widget-backlight scale trough,
+      .widget-volume scale trough {
         background-color: @base01;
         border-radius: 8px;
         border: 1px solid alpha(black, 0.2);
       }
 
-      .widget-backlight scale trough highlight {
+      .widget-backlight scale trough highlight,
+      .widget-volume scale trough highlight {
         background-color: @base0D;
         border-radius: 8px;
       }
 
-      .widget-backlight scale slider {
+      .widget-backlight scale slider,
+      .widget-volume scale slider {
         background-color: @base05;
       }
 
@@ -302,21 +300,6 @@ in
 
       .widget-mpris .widget-mpris-player button:hover {
         background-color: @base02;
-      }
-
-      .widget-volume scale trough {
-        background-color: @base01;
-        border-radius: 8px;
-        border: 1px solid alpha(black, 0.2);
-      }
-
-      .widget-volume scale trough highlight {
-        background-color: @base0D;
-        border-radius: 8px;
-      }
-
-      .widget-volume scale slider {
-        background-color: @base05;
       }
 
       progressbar trough {
