@@ -76,7 +76,6 @@
   services.upower = {
     enable = true;
     criticalPowerAction = "Hibernate";
-    noPollBatteries = true;
   };
 
   services.power-profiles-daemon.enable = true;
