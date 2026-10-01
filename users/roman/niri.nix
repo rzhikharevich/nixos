@@ -53,7 +53,7 @@ in
       };
 
       touch = lib.optionalAttrs (osConfig.rzhikharevich.touchDisplay != null) {
-        map-to-output = "eDP-1";
+        map-to-output = osConfig.rzhikharevich.touchDisplay;
       };
     };
 
