@@ -30,6 +30,7 @@
   programs.claude-code = {
     enable = true;
     rules = {
+      nix-modules = ./claude/rules/nix-modules.md;
       rust-code-style = ./claude/rules/rust-code-style.md;
     };
   };
