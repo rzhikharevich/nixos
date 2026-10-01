@@ -58,8 +58,10 @@ in
         "custom/fuzzel"
       ];
       "custom/fuzzel" = mkCustomButton "Toggle app launcher" "${pkgs.toggleUserUnit "fuzzel"}";
-      "custom/overview" = mkCustomButton "Toggle overview" "${pkgs.niri}/bin/niri msg action toggle-overview";
-      "custom/maximize" = mkCustomButton "Toggle maximize column" "${pkgs.niri}/bin/niri msg action maximize-column";
+      "custom/overview" =
+        mkCustomButton "Toggle overview" "${pkgs.niri}/bin/niri msg action toggle-overview";
+      "custom/maximize" =
+        mkCustomButton "Toggle maximize column" "${pkgs.niri}/bin/niri msg action maximize-column";
       "custom/notifications" =
         mkCustomButton "Toggle notification center" "${pkgs.swaynotificationcenter}/bin/swaync-client -t";
       "niri/language" = {

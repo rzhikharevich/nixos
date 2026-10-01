@@ -81,7 +81,14 @@ in
         # default to halign=FILL. Proper fix: patch buttonsGrid.vala to
         # set halign=CENTER on each button.
         buttons-per-row = 9;
-        actions = map (button: { label = " "; type = "toggle"; } // button.action) buttons;
+        actions = map (
+          button:
+          {
+            label = " ";
+            type = "toggle";
+          }
+          // button.action
+        ) buttons;
       };
       widget-config.volume.label = " ";
       widget-config.backlight = {
