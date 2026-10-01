@@ -1,16 +1,8 @@
 {
-  config,
   lib,
   pkgs,
   ...
 }:
-let
-  ssh-inhibit-suspend = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/rzhikharevich/nixos-artefacts/c1fcdd3f7974aaa73ae482f8f1c16ead6204d1dd/executables/ssh-inhibit-suspend";
-    hash = "sha256-7cidbEPhP4DZGjuDhSkAEgle8Z8owxj3INYiBdQYoV8=";
-    executable = true;
-  };
-in
 {
   users.users.ssh-inhibit-suspend = {
     isSystemUser = true;
@@ -24,7 +16,7 @@ in
 
   rzhikharevich.hardenedServices.ssh-inhibit-suspend = {
     serviceConfig = {
-      ExecStart = ssh-inhibit-suspend;
+      ExecStart = lib.getExe pkgs.ssh-inhibit-suspend;
       Restart = "on-failure";
       CPUSchedulingPolicy = "idle";
       User = "ssh-inhibit-suspend";

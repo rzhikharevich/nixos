@@ -48,6 +48,10 @@
       url = "github:rzhikharevich/revisor";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ssh-inhibit-suspend = {
+      url = "github:rzhikharevich/ssh-inhibit-suspend";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     darwin_darkmode = {
       url = "github:rzhikharevich/darwin_darkmode";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -128,6 +132,7 @@
         ./modules/kanata.nix
         ./modules/network-manager.nix
         ./modules/tailscale.nix
+        ./modules/ssh-inhibit-suspend.nix
         ./users/greeter/default.nix
         ./users/roman/linux.nix
       ];

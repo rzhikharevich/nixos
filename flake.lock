@@ -1802,6 +1802,7 @@
         "nixpkgs": "nixpkgs_4",
         "revisor": "revisor",
         "sops-nix": "sops-nix",
+        "ssh-inhibit-suspend": "ssh-inhibit-suspend",
         "stylix": "stylix",
         "virby": "virby"
       }
@@ -1911,6 +1912,26 @@
       "original": {
         "type": "git",
         "url": "https://spectrum-os.org/git/spectrum"
+      }
+    },
+    "ssh-inhibit-suspend": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790822607,
+        "narHash": "sha256-QjZGbC94E1AAVoJL8yhIrJd6bLLE+LnoVoYJvH17gRU=",
+        "owner": "rzhikharevich",
+        "repo": "ssh-inhibit-suspend",
+        "rev": "97f2beb34a5a6c23251fc3e88fac7bbefb8c1fb2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rzhikharevich",
+        "repo": "ssh-inhibit-suspend",
+        "type": "github"
       }
     },
     "stylix": {

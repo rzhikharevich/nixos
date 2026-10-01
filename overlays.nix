@@ -108,6 +108,7 @@ final: prev:
   inherit (prev.callPackages ./packages/vmnet.nix { }) vmnet-broker vmnet-helper;
 }
 // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isLinux {
+  ssh-inhibit-suspend = inputs.ssh-inhibit-suspend.packages.${prev.stdenv.hostPlatform.system}.default;
   wvkbd = prev.wvkbd.overrideAttrs {
     makeFlags = [ "LAYOUT=deskintl" ];
     patches = [

@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   ...
 }:
@@ -8,7 +7,6 @@
   imports = [
     ./hardware.nix
     ./boot.nix
-    (inputs.self + /modules/ssh-inhibit-suspend.nix)
   ];
 
   rzhikharevich.touchDisplay = "eDP-1";
