@@ -129,7 +129,7 @@
         microvm.nixosModules.host
         ./modules/microvm-linux.nix
         ./modules/desktop.nix
-        ./modules/kanata.nix
+        ./modules/kanata-linux.nix
         ./modules/network-manager.nix
         ./modules/tailscale.nix
         ./modules/ssh-inhibit-suspend.nix
@@ -140,7 +140,7 @@
       commonDarwinModules = [
         ./configuration.nix
         ./darwin.nix
-        ./modules/kanata.nix
+        ./modules/kanata-darwin.nix
         home-manager.darwinModules.default
         virby.darwinModules.default
       ];
