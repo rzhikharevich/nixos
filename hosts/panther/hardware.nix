@@ -14,7 +14,7 @@
   ];
 
   hardware = {
-    graphics.enable = true;
+    # graphics.enable = true;
     bluetooth = {
       enable = true;
       powerOnBoot = false;
@@ -24,7 +24,7 @@
   };
 
   services = {
-    power-profiles-daemon.enable = true;
+    # power-profiles-daemon.enable = true;
     fwupd.enable = true;
     zfs.trim = {
       enable = true;

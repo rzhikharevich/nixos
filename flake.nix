@@ -208,7 +208,11 @@
         [ nixos-hardware.nixosModules.common-cpu-amd-zenpower ] ++ desktopNixosModules
       );
 
-      nixosConfigurations.panther = mkHost ./hosts/panther [ inputs.disko.nixosModules.disko ];
+      nixosConfigurations.panther = mkHost ./hosts/panther [
+        inputs.disko.nixosModules.disko
+        (self + /modules/tailscale.nix)
+        (self + /modules/systemd-networkd.nix)
+      ];
 
       nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
         nixos-apple-silicon.nixosModules.apple-silicon-support

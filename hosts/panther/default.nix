@@ -1,5 +1,6 @@
 {
   inputs,
+  config,
   ...
 }:
 
@@ -7,46 +8,15 @@
   imports = [
     ./hardware.nix
     ./boot.nix
-    (inputs.self + /modules/tailscale.nix)
   ];
+
+  sops.secrets = {
+    roman-password = {};
+  };
 
   networking = {
     hostId = "b0d86da2";
     hostName = "panther";
-    wireless.iwd = {
-      enable = true;
-      settings = {
-        General.EnableNetworkConfiguration = false;
-        Settings.AutoConnect = false;
-      };
-    };
-    useDHCP = false;
-  };
-
-  systemd.network = {
-    enable = true;
-    wait-online.enable = false;
-    networks = {
-      "10-wired" = {
-        matchConfig.Type = "ether";
-        networkConfig = {
-          DHCP = "yes";
-          IPv6AcceptRA = true;
-        };
-        dhcpV4Config.RouteMetric = 100;
-        ipv6AcceptRAConfig.RouteMetric = 100;
-      };
-
-      "20-wireless" = {
-        matchConfig.Type = "wlan";
-        networkConfig = {
-          DHCP = "yes";
-          IPv6AcceptRA = true;
-        };
-        dhcpV4Config.RouteMetric = 200;
-        ipv6AcceptRAConfig.RouteMetric = 200;
-      };
-    };
   };
 
   services.openssh.hostKeys = [
@@ -61,11 +31,12 @@
     }
   ];
 
-  # services.scx = {
-  #   enable = true;
-  #   scheduler = "scx_lavd";
-  #   extraArgs = [ "--autopilot" ];
-  # };
+  environment.etc."machine-id".source = "/var/lib/machine-id";
+
+  users = {
+    mutableUsers = false;
+    hashedPasswordFile = config.sops.secrets.roman-password.path;
+  };
 
   system.stateVersion = "26.05";
 }
