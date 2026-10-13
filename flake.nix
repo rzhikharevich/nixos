@@ -10,6 +10,13 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-private = {
+      url = "git+ssh://git@github.com/rzhikharevich/nixos-private";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        sops-nix.follows = "sops-nix";
+      };
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
@@ -201,6 +208,7 @@
         nixos-apple-silicon.nixosModules.apple-silicon-support
         foundryvtt.nixosModules.foundryvtt
         inputs.sops-nix.nixosModules.sops
+        inputs.nixos-private.nixosModules.nixodrome
         microvm.nixosModules.host
         ./modules/microvm-linux.nix
       ];
