@@ -11,7 +11,7 @@
   ];
 
   sops.secrets = {
-    roman-password = {};
+    roman-password = { };
   };
 
   networking = {
