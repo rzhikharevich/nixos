@@ -1477,6 +1477,29 @@
         "type": "github"
       }
     },
+    "nixos-private": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "sops-nix": [
+          "sops-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791929785,
+        "narHash": "sha256-Bszefs6ClaDOOnneDYVWFs1RbLkX+fGEasal2bMaPK4=",
+        "ref": "refs/heads/main",
+        "rev": "5a342b5cf02a4a32c2b3e6afe23e32e9a30de7ed",
+        "revCount": 2,
+        "type": "git",
+        "url": "ssh://git@github.com/rzhikharevich/nixos-private"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/rzhikharevich/nixos-private"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785828668,
@@ -1799,6 +1822,7 @@
         "nix-darwin": "nix-darwin",
         "nixos-apple-silicon": "nixos-apple-silicon",
         "nixos-hardware": "nixos-hardware",
+        "nixos-private": "nixos-private",
         "nixpkgs": "nixpkgs_4",
         "revisor": "revisor",
         "sops-nix": "sops-nix",
