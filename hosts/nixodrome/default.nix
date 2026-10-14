@@ -11,48 +11,13 @@
     ./boot.nix
     ./nginx.nix
     (inputs.self + /modules/tailscale.nix)
+    (inputs.self + /modules/systemd-networkd.nix)
   ];
 
   networking.hostName = "nixodrome";
   networking.hostId = "69ba052a";
 
   users.users.roman.uid = 1001;
-
-  networking.wireless.iwd = {
-    enable = true;
-    settings = {
-      General.EnableNetworkConfiguration = false;
-      Settings.AutoConnect = false;
-    };
-  };
-
-  systemd.network = {
-    enable = true;
-    wait-online.enable = false;
-    networks = {
-      "10-wired" = {
-        matchConfig.Type = "ether";
-        networkConfig = {
-          DHCP = "yes";
-          IPv6AcceptRA = true;
-        };
-        dhcpV4Config.RouteMetric = 100;
-        ipv6AcceptRAConfig.RouteMetric = 100;
-      };
-
-      "20-wireless" = {
-        matchConfig.Type = "wlan";
-        networkConfig = {
-          DHCP = "yes";
-          IPv6AcceptRA = true;
-        };
-        dhcpV4Config.RouteMetric = 200;
-        ipv6AcceptRAConfig.RouteMetric = 200;
-      };
-    };
-  };
-
-  networking.useDHCP = false;
 
   services.scx = {
     enable = true;

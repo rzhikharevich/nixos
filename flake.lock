@@ -171,6 +171,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781152676,
+        "narHash": "sha256-RxWs5ND31KzTG7wvMM+PMfUjyNpmIEr999lqNARaM5o=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "ff8702b4de27f72b4c78573dfb89ec74e36abdf1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "dix": {
       "inputs": {
         "fenix": "fenix_2",
@@ -1487,11 +1507,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791937122,
-        "narHash": "sha256-sJrtYS3Spng2f+cPlHo6RWvECtiEGsLXr7Qz2PbNXlo=",
+        "lastModified": 1791940079,
+        "narHash": "sha256-1FL5Yo4F9ubnES8QfFRUDRDynxK7+k18DYzYtL3yNiY=",
         "ref": "refs/heads/main",
-        "rev": "f5c843c63e98413c2a6207c9b198c37ef83190d6",
-        "revCount": 4,
+        "rev": "98c716570f8c9bf86380121bb56f4a79021c107c",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@github.com/rzhikharevich/nixos-private"
       },
@@ -1813,6 +1833,7 @@
       "inputs": {
         "darwin_darkmode": "darwin_darkmode",
         "darwin_exec": "darwin_exec",
+        "disko": "disko",
         "fenix": "fenix",
         "foundryvtt": "foundryvtt",
         "hauntedcupofdotfiles": "hauntedcupofdotfiles",
