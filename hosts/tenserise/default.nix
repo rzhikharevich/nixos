@@ -10,5 +10,10 @@
     memory = 32768;
   };
 
+  homebrew.casks = [
+    "orbstack"
+    "postgres-app"
+  ];
+
   system.stateVersion = 6;
 }
