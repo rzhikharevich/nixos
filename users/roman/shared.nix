@@ -84,7 +84,15 @@
 
       core = {
         editor = "nano";
-        pager = "less -R --mouse";
+        pager = lib.getExe pkgs.delta;
+      };
+
+      interactive.diffFilter = "${lib.getExe pkgs.delta} --color-only";
+
+      delta = {
+        navigate = true;
+        conflictStyle = "zdiff3";
+        line-numbers = true;
       };
     };
   };
@@ -96,6 +104,10 @@
   ];
 
   home.sessionPath = [ "$HOME/.local/bin" ];
+
+  home.sessionVariables = {
+    DELTA_PAGER = "less -R --mouse";
+  };
 
   home.pointerCursor.enable = lib.mkDefault false;
   home.stateVersion = "25.11";
