@@ -26,7 +26,6 @@
       kernelModules = [
         "tg3"
       ];
-      systemd.enable = true;
       systemd.users.root.shell = "/bin/systemd-tty-ask-password-agent";
       systemd.network = {
         enable = true;

@@ -22,7 +22,6 @@
         "virtio_console"
         "virtio_rng"
       ];
-      systemd.enable = true;
     };
   };
 
