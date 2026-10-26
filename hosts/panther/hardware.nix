@@ -24,6 +24,7 @@
 
   services = {
     fwupd.enable = true;
+    hardware.bolt.enable = true;
     zfs.autoScrub.enable = true;
   };
 
