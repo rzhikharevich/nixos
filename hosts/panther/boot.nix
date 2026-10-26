@@ -33,7 +33,6 @@ in
 
     initrd = {
       systemd = {
-        enable = true;
         users.root.shell = "/bin/systemd-tty-ask-password-agent";
         network = {
           enable = true;
