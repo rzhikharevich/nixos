@@ -13,7 +13,18 @@ in
   imports = [
     ./hardware.nix
     ./boot.nix
+    ./foundryvtt.nix
+    ./nginx.nix
   ];
+
+  boot = {
+    supportedFilesystems = [ "zfs" ];
+    zfs = {
+      forceImportRoot = false;
+      extraPools = [ "ark" ];
+      requestEncryptionCredentials = true;
+    };
+  };
 
   sops.secrets = {
     roman-password = {
@@ -65,6 +76,8 @@ in
     mutableUsers = false;
     users.roman.hashedPasswordFile = config.sops.secrets.roman-password.path;
   };
+
+  users.users.roman.extraGroups = [ "foundryvtt" ];
 
   system.stateVersion = "26.05";
 }

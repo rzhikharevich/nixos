@@ -30,30 +30,6 @@
     ];
   };
 
-  users.users.roman.extraGroups = [ "foundryvtt" ];
-
-  services.foundryvtt = {
-    enable = true;
-    package = (pkgs.callPackage "${inputs.foundryvtt}/pkgs/foundryvtt" { }).overrideAttrs (
-      old:
-      old
-      // {
-        majorVersion = "14";
-        build = "365";
-      }
-    );
-    hostName = "fvtt.rzhikharevi.ch";
-    minifyStaticFiles = true;
-    proxySSL = true;
-    upnp = false;
-    dataDir = "/ark/fvtt";
-  };
-
-  systemd.services.foundryvtt = {
-    after = [ "zfs.target" ];
-    requires = [ "zfs.target" ];
-  };
-
   networking.firewall.enable = true;
 
   programs.ccache.enable = true;
@@ -134,14 +110,12 @@
         secretive.id = "QLFTICR-PDD46YZ-JXYXTW6-UDKK3H3-CULJHZA-WYIWO6Z-NOWNVW5-NEPWZQT";
         tenserise.id = "C4CSVFC-ZUUKK3U-TGTEZ5N-R5OYHBC-GNX3FFI-RMOY7VE-XMVE6G3-AHJWWAT";
       };
-      folders = {
-        "Documents" = {
-          path = "/ark/syncthing/Documents";
-          devices = [
-            "iphone"
-            "secretive"
-          ];
-        };
+      folders.Documents = {
+        path = "/ark/syncthing/Documents";
+        devices = [
+          "iphone"
+          "secretive"
+        ];
       };
     };
   };
@@ -200,8 +174,6 @@
         type filter hook output priority filter; policy accept;
         ip daddr 127.0.0.1 tcp dport 8384 meta skuid != ${toString config.users.users.syncthing.uid} drop;
         ip6 daddr ::1 tcp dport 8384 meta skuid != ${toString config.users.users.syncthing.uid} drop;
-        ip daddr 127.0.0.1 tcp dport 30000 meta skuid != ${toString config.users.users.nginx.uid} drop;
-        ip6 daddr ::1 tcp dport 30000 meta skuid != ${toString config.users.users.nginx.uid} drop;
       }
     '';
   };
