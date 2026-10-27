@@ -115,5 +115,14 @@
     };
   };
 
+  disko.zfs = {
+    enable = true;
+    settings = {
+      # Preserve ark's existing pool-root properties.
+      ignoredDatasets = [ "ark" ];
+      datasets."ark/fvtt".properties.mountpoint = "/ark/fvtt";
+    };
+  };
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
