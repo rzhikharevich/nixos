@@ -118,8 +118,6 @@
   disko.zfs = {
     enable = true;
     settings = {
-      # Preserve ark's existing pool-root properties.
-      ignoredDatasets = [ "ark" ];
       datasets."ark/fvtt".properties.mountpoint = "/ark/fvtt";
     };
   };
