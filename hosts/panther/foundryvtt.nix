@@ -25,13 +25,19 @@
 
   systemd.services.foundryvtt = {
     after = [
-      "zfs.target"
+      "zfs-import-ark.service"
       "disko-zfs.service"
+      "zfs-mount.service"
+      "zfs.target"
     ];
     requires = [
-      "zfs.target"
+      "zfs-import-ark.service"
       "disko-zfs.service"
+      "zfs-mount.service"
+      "zfs.target"
     ];
+    # Never run against the underlying directory if the dataset was not mounted.
+    unitConfig.AssertPathIsMountPoint = config.services.foundryvtt.dataDir;
   };
 
   networking.nftables.tables.foundryvtt-local = {
