@@ -38,38 +38,42 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    settings =
-      let
-        nixodromeConfig = {
-          ForwardAgent = true;
-        };
-      in
-      {
-        "*".SendEnv = "RZ_CLIENT_PLATFORM";
-        "100.64.0.* microvm-*.local" = {
-          StrictHostKeyChecking = "no";
-          UserKnownHostsFile = "/dev/null";
-        };
-        hetzner-ubuntu-main = {
-          HostName = "157.90.114.181";
-          User = "root";
-        };
-        nixodrome-boot = {
-          HostName = "192.168.50.117";
-          User = "root";
-          ConnectTimeout = 600;
-          HostKeyAlias = "nixodrome-boot";
-        };
-        nixodrome = {
-          HostName = "192.168.50.117";
-        }
-        // nixodromeConfig;
-        nixodrone = {
-          HostName = "192.168.50.118";
-        }
-        // nixodromeConfig;
-        nixform.HostName = "192.168.50.31";
+    settings = {
+      "*".SendEnv = "RZ_CLIENT_PLATFORM";
+      "100.64.0.* microvm-*.local" = {
+        StrictHostKeyChecking = "no";
+        UserKnownHostsFile = "/dev/null";
       };
+      hetzner-ubuntu-main = {
+        HostName = "157.90.114.181";
+        User = "root";
+      };
+      nixodrome-boot = {
+        HostName = "192.168.50.117";
+        User = "root";
+        ConnectTimeout = 600;
+        HostKeyAlias = "nixodrome-boot";
+      };
+      nixodrome = {
+        HostName = "100.102.126.120";
+        ForwardAgent = true;
+      };
+      nixodrome-wlan = {
+        HostName = "192.168.50.118";
+        ForwardAgent = true;
+      };
+      nixform.HostName = "100.107.69.77";
+      panther-boot = {
+        HostName = "192.168.50.244";
+        User = "root";
+        ConnectTimeout = 600;
+        HostKeyAlias = "panther-boot";
+      };
+      panther = {
+        HostName = "100.83.29.93";
+        ForwardAgent = true;
+      };
+    };
   };
 
   programs.git = {
