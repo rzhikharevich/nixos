@@ -10,10 +10,21 @@
     memory = 32768;
   };
 
-  homebrew.casks = [
-    "orbstack"
-    "postgres-app"
-  ];
+  homebrew = {
+    taps = [
+      {
+        name = "unikraft/cli";
+        trusted = true;
+      }
+    ];
+    brews = [
+      "unikraft"
+    ];
+    casks = [
+      "orbstack"
+      "postgres-app"
+    ];
+  };
 
   users.users.roman.openssh.authorizedKeys.keys = [
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBwxpC2XM9Ialnbm51C5UCIW2ih9+tTBzkjWUc2Fv9ORFw4XCeTLSwHLQt+hLD5fm8E5lnF9QxV1Jt8/851jIyk= ShellFish@iPhone-Enclave-03022026"
