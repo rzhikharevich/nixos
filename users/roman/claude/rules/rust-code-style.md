@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/.rs"
+  - "**/*.rs"
   - "**/Cargo.toml"
   - "**/.cargo/**"
   - "**/rustfmt.toml"
