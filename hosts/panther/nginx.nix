@@ -2,11 +2,18 @@
 
 {
   sops.secrets = {
-    gandi-env = { };
+    gandi-token = { };
     foundryvtt-basicauth = {
       owner = "nginx";
       reloadUnits = [ "nginx.service" ];
     };
+  };
+
+  sops.templates."gandi.env" = {
+    owner = "acme";
+    content = ''
+      GANDIV5_PERSONAL_ACCESS_TOKEN=${config.sops.placeholder.gandi-token}
+    '';
   };
 
   security.acme = {
@@ -15,7 +22,7 @@
     certs."fvtt.rzhikharevi.ch" = {
       domain = "fvtt.rzhikharevi.ch";
       dnsProvider = "gandiv5";
-      environmentFile = config.sops.secrets.gandi-env.path;
+      environmentFile = config.sops.templates."gandi.env".path;
       webroot = null;
     };
   };
