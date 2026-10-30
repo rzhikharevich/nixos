@@ -13,7 +13,7 @@
   homebrew = {
     taps = [
       {
-        name = "unikraft/cli";
+        name = "unikraft/tap";
         trusted = true;
       }
     ];
