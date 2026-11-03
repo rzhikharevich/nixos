@@ -6,6 +6,24 @@
 let
   linuxOnly = pkg: if isLinux then pkg else null;
   darwinOnly = pkg: if !isLinux then pkg else null;
+
+  # nixpkgs' Apple SDK omits libiconv, libresolv, etc. and relies on stdenv to
+  # put nixpkgs builds of them on the link path. Bake those paths into the
+  # system-wide compilers so they link the same way outside of a nix shell.
+  withAppleSdkLibraries =
+    cc:
+    if isLinux then
+      cc
+    else
+      cc.override (prev: {
+        extraBuildCommands = (prev.extraBuildCommands or "") + ''
+          echo "${
+            pkgs.lib.concatMapStringsSep " " (
+              sdkLibrary: "-L${sdkLibrary.out}/lib"
+            ) prev.apple-sdk.propagatedBuildInputs
+          }" >> $out/nix-support/cc-ldflags
+        '';
+      });
 in
 builtins.filter (pkg: pkg != null) (
   with pkgs;
@@ -13,7 +31,7 @@ builtins.filter (pkg: pkg != null) (
     age
     (darwinOnly blueutil)
     (darwinOnly lgtv-remote)
-    clang
+    (withAppleSdkLibraries clang)
     clang-tools
     claude-code
     cmake
@@ -21,7 +39,7 @@ builtins.filter (pkg: pkg != null) (
     fastfetch
     file
     (linuxOnly flow-control)
-    gcc
+    (withAppleSdkLibraries gcc)
     gh
     git
     gnumake
