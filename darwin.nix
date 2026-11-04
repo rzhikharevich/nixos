@@ -121,7 +121,6 @@
     brews = [
       # No PQ support in nixpkgs?..
       "age-plugin-se"
-      "lume"
       "sleepwatcher"
     ];
     casks = [
