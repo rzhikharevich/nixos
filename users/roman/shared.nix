@@ -6,7 +6,10 @@
 }:
 
 {
-  imports = lib.rzMatchDefault osConfig.networking.hostName [
+  imports = [
+    ./llm
+  ]
+  ++ lib.rzMatchDefault osConfig.networking.hostName [
     [
       "nixodrome"
       [ (import ./hosts/nixodrome/default.nix) ]
@@ -26,14 +29,6 @@
   ] { default = [ ]; };
 
   programs.fish.enable = true;
-
-  programs.claude-code = {
-    enable = true;
-    rules = {
-      nix-modules = ./claude/rules/nix-modules.md;
-      rust-code-style = ./claude/rules/rust-code-style.md;
-    };
-  };
 
   programs.ssh = {
     enable = true;

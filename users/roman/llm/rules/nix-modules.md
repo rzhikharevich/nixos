@@ -1,9 +1,3 @@
----
-paths:
-  - "**/*.nix"
-  - "**/flake.lock"
----
-
 # Nix Module Style
 
 Conventions for writing clear, maintainable Nix flakes and modules.

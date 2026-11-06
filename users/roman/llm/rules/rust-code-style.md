@@ -1,11 +1,3 @@
----
-paths:
-  - "**/*.rs"
-  - "**/Cargo.toml"
-  - "**/.cargo/**"
-  - "**/rustfmt.toml"
----
-
 # Rust Code Style
 
 Opinionated conventions for writing clear, fast, idiomatic Rust.
