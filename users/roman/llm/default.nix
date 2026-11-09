@@ -9,6 +9,20 @@ let
       ];
       description = "Apply personal Nix conventions when writing or reviewing .nix files or flake.lock, including NixOS, nix-darwin, and Home Manager modules.";
     };
+    python-code-style = {
+      body = builtins.readFile ./rules/python-code-style.md;
+      paths = [
+        "**/*.py"
+        "**/*.pyi"
+        "**/pyproject.toml"
+        "**/requirements*.txt"
+        "**/ruff.toml"
+        "**/.ruff.toml"
+        "**/pyrightconfig.json"
+        "**/pytest.ini"
+      ];
+      description = "Apply personal Python conventions when writing or reviewing Python code, type stubs, or Python project and tooling configuration.";
+    };
     rust-code-style = {
       body = builtins.readFile ./rules/rust-code-style.md;
       paths = [
