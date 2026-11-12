@@ -25,6 +25,10 @@
   services = {
     fwupd.enable = true;
     hardware.bolt.enable = true;
+    udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{unique_id}=="c3030000-0082-8c1e-03e6-2dd64a926008", ATTR{authorized}=="0", ATTR{authorized}="1"
+      ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{unique_id}=="bc010000-0072-740e-03e6-2dd6cab06008", ATTR{authorized}=="0", ATTR{authorized}="1"
+    '';
     zfs.autoScrub.enable = true;
   };
 
@@ -76,6 +80,7 @@
         xattr = "sa";
         encryption = "on";
         keyformat = "passphrase";
+        keylocation = "prompt";
       };
       datasets = {
         nixos = {
@@ -113,6 +118,11 @@
         };
       };
     };
+  };
+
+  disko.zfs = {
+    enable = true;
+    settings.ignoredProperties = [ "nixos:shutdown-time" ];
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

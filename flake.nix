@@ -22,6 +22,13 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko-zfs = {
+      url = "github:numtide/disko-zfs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        disko.follows = "disko";
+      };
+    };
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -210,15 +217,16 @@
 
       nixosConfigurations.panther = mkHost ./hosts/panther [
         inputs.disko.nixosModules.disko
+        inputs.disko-zfs.nixosModules.default
         inputs.sops-nix.nixosModules.sops
         inputs.nixos-private.nixosModules.panther
+        foundryvtt.nixosModules.foundryvtt
         ./modules/tailscale.nix
         ./modules/systemd-networkd.nix
       ];
 
       nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
         nixos-apple-silicon.nixosModules.apple-silicon-support
-        foundryvtt.nixosModules.foundryvtt
         inputs.sops-nix.nixosModules.sops
         inputs.nixos-private.nixosModules.nixodrome
         microvm.nixosModules.host
