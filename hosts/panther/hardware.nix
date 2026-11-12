@@ -121,9 +121,7 @@
 
   disko.zfs = {
     enable = true;
-    settings = {
-      datasets."ark/fvtt".properties.mountpoint = "/ark/fvtt";
-    };
+    settings.ignoredProperties = [ "nixos:shutdown-time" ];
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

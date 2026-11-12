@@ -1,7 +1,5 @@
 {
   config,
-  inputs,
-  pkgs,
   ...
 }:
 
@@ -9,13 +7,13 @@ let
   # `systemd-machine-id-setup --root` looks for etc/machine-id beneath it.
   machineIdRoot = "/var/lib";
   machineIdFile = "${machineIdRoot}/etc/machine-id";
-  zfs = "${config.boot.zfs.package}/sbin/zfs";
 in
 
 {
   imports = [
     ./hardware.nix
     ./boot.nix
+    ./ark.nix
     ./foundryvtt.nix
     ./nginx.nix
   ];
@@ -24,33 +22,15 @@ in
     supportedFilesystems = [ "zfs" ];
     zfs = {
       forceImportRoot = false;
-      extraPools = [ "ark" ];
       requestEncryptionCredentials = [ "rpool" ];
     };
   };
-
-  # Make SOPS's age key available before stage-2 pool imports.
-  fileSystems."/var/lib".neededForBoot = true;
 
   sops.useSystemdActivation = true;
   sops.secrets = {
     roman-password = {
       neededForUsers = true;
     };
-  };
-
-  # SOPS's regular service runs after local-fs.target, which depends on this
-  # import through disko-zfs. Decrypt ark's key here to avoid an ordering cycle.
-  systemd.services.zfs-import-ark = {
-    environment.SOPS_AGE_KEY_FILE = config.sops.age.keyFile;
-    postStart = ''
-      set -o pipefail
-      if [ "$(${zfs} get -H -o value keystatus ark)" != available ]; then
-        ${pkgs.sops}/bin/sops --decrypt --input-type binary --output-type binary \
-          ${inputs.nixos-private + /secrets/zfs-ark.json} \
-          | ${zfs} load-key -L file:///dev/stdin ark
-      fi
-    '';
   };
 
   networking = {
