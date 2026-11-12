@@ -66,7 +66,6 @@
       };
     };
     initrd = {
-      systemd.enable = true;
       luks.devices.cryptroot = {
         device = "/dev/disk/by-uuid/7dc4136d-c383-4971-95f6-bbcbb74fe4a1";
         allowDiscards = true;
