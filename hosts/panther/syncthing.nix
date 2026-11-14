@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   sops.secrets.syncthing-gui = {
@@ -17,18 +17,17 @@
         urAccepted = -1;
         localAnnounceEnabled = false;
       };
-      devices = {
-        iphone.id = "DZ7EN2F-I64TTJS-FVUYRCR-SCMRWDF-GMXYRZL-2XHYVQ6-CPLGUKB-LGVQJQH";
-        secretive.id = "QLFTICR-PDD46YZ-JXYXTW6-UDKK3H3-CULJHZA-WYIWO6Z-NOWNVW5-NEPWZQT";
-        tenserise.id = "C4CSVFC-ZUUKK3U-TGTEZ5N-R5OYHBC-GNX3FFI-RMOY7VE-XMVE6G3-AHJWWAT";
-      };
-      folders.Documents = {
-        path = "${config.services.syncthing.dataDir}/Documents";
-        devices = [
-          "iphone"
-          "secretive"
-        ];
-      };
+      devices =
+        lib.mapAttrs
+          (device: id: {
+            id = id;
+            autoAcceptFolders = true;
+          })
+          {
+            iphone = "DZ7EN2F-I64TTJS-FVUYRCR-SCMRWDF-GMXYRZL-2XHYVQ6-CPLGUKB-LGVQJQH";
+            secretive = "QLFTICR-PDD46YZ-JXYXTW6-UDKK3H3-CULJHZA-WYIWO6Z-NOWNVW5-NEPWZQT";
+            tenserise = "C4CSVFC-ZUUKK3U-TGTEZ5N-R5OYHBC-GNX3FFI-RMOY7VE-XMVE6G3-AHJWWAT";
+          };
     };
   };
 
