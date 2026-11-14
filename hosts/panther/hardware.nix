@@ -29,7 +29,10 @@
       ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{unique_id}=="c3030000-0082-8c1e-03e6-2dd64a926008", ATTR{authorized}=="0", ATTR{authorized}="1"
       ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{unique_id}=="bc010000-0072-740e-03e6-2dd6cab06008", ATTR{authorized}=="0", ATTR{authorized}="1"
     '';
-    zfs.autoScrub.enable = true;
+    zfs = {
+      autoScrub.enable = true;
+      trim.enable = true;
+    };
   };
 
   disko.devices = {

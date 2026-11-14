@@ -227,8 +227,6 @@
 
       nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
         nixos-apple-silicon.nixosModules.apple-silicon-support
-        inputs.sops-nix.nixosModules.sops
-        inputs.nixos-private.nixosModules.nixodrome
         microvm.nixosModules.host
         ./modules/microvm-linux.nix
       ];

@@ -15,7 +15,9 @@ in
     ./boot.nix
     ./ark.nix
     ./foundryvtt.nix
+    ./immich.nix
     ./nginx.nix
+    ./syncthing.nix
   ];
 
   boot = {

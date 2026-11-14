@@ -24,6 +24,8 @@
   };
 
   systemd.services.foundryvtt = {
+    requires = [ "ark-permissions.service" ];
+    after = [ "ark-permissions.service" ];
     unitConfig = {
       RequiresMountsFor = config.services.foundryvtt.dataDir;
       # Never run against the underlying directory if the dataset was not mounted.
