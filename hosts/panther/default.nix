@@ -16,6 +16,7 @@ in
     ./ark.nix
     ./foundryvtt.nix
     ./immich.nix
+    ./monitoring.nix
     ./nginx.nix
     ./syncthing.nix
   ];

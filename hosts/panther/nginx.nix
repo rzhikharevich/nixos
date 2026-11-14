@@ -1,5 +1,10 @@
 { config, ... }:
 
+let
+  tailscaleAddress = "100.83.29.93";
+  grafana = config.services.grafana.settings.server;
+in
+
 {
   sops.secrets = {
     gandi-token = { };
@@ -33,6 +38,12 @@
         environmentFile = config.sops.secrets.porkbun-env.path;
         webroot = null;
       };
+      ${grafana.domain} = {
+        domain = grafana.domain;
+        dnsProvider = "porkbun";
+        environmentFile = config.sops.secrets.porkbun-env.path;
+        webroot = null;
+      };
     };
   };
 
@@ -53,11 +64,20 @@
         basicAuthFile = config.sops.secrets.foundryvtt-basicauth.path;
       };
       "im.unholy.systems" = {
-        listenAddresses = [ "100.83.29.93" ];
+        listenAddresses = [ tailscaleAddress ];
         enableACME = true;
         forceSSL = true;
         locations."/" = {
           proxyPass = "http://localhost:${toString config.services.immich.port}";
+          proxyWebsockets = true;
+        };
+      };
+      ${grafana.domain} = {
+        listenAddresses = [ tailscaleAddress ];
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          proxyPass = "http://${grafana.http_addr}:${toString grafana.http_port}";
           proxyWebsockets = true;
         };
       };
