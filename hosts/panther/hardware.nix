@@ -33,6 +33,10 @@
       autoScrub.enable = true;
       trim.enable = true;
     };
+    smartd = {
+      enable = true;
+      autodetect = true;
+    };
   };
 
   disko.devices = {
