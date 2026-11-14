@@ -5,7 +5,10 @@
     enable = true;
     port = 30001;
     mediaLocation = "/ark/immich";
+    accelerationDevices = [ "/dev/dri/renderD128" ];
   };
+
+  users.users.immich.extraGroups = [ "render" ];
 
   systemd.services.immich-server = {
     requires = [ "ark-permissions.service" ];
