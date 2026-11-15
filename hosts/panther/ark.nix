@@ -50,6 +50,7 @@ in
       };
       "ark/fvtt".properties = {
         canmount = "noauto";
+        "com.sun:auto-snapshot:weekly" = "true";
       };
       "ark/immich".properties = {
         canmount = "noauto";
