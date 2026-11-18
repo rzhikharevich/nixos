@@ -10,6 +10,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Separate input for programs using the Accessibility API since updating them is very annoying
+    # because macOS TCC can't be managed declaratively.
+    nixpkgs-darwin-ax.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-private = {
       url = "git+ssh://git@github.com/rzhikharevich/nixos-private";
       inputs = {

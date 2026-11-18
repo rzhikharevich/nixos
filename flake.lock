@@ -1611,6 +1611,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-darwin-ax": {
+      "locked": {
+        "lastModified": 1792773339,
+        "narHash": "sha256-rZLrzrC6i+jnTAlvPZHogKDulY7WWDEv9hJeHieO7Zw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3ec636362e1816bc2f0888fa0fa2c69f1bc9e504",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-docs": {
       "locked": {
         "lastModified": 1705957679,
@@ -1936,6 +1952,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-private": "nixos-private",
         "nixpkgs": "nixpkgs_4",
+        "nixpkgs-darwin-ax": "nixpkgs-darwin-ax",
         "revisor": "revisor",
         "sops-nix": "sops-nix",
         "ssh-inhibit-suspend": "ssh-inhibit-suspend",

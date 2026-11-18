@@ -100,6 +100,11 @@ final: prev:
   };
 }
 // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
+  inherit (inputs.nixpkgs-darwin-ax.legacyPackages.${prev.stdenv.hostPlatform.system})
+    yabai
+    skhd
+    kanata
+    ;
   darwin_exec = inputs.darwin_exec.packages.${prev.stdenv.hostPlatform.system}.default;
   darwin_darkmode = inputs.darwin_darkmode.packages.${prev.stdenv.hostPlatform.system}.default;
   rvctl = prev.writeShellScriptBin "rvctl" ''
