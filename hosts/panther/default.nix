@@ -19,6 +19,7 @@ in
     ./monitoring.nix
     ./nginx.nix
     ./syncthing.nix
+    ./rustic.nix
   ];
 
   boot = {
