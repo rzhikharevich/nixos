@@ -73,6 +73,7 @@ in
         interactiveShellInit = ''
           set fish_greeting
           alias ssh-local "ssh -o StrictHostKeyChecking=false -o UserKnownHostsFile=/dev/null"
+          alias scp-local "scp -o StrictHostKeyChecking=false -o UserKnownHostsFile=/dev/null"
         ''
         + (
           if isLinux then
