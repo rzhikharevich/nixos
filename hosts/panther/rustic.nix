@@ -7,7 +7,14 @@
 }:
 
 let
-  datasets = lib.sort builtins.lessThan (lib.map (dataset: "ark/${dataset}") [ "fvtt" ]);
+  datasets = lib.sort builtins.lessThan (
+    lib.map (dataset: "ark/${dataset}") [
+      "fvtt"
+      "immich"
+      "postgres"
+      "syncthing"
+    ]
+  );
   snapshotName = "rustic-backup";
   snapshotRoot = "/run/rustic-snapshots";
   snapshots = map (dataset: "${dataset}@${snapshotName}") datasets;
@@ -19,7 +26,7 @@ let
     if zfs list -H -t snapshot ${lib.escapeShellArg "${dataset}@${snapshotName}"} >/dev/null 2>&1; then
       zfs destroy ${lib.escapeShellArg "${dataset}@${snapshotName}"}
     fi
-  '') (lib.reverseList datasets);  # Reverse of sorted list => unmount children first.
+  '') (lib.reverseList datasets); # Reverse of sorted list => unmount children first.
 
   rusticConfig = (pkgs.formats.toml { }).generate "rustic-ark.toml" {
     repository = {
@@ -179,7 +186,10 @@ in
     description = "Back up ark ZFS snapshots with Rustic";
     restartIfChanged = false;
     startAt = "daily";
-    wants = [ "network-online.target" "nscd.service" ];
+    wants = [
+      "network-online.target"
+      "nscd.service"
+    ];
     bindsTo = [ "rustic-snapshots.service" ];
     after = [
       "network-online.target"
