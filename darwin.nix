@@ -134,14 +134,12 @@
       "iterm2"
       "linearmouse"
       "lm-studio"
-      "microsoft-teams"
       "obsidian"
       "openzfs"
       "secretive"
       "tailscale-app"
       "transmission"
       "visual-studio-code"
-      "zoom"
     ];
   };
 }
