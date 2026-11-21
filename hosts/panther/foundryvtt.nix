@@ -1,46 +1,52 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
+{ config, inputs, ... }:
+let
+  app = config.rzhikharevich.microvmSandboxes.fvtt;
 
+  # Preserve Panther's existing ownership across the virtiofs boundary.
+  uid = 993;
+  gid = 991;
+in
 {
-  services.foundryvtt = {
-    enable = true;
-    package = (pkgs.callPackage "${inputs.foundryvtt}/pkgs/foundryvtt" { }).overrideAttrs (
-      old:
-      old
-      // {
-        majorVersion = "14";
-        build = "365";
-      }
-    );
-    hostName = "fvtt.rzhikharevi.ch";
-    minifyStaticFiles = true;
-    proxySSL = true;
-    upnp = false;
+  users.users.foundryvtt = {
+    inherit uid;
+    isSystemUser = true;
+    group = "foundryvtt";
+  };
+  users.groups.foundryvtt = { inherit gid; };
+
+  rzhikharevich.microvmSandboxes.fvtt = {
+    service = "foundryvtt";
+    allowInternet = true;
+    port = 30000;
     dataDir = "/ark/fvtt";
-  };
+    dataDirRequires = [ "ark-permissions.service" ];
 
-  systemd.services.foundryvtt = {
-    requires = [ "ark-permissions.service" ];
-    after = [ "ark-permissions.service" ];
-    unitConfig = {
-      RequiresMountsFor = config.services.foundryvtt.dataDir;
-      # Never run against the underlying directory if the dataset was not mounted.
-      AssertPathIsMountPoint = config.services.foundryvtt.dataDir;
+    guestConfig = { pkgs, ... }: {
+      imports = [ inputs.foundryvtt.nixosModules.foundryvtt ];
+      system.stateVersion = "26.05";
+      microvm = {
+        vcpu = 2;
+        mem = 4096;
+      };
+
+      users.users.foundryvtt = { inherit uid; };
+      users.groups.foundryvtt = { inherit gid; };
+      systemd.services.foundryvtt.serviceConfig = {
+        StandardOutput = "journal+console";
+        StandardError = "journal+console";
+      };
+      services.foundryvtt = {
+        inherit (app) dataDir port;
+        enable = true;
+        package = (pkgs.callPackage "${inputs.foundryvtt}/pkgs/foundryvtt" { }).overrideAttrs {
+          majorVersion = "14";
+          build = "365";
+        };
+        hostName = "fvtt.rzhikharevi.ch";
+        minifyStaticFiles = true;
+        proxySSL = true;
+        upnp = false;
+      };
     };
-  };
-
-  networking.nftables.tables.foundryvtt-local = {
-    family = "inet";
-    content = ''
-      chain output {
-        type filter hook output priority filter; policy accept;
-        ip daddr 127.0.0.1 tcp dport 30000 meta skuid != ${toString config.users.users.nginx.uid} drop;
-        ip6 daddr ::1 tcp dport 30000 meta skuid != ${toString config.users.users.nginx.uid} drop;
-      }
-    '';
   };
 }

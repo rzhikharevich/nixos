@@ -50,6 +50,9 @@ in
       };
       "ark/fvtt".properties = {
         canmount = "noauto";
+        acltype = "posixacl";
+        devices = "off";
+        setuid = "off";
         "com.sun:auto-snapshot:weekly" = "true";
       };
       "ark/immich".properties = {

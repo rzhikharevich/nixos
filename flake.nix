@@ -104,7 +104,6 @@
       darwin_darkmode,
       revisor,
       nixos-apple-silicon,
-      foundryvtt,
       hauntedcupofdotfiles,
       ...
     }:
@@ -142,6 +141,11 @@
         ./configuration.nix
         ./linux.nix
         home-manager.nixosModules.default
+      ];
+
+      microvmSandboxModules = [
+        microvm.nixosModules.host
+        ./modules/microvm-sandbox.nix
       ];
 
       desktopNixosModules = [
@@ -199,6 +203,8 @@
         };
     in
     {
+      nixosModules.microvm-sandbox.imports = microvmSandboxModules;
+
       packages.x86_64-linux.default =
         (import nixpkgs {
           system = "x86_64-linux";
@@ -218,15 +224,17 @@
         [ nixos-hardware.nixosModules.common-cpu-amd-zenpower ] ++ desktopNixosModules
       );
 
-      nixosConfigurations.panther = mkHost ./hosts/panther [
-        inputs.disko.nixosModules.disko
-        inputs.disko-zfs.nixosModules.default
-        inputs.sops-nix.nixosModules.sops
-        inputs.nixos-private.nixosModules.panther
-        foundryvtt.nixosModules.foundryvtt
-        ./modules/tailscale.nix
-        ./modules/systemd-networkd.nix
-      ];
+      nixosConfigurations.panther = mkHost ./hosts/panther (
+        [
+          inputs.disko.nixosModules.disko
+          inputs.disko-zfs.nixosModules.default
+          inputs.sops-nix.nixosModules.sops
+          inputs.nixos-private.nixosModules.panther
+          ./modules/tailscale.nix
+          ./modules/systemd-networkd.nix
+        ]
+        ++ microvmSandboxModules
+      );
 
       nixosConfigurations.nixodrome = mkHost ./hosts/nixodrome [
         nixos-apple-silicon.nixosModules.apple-silicon-support

@@ -58,7 +58,7 @@ in
         enableACME = true;
         forceSSL = true;
         locations."/" = {
-          proxyPass = "http://localhost:30000";
+          proxyPass = "http://unix:${config.rzhikharevich.microvmSandboxes.fvtt.socketPath}";
           proxyWebsockets = true;
         };
         basicAuthFile = config.sops.secrets.foundryvtt-basicauth.path;

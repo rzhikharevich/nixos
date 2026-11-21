@@ -84,5 +84,8 @@ in
 
   users.users.roman.extraGroups = [ "foundryvtt" ];
 
+  # QEMU / microvm.nix install this, not needed at the moment.
+  security.wrappers.qemu-bridge-helper.enable = false;
+
   system.stateVersion = "26.05";
 }
