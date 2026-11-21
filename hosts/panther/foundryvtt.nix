@@ -27,10 +27,23 @@ in
       microvm = {
         vcpu = 2;
         mem = 4096;
+        balloon = true;
+        vsock = {
+          cid = 42;
+          ssh.enable = true;
+        };
       };
 
+      users.users.root.openssh.authorizedKeys.keys = config.rzhikharevich.sshPubKeys;
       users.users.foundryvtt = { inherit uid; };
       users.groups.foundryvtt = { inherit gid; };
+      services.openssh = {
+        openFirewall = false;
+        settings = {
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+        };
+      };
       systemd.services.foundryvtt.serviceConfig = {
         StandardOutput = "journal+console";
         StandardError = "journal+console";
