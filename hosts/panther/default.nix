@@ -20,6 +20,7 @@ in
     ./nginx.nix
     ./syncthing.nix
     ./rustic.nix
+    ./soju.nix
   ];
 
   boot = {
