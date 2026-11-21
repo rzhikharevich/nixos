@@ -18,15 +18,17 @@
 
   users.users.roman.uid = 1001;
 
-  services.scx = {
+  services.scx-loader = {
     enable = true;
-    package = pkgs.scx.rustscheds;
-    scheduler = "scx_lavd";
-    extraArgs = [
-      "--autopilot"
-      "--cpu-pref-order"
-      "0-3,4-7,8-11"
-    ];
+    config = {
+      default_sched = "scx_lavd";
+      default_mode = "Auto";
+      scheds.scx_lavd.auto_mode = [
+        "--autopilot"
+        "--cpu-pref-order"
+        "0-3,4-7,8-11"
+      ];
+    };
   };
 
   networking.firewall.enable = true;

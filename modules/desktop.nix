@@ -81,10 +81,13 @@
   services.power-profiles-daemon.enable = true;
   services.fwupd.enable = true;
 
-  services.scx = {
+  services.scx-loader = {
     enable = true;
-    scheduler = "scx_lavd";
-    extraArgs = [ "--autopower" ];
+    config = {
+      default_sched = "scx_lavd";
+      default_mode = "Auto";
+    };
+    #    extraArgs = [ "--autopower" ];
   };
 
   programs.fuse.enable = true;
