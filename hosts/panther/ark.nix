@@ -48,6 +48,13 @@ in
         keylocation = arkKeyLocation;
         atime = "off";
       };
+      "ark/downloads".properties = {
+        canmount = "noauto";
+      };
+      "ark/downloads/media".properties = {
+        canmount = "noauto";
+        recordsize = "1M";
+      };
       "ark/fvtt".properties = {
         canmount = "noauto";
         acltype = "posixacl";
@@ -96,6 +103,10 @@ in
     serviceConfig.Type = "oneshot";
     path = [ pkgs.coreutils ];
     script = ''
+      chown ${config.services.qbittorrent.user}:${config.services.qbittorrent.group} /ark/downloads
+      chmod 0750 /ark/downloads
+      chown ${config.services.qbittorrent.user}:${config.services.qbittorrent.group} /ark/downloads
+      chmod 0750 /ark/downloads/media
       chown foundryvtt:foundryvtt /ark/fvtt
       chmod 0750 /ark/fvtt
       chown immich:immich /ark/immich

@@ -18,6 +18,7 @@ in
     ./immich.nix
     ./monitoring.nix
     ./nginx.nix
+    ./qbittorrent.nix
     ./syncthing.nix
     ./rustic.nix
     ./soju.nix

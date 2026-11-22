@@ -3,6 +3,7 @@
 let
   tailscaleAddress = "100.83.29.93";
   grafana = config.services.grafana.settings.server;
+  qbittorrentHost = "t.unholy.systems";
 in
 
 {
@@ -30,6 +31,12 @@ in
         domain = "fvtt.rzhikharevi.ch";
         dnsProvider = "gandiv5";
         environmentFile = config.sops.templates."gandi.env".path;
+        webroot = null;
+      };
+      ${qbittorrentHost} = {
+        domain = qbittorrentHost;
+        dnsProvider = "porkbun";
+        environmentFile = config.sops.secrets.porkbun-env.path;
         webroot = null;
       };
       "im.unholy.systems" = {
@@ -62,6 +69,13 @@ in
           proxyWebsockets = true;
         };
         basicAuthFile = config.sops.secrets.foundryvtt-basicauth.path;
+      };
+      ${qbittorrentHost} = {
+        listenAddresses = [ tailscaleAddress ];
+        enableACME = true;
+        forceSSL = true;
+        locations."/".proxyPass = "http://127.0.0.1:${toString config.services.qbittorrent.webuiPort}";
+        basicAuthFile = config.sops.secrets.qbittorrent-basicauth.path;
       };
       "im.unholy.systems" = {
         listenAddresses = [ tailscaleAddress ];
