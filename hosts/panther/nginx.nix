@@ -14,6 +14,10 @@ in
       owner = "nginx";
       reloadUnits = [ "nginx.service" ];
     };
+    qbittorrent-basicauth = {
+      owner = "nginx";
+      reloadUnits = [ "nginx.service" ];
+    };
   };
 
   sops.templates."gandi.env" = {
