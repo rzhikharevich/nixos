@@ -4,15 +4,13 @@ let
   domain = "irc.unholy.systems";
 in
 {
-  security.acme = {
-    certs.${domain} = {
-      domain = domain;
-      dnsProvider = "porkbun";
-      environmentFile = config.sops.secrets.porkbun-env.path;
-      webroot = null;
-      postRun = "systemctl reload soju";
-      group = "soju";
-    };
+  security.acme.certs.${domain} = {
+    domain = domain;
+    dnsProvider = "porkbun";
+    environmentFile = config.sops.secrets.porkbun-env.path;
+    webroot = null;
+    reloadServices = [ "soju.service" ];
+    group = "soju";
   };
 
   users = {
