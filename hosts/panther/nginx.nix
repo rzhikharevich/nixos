@@ -78,7 +78,12 @@ in
         listenAddresses = [ tailscaleAddress ];
         enableACME = true;
         forceSSL = true;
-        locations."/".proxyPass = "http://127.0.0.1:${toString config.services.qbittorrent.webuiPort}";
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.qbittorrent.webuiPort}";
+          extraConfig = ''
+            proxy_set_header Authorization "";
+          '';
+        };
         basicAuthFile = config.sops.secrets.qbittorrent-basicauth.path;
       };
       "im.unholy.systems" = {

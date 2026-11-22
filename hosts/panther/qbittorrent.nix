@@ -14,7 +14,10 @@ in
         DefaultSavePath = downloadDir;
         Encryption = 1; # Require encryption.
       };
-      WebUI.Address = "127.0.0.1";
+      WebUI = {
+        Address = "127.0.0.1";
+        HostHeaderValidation = false;
+      };
     };
     webuiPort = 30001;
   };
