@@ -35,6 +35,21 @@ in
 {
   programs.waybar = {
     enable = true;
+    package = pkgs.waybar.overrideAttrs (oldAttrs: {
+      # Backport https://github.com/Alexays/Waybar/pull/5501 to Waybar 0.16.0.
+      patches = (oldAttrs.patches or [ ]) ++ [
+        (builtins.toFile "waybar-center-niri-workspaces.patch" ''
+          --- a/src/modules/niri/workspace.cpp
+          +++ b/src/modules/niri/workspace.cpp
+          @@ -22,4 +22,5 @@
+                 taskbar_box_(Gtk::ORIENTATION_HORIZONTAL, 0) {
+             button_.add(box_);
+          +  box_.set_halign(Gtk::ALIGN_CENTER);
+             box_.pack_start(label_, false, false, 0);
+             box_.pack_start(taskbar_box_, false, false, 0);
+        '')
+      ];
+    });
     systemd.enable = true;
     settings.mainBar = {
       layer = "top";
